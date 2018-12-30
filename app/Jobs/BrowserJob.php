@@ -11,16 +11,12 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Arr;
-use Laravel\Dusk\Browser;
 
 class BrowserJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, BrowserScaffold;
 
     protected $user;
-
-    protected $job;
 
     protected $tags;
 
@@ -55,7 +51,7 @@ class BrowserJob implements ShouldQueue
         foreach($this->tasks as $task){
             if ($task instanceof BaseTask) {
                 $task->execute($this->user ?: $user);
-                $this->addTag(get_class($task));
+                session()->flush();
             } else {
                 return new Exception('All tasks must be instances of BaseTask');
             }

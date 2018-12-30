@@ -24,11 +24,11 @@ Route::get('stock/{ticker}/price', function (Request $request, $ticker) {
     return $stock->json();
 });
 
-Route::group(['prefix'=>'process/'], function(){
+Route::group(['middleware'=>'auth:api','prefix'=>'process/'], function(){
 
     Route::get('test', function(Request $request){
 
-        JobTest::dispatch($request->user());
+        JobTest::dispatch(auth('api')->user());
 
     });
 

@@ -7,6 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @if (Session()->has('api_key'))
+    <!-- API Token -->
+    <meta name="api-key" content="{{ session()->get('api_key')[0] }}">
+    @endif
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
