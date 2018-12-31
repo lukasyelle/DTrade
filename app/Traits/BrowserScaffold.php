@@ -22,8 +22,6 @@ trait BrowserScaffold
 
     function __construct()
     {
-        \Log::debug('Browser Config Setup!');
-
         $this->basePath = base_path('tests/Browser/screenshots');
 
         $this->createApplication();
@@ -65,7 +63,6 @@ trait BrowserScaffold
     {
         $browsers->each(function ($browser, $key) {
             $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
-
             $browser->storeConsoleLog("$this->basePath/$name-$key");
         });
     }
@@ -82,17 +79,23 @@ trait BrowserScaffold
             '--disable-gpu',
             '--headless',
             '--window-size=1920,1080',
+            '--no-sandbox'
+        ]);
+        */
+
+        $options = (new ChromeOptions)->addArguments([
+            '--window-size=1920,1080',
+            '--no-sandbox'
         ]);
 
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
             ChromeOptions::CAPABILITY, $options
         ));
-        */
 
-        return RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()
-        );
+//        return RemoteWebDriver::create(
+//            'http://localhost:9515', DesiredCapabilities::chrome()
+//        );
     }
 
     /**

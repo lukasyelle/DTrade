@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Robinhood\Tasks;
 
-use App\PlatformData;
+use App\Jobs\BaseTask;
 use App\User;
 use Exception;
 use Laravel\Dusk\Browser;
