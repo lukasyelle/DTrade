@@ -11,9 +11,10 @@ class LoginTask extends BaseTask
 {
     /**
      * @param User $user
+     * @param null $params
      * @throws \Throwable
      */
-    public function execute(User $user = null)
+    public function execute(User $user = null, $params = null)
     {
         if ($user == null) throw new Exception('User not passed to login task');
 

@@ -4,16 +4,16 @@ namespace App\Jobs\Robinhood\Tasks;
 
 use App\Jobs\BaseTask;
 use App\User;
-use Exception;
 use Laravel\Dusk\Browser;
 
 class LogoutTask extends BaseTask
 {
     /**
      * @param User $user
+     * @param null $params
      * @throws \Throwable
      */
-    public function execute(User $user = null)
+    public function execute(User $user = null, $params = null)
     {
         $this->browse(function(Browser $browser) {
             $browser->visit('https://robinhood.com/')

@@ -10,9 +10,18 @@ abstract class BaseTask
 {
     use BrowserScaffold;
 
+    public $params;
+
+    public function __construct($params = null)
+    {
+        $this->params = $params;
+        $this->setup();
+    }
+
+    public function setup(){}
+
     /**
      * @param User|null $user
-     * @return Browser the browser used in the task.
      */
     abstract public function execute(User $user = null);
 

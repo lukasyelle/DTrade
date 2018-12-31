@@ -22,9 +22,11 @@ trait BrowserScaffold
 
     function __construct()
     {
-        $this->basePath = base_path('tests/Browser/screenshots');
-
         $this->createApplication();
+
+        $this->basePath = base_path('tests/Browser/');
+
+        \Log::debug($this->basePath);
 
         static::startChromeDriver();
 
@@ -48,8 +50,9 @@ trait BrowserScaffold
     protected function captureFailuresFor($browsers)
     {
         $browsers->each(function ($browser, $key) {
+            $path = base_path('tests/Browser/screenshots');
             $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
-            $browser->screenshot("$this->basePath/failure-$name-$key");
+            $browser->screenshot("$path/failure-$name-$key");
         });
     }
 
@@ -62,8 +65,9 @@ trait BrowserScaffold
     protected function storeConsoleLogsFor($browsers)
     {
         $browsers->each(function ($browser, $key) {
+            $path = base_path('tests/Browser/console');
             $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
-            $browser->storeConsoleLog("$this->basePath/$name-$key");
+            $browser->storeConsoleLog("$path/$name-$key");
         });
     }
 
@@ -92,10 +96,6 @@ trait BrowserScaffold
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
             ChromeOptions::CAPABILITY, $options
         ));
-
-//        return RemoteWebDriver::create(
-//            'http://localhost:9515', DesiredCapabilities::chrome()
-//        );
     }
 
     /**
