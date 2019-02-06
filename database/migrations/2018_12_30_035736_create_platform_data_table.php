@@ -20,6 +20,7 @@ class CreatePlatformDataTable extends Migration
             $table->string('platform');
             $table->string('username');
             $table->longText('password');
+            $table->float('portfolio_value')->default(0.0);
             $table->timestamp('last_login')->nullable();
             $table->timestamps();
         });

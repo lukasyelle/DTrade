@@ -41,6 +41,15 @@ trait BrowserScaffold
         return 'BrowserScaffold';
     }
 
+    private function storeLogs($browsers, $path, $prefix = "")
+    {
+        $browsers->each(function ($browser, $key) use ($path, $prefix) {
+            $path = base_path($path);
+            $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
+            $browser->screenshot("$path/$prefix$name-$key");
+        });
+    }
+
     /**
      * Capture failure screenshots for each browser.
      *
@@ -49,11 +58,7 @@ trait BrowserScaffold
      */
     protected function captureFailuresFor($browsers)
     {
-        $browsers->each(function ($browser, $key) {
-            $path = base_path('tests/Browser/screenshots');
-            $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
-            $browser->screenshot("$path/failure-$name-$key");
-        });
+        $this->storeLogs($browsers, "tests/Browser/screenshots","failure-");
     }
 
     /**
@@ -64,11 +69,7 @@ trait BrowserScaffold
      */
     protected function storeConsoleLogsFor($browsers)
     {
-        $browsers->each(function ($browser, $key) {
-            $path = base_path('tests/Browser/console');
-            $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
-            $browser->storeConsoleLog("$path/$name-$key");
-        });
+        $this->storeLogs($browsers, "tests/Browser/console","failure-");
     }
 
     /**

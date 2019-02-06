@@ -90,17 +90,28 @@ abstract class BrowserJob implements ShouldQueue
         return $this->tags->toArray();
     }
 
+    /**
+     * @param User|null $user
+     * @throws \Throwable
+     */
     public function handle(User $user = null)
     {
-        if ($this->tasks instanceof Collection) {
-            $this->tasks->each(function(BaseTask $task) use ($user) {
-                if ($this->debug) \Log::debug("Starting '".$task->getName()."'..");
-                $task->execute($this->user ?: $user);
-                if ($this->debug) \Log::debug("Done with '".$task->getName()."'.");
-                sleep(2);
-            });
-        }
+        $this->browse(function (Browser $browser) use ($user) {
+            if ($this->tasks instanceof Collection) {
+                $this->tasks->each(function(BaseTask $task) use ($user, $browser) {
+                    if ($this->debug) \Log::debug("Starting '".$task->getName()."'..");
+                    $task->run( $browser,$this->user ?: $user);
+                    if ($this->debug) \Log::debug("Done with '".$task->getName()."'.");
+                    sleep(2);
+                });
+            }
+        });
         $this->closeAll();
     }
+
+    /**
+     * This method may be overwritten in each Job in order to provide a callback after executing the job
+     */
+    public function tearDown(){}
 
 }
