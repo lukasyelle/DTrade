@@ -1,4 +1,8 @@
 
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -43,7 +47,10 @@ Vue.component(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.use(ElementUI);
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components: ElementUI
 });
 

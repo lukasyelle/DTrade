@@ -2,13 +2,12 @@
 
 namespace App\Jobs\Robinhood\Tasks;
 
-
-use App\Jobs\BaseTask;
+use App\Jobs\BrowserTask;
 use App\User;
 use Exception;
 use Laravel\Dusk\Browser;
 
-class StockSearchTask extends BaseTask
+class StockSearchTask extends BrowserTask
 {
     public function setup()
     {
@@ -16,11 +15,11 @@ class StockSearchTask extends BaseTask
     }
 
     /**
+     * @param User $user
      * @param Browser $browser
-     * @param User|null $user
-     * @throws \Throwable
+     * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
-    public function execute(Browser $browser, User $user = null)
+    public function execute(User $user = null, Browser $browser = null)
     {
         $symbol = $this->params;
         if (!is_string($symbol)) throw new Exception('Ticker symbol must be sent as the parameter to the task upon initialization.');

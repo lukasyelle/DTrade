@@ -2,11 +2,11 @@
 
 namespace App\Jobs\Robinhood\Tasks;
 
-use App\Jobs\BaseTask;
+use App\Jobs\BrowserTask;
 use App\User;
 use Laravel\Dusk\Browser;
 
-class WaitTask extends BaseTask
+class WaitTask extends BrowserTask
 {
 
     public function setup()
@@ -16,11 +16,10 @@ class WaitTask extends BaseTask
 
     /**
      * Requires the initialized parameter set and be sent as an integer
+     * @param User $user
      * @param Browser $browser
-     * @param User|null $user
-     * @throws \Throwable
      */
-    public function execute(Browser $browser, User $user = null)
+    public function execute(User $user = null, Browser $browser = null)
     {
         $browser->pause($this->params);
     }

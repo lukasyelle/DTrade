@@ -2,18 +2,18 @@
 
 namespace App\Jobs\Robinhood\Tasks;
 
-use App\Jobs\BaseTask;
+use App\Jobs\BrowserTask;
 use App\User;
 use Laravel\Dusk\Browser;
 
-class LogoutTask extends BaseTask
+class LogoutTask extends BrowserTask
 {
     /**
-     * @param Browser $browser
      * @param User $user
-     * @throws \Throwable
+     * @param Browser $browser
+     * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
-    public function execute(Browser $browser, User $user = null)
+    public function execute(User $user = null, Browser $browser = null)
     {
         $currentUrl = $browser->driver->getCurrentURL();
         if ($currentUrl != 'https://robinhood.com/') $browser->visit('https://robinhood.com/');

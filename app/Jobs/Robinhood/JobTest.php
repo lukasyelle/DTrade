@@ -26,6 +26,7 @@ class JobTest extends BrowserJob
         $this->debug = true;
         $this->addTasks([
             new Tasks\LoginTask(),
+            new Tasks\StockSearchTask('aapl'),
             new Tasks\LogoutTask()
         ]);
     }

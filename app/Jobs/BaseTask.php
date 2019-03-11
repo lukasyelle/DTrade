@@ -2,14 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Traits\BrowserScaffold;
 use App\User;
 use Exception;
-use Laravel\Dusk\Browser;
 
 abstract class BaseTask
 {
-    use BrowserScaffold;
 
     public $params;
     public $requiredParams = null;
@@ -87,19 +84,17 @@ abstract class BaseTask
 
     /**
      * @param User|null $user
-     * @param Browser $browser
-     * @throws \Throwable
      */
-    public function run(Browser $browser, User $user = null){
-        $this->execute($browser, $user);
+    public function run(User $user = null){
+        $this->execute($user);
         $this->tearDown();
     }
 
     /**
-     * @param Browser $browser
      * @param User|null $user
+     * @return
      */
-    abstract public function execute(Browser $browser, User $user = null);
+    abstract public function execute(User $user = null);
 
     public function tearDown(){}
 

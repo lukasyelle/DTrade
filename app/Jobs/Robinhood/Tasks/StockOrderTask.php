@@ -2,11 +2,11 @@
 
 namespace App\Jobs\Robinhood\Tasks;
 
-use App\Jobs\BaseTask;
+use App\Jobs\BrowserTask;
 use App\User;
 use Laravel\Dusk\Browser;
 
-class StockOrderTask extends BaseTask
+class StockOrderTask extends BrowserTask
 {
     public function setup()
     {
@@ -33,15 +33,15 @@ class StockOrderTask extends BaseTask
     }
 
     /**
+     * @param User $user
      * @param Browser $browser
-     * @param User|null $user
-     * @throws \Throwable
+     * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
-    public function execute(Browser $browser, User $user = null)
+    public function execute(User $user = null, Browser $browser = null)
     {
         // Go to the stock page using the Stock Search Task
         $ticker = strtoupper($this->params['ticker']);
-        (new StockSearchTask($ticker))->execute($browser, $user);
+        (new StockSearchTask($ticker))->execute($browser, $browser);
 
         $order = ucfirst($this->params['order']);
         $orderType = $this->params['order_type'];

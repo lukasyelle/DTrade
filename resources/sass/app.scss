@@ -1,14 +1,23 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Raleway:300,400|Slabo+27px|Nunito");
 
-// Variables
+// Local imports
 @import 'variables';
+@import 'header';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+body {
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  margin: 0;
+  padding: 0;
+  background-color: $body-bg;
+  font-family: "Raleway", "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
+h1, h2, h3, h4, h5 {
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
 }
