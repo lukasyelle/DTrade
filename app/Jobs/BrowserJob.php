@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\JobFinished;
 use App\Traits\BrowserScaffold;
 use App\User;
 use Illuminate\Support\Collection;
@@ -32,6 +33,8 @@ abstract class BrowserJob extends BaseJob
                 });
             }
         });
+        event(new JobFinished($this->toString()));
+        $this->tearDown();
         $this->closeAll();
     }
 }

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Robinhood\RefreshPortfolioJob;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Laravel\Passport\Token;
 
 class LoginController extends Controller
 {
@@ -39,7 +43,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function authenticated(Request $request, $user)
+    public function authenticated(Request $request, User $user)
     {
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -47,7 +51,9 @@ class LoginController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
-        $request->session()->push('api_key', $token->id);
+        $user->save();
+        $request->session()->push('api_key', $tokenResult->accessToken);
+        RefreshPortfolioJob::dispatch($user);
     }
 
     /**
@@ -58,9 +64,17 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        $tokens = $request->user()->tokens;
+        if ($tokens instanceof Collection && $tokens->count() > 0) {
+            $tokens->each(function (Token $token) {
+                $token->revoke();
+                $token->delete();
+            });
+        } else {
+            \Log::warn("User API Token not revoked");
+        }
 
-        $request->user()->token()->revoke();
+        $this->guard()->logout();
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect('/');

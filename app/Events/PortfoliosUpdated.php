@@ -9,21 +9,22 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Collection;
 
-class JobStarted implements ShouldBroadcast
+class PortfoliosUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $portfolios;
 
     /**
      * Create a new event instance.
      *
-     * @param $jobString String: The stringified version of the job class
+     * @param Collection $portfolios
      */
-    public function __construct($jobString)
+    public function __construct(Collection $portfolios)
     {
-        $this->message = "{$jobString} started...";
+        $this->portfolios = $portfolios->toArray();
     }
 
     /**
@@ -33,6 +34,6 @@ class JobStarted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('jobs');
+        return new Channel('portfolios');
     }
 }

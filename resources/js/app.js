@@ -1,6 +1,6 @@
-
 import Vue from 'vue';
 import ElementUI from 'element-ui';
+import VueEcho from 'vue-echo-laravel';
 import 'element-ui/lib/theme-chalk/index.css';
 
 /**
@@ -13,6 +13,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.prototype.$http = window.axios;
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,11 +23,11 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const files = require.context('./', true, /\.vue$/i);
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+// Vue.component('dashboard-portfolio-card', require('./components/DashboardPortfolioCard.vue').default);
+//
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')
@@ -48,6 +50,8 @@ Vue.component(
  */
 
 Vue.use(ElementUI);
+
+Vue.use(VueEcho, window.Echo);
 
 const app = new Vue({
     el: '#app',

@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlatformData::class);
     }
+
+    public function portfolios()
+    {
+        return $this->platforms()->select('platform', 'portfolio_value', 'updated_at')->get();
+    }
 }

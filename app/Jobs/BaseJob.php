@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\JobFinished;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,7 +29,10 @@ abstract class BaseJob implements ShouldQueue
         $this->tags = collect($tags);
         $this->tasks = collect([]);
         $this->setup();
-        $this->addTag('Browser Job');
+        $namespace = __NAMESPACE__ . "\\";
+        $className = get_class();
+        $name = str_replace($namespace,"", $className);
+        $this->addTag($name);
         $this->addTaskTags();
 
         if ($this->debug) {
@@ -111,7 +115,7 @@ abstract class BaseJob implements ShouldQueue
                 sleep(2);
             });
         }
-        event(new \App\Events\JobFinished($this->toString()));
+        event(new JobFinished($this->toString()));
         $this->tearDown();
     }
 

@@ -23,20 +23,7 @@
             </el-card>
         </el-col>
         <el-col :span="8">
-            <el-card shadow="always">
-                <div slot="header">
-                    <h3>Portfolios</h3>
-                </div>
-                @foreach($portfolios as $portfolio)
-                    <el-card class="portfolio" shadow="hover">
-                        <div slot="header">
-                            <h3 class="text-capitalize">{{ ucfirst($portfolio['platform']) }}</h3>
-                        </div>
-                        <p>Value: <strong>${{ $portfolio['portfolio_value'] }}</strong></p>
-                        <span>Last Updated {{ $portfolio['updated_at'] }}</span>
-                    </el-card>
-                @endforeach
-            </el-card>
+            <dashboard-portfolios initial_portfolios="{{ $portfolios }}"></dashboard-portfolios>
         </el-col>
     </el-row>
 </div>

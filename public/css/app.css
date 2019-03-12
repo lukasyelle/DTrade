@@ -1,4 +1,297 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Raleway:300,400|Slabo+27px|Nunito);#header h3 {
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Raleway:300,400|Slabo+27px|Nunito);/* -- Mixins -- */
+
+/* -- Global Classes -- */
+
+.transition {
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.one-quarter-width {
+  width: 25%;
+  overflow: hidden;
+}
+
+.three-quarter-width {
+  width: 75%;
+  overflow: hidden;
+}
+
+.one-third-width {
+  width: 33%;
+  overflow: hidden;
+}
+
+.two-third-width {
+  width: 66%;
+  overflow: hidden;
+}
+
+.ninety-width {
+  width: calc(90% - 40px);
+  padding: 40px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  overflow: hidden;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-center span:not(.switchery) {
+  display: block;
+  margin: 0 auto;
+  width: 30%;
+  min-width: 200px;
+  text-align: center;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.list-item {
+  list-style-type: none;
+}
+
+.material-line {
+  width: 100px;
+  height: 1px;
+  border: none;
+  margin: 0.7em auto;
+  padding: 0;
+  background-color: #ccc;
+}
+
+.material-input {
+  padding: 7px 15px;
+  border: 0px;
+  background-color: transparent;
+  border-bottom: 2px solid #ccc;
+  font-size: 1em;
+  margin: 0;
+  transition: border-color 320ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+}
+
+.material-shadow {
+  -o-box-shadow: 0 0 5px 0 #eee;
+  box-shadow: 0 0 5px 0 #eee;
+}
+
+.material-hover:hover {
+  -o-box-shadow: 0 0 5px 0 #bbb;
+  box-shadow: 0 0 5px 0 #bbb;
+}
+
+.material-input:focus {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.material-button {
+  padding: 5px 15px 5px 15px;
+  border-radius: 3px;
+  font-family: "Montserrat", Arial;
+  font-size: 0.7em;
+  background-color: #ff7700;
+  color: #f0f0f0;
+  border: 1px solid #ff7700;
+  margin-right: 5px;
+  text-transform: uppercase;
+}
+
+.material-button:hover {
+  -o-box-shadow: 0 0 5px 0 #ddd;
+  box-shadow: 0 0 5px 0 #ddd;
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+  cursor: pointer;
+}
+
+.material-button.minimal {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  color: #0f0f0f;
+}
+
+.parallax-container {
+  height: calc(90vh - 70px);
+  display: block;
+  z-index: 10;
+  overflow: hidden;
+  position: relative;
+}
+
+.circle {
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border: 1px solid #000;
+  text-align: center;
+}
+
+.center {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  opacity: 0;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.cursor:hover {
+  cursor: pointer;
+}
+
+.padded {
+  padding: 1em;
+}
+
+.padding {
+  padding: 10px;
+}
+
+.padding-left {
+  padding-left: 10px;
+}
+
+.padding-right {
+  padding-right: 10px;
+}
+
+.padding-top {
+  padding-top: 10px;
+}
+
+.padding-bottom {
+  padding-bottom: 10px;
+}
+
+.margin {
+  margin: 10px;
+}
+
+.margin-left {
+  margin-left: 10px;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
+}
+
+.block {
+  display: block;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.relative {
+  position: relative;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italics {
+  font-style: italic;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.dim-background {
+  background-color: #606266;
+}
+
+.dark-background {
+  background-color: #0f0f0f;
+}
+
+.light-background {
+  background-color: #f0f0f0;
+}
+
+.bright-background {
+  background-color: #ffffff;
+}
+
+.dim-text {
+  color: #606266;
+}
+
+.dark-text {
+  color: #0f0f0f;
+}
+
+.light-text {
+  color: #f0f0f0;
+}
+
+.bright-text {
+  color: #ffffff;
+}
+
+#header h3 {
   margin: 0;
 }
 

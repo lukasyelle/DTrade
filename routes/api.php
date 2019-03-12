@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\Robinhood\RefreshPortfolioJob;
 use Illuminate\Http\Request;
 use RadicalLoop\Eod\Config as EodConfig;
 use RadicalLoop\Eod\Api\Stock as Market;
@@ -29,6 +30,12 @@ Route::group(['middleware'=>'auth:api','prefix'=>'process/'], function(){
     Route::get('test', function(Request $request){
 
         JobTest::dispatch(auth('api')->user());
+
+    });
+
+    Route::get('refresh', function(Request $request){
+
+        RefreshPortfolioJob::dispatch(auth('api')->user());
 
     });
 

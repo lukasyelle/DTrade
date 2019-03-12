@@ -1,9 +1,8 @@
-
-// Body
-$body-bg: #f8fafc;
-
 // Typography
 $font-family-sans-serif: "Nunito", sans-serif;
+$font-subtitle: "Slabo", "Montserrat", Arial;
+$font-title: "Montserrat", Arial;
+$font-body: "Raleway", "Slabo", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -18,3 +17,13 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+$dim: #606266;
+$dark: #0f0f0f;
+$light: #f0f0f0;
+$bright: #ffffff;
+$highlight: #ff7700;
+
+$body-bg: #f8fafc;
+
+// General Variables
+$mobile-breakpoint: 640px;
