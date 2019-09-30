@@ -14,9 +14,13 @@ class Ticker extends Model
         parent::__construct();
 
         $this->market = new Market();
+        $this->updateData();
+    }
+
+    public function updateData()
+    {
         $updatedAt = $this->getUpdatedAtColumn();
         $currentTime = $this->freshTimestamp();
-        // Automatically update the model at most every 30 minutes
         if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 30) {
             $this->data = $this->market->realTime($this->symbol);
             $this->save();
