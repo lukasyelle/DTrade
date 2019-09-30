@@ -115018,9 +115018,9 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/lukasyelle/development/DTrade/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /Users/lukasyelle/development/DTrade/resources/sass/pages/home.scss */"./resources/sass/pages/home.scss");
-module.exports = __webpack_require__(/*! /Users/lukasyelle/development/DTrade/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/Lukas/development/DTrade/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /Users/Lukas/development/DTrade/resources/sass/pages/home.scss */"./resources/sass/pages/home.scss");
+module.exports = __webpack_require__(/*! /Users/Lukas/development/DTrade/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
