@@ -10,10 +10,12 @@ use Laravel\Dusk\Browser;
 
 class LoginTask extends BrowserTask
 {
+
     /**
      * @param User $user
      * @param Browser $browser
      * @throws \Facebook\WebDriver\Exception\TimeOutException
+     * @throws Exception if the user does not have a Robinhood account
      */
     public function execute(User $user = null, Browser $browser = null)
     {

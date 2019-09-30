@@ -9,7 +9,7 @@ class Ticker extends Model
 
     private $market;
 
-    function __construct($symbol = null)
+    public function __construct($symbol = null)
     {
         parent::__construct();
 
@@ -21,6 +21,16 @@ class Ticker extends Model
             $this->data = $this->market->realTime($this->symbol);
             $this->save();
         }
+    }
+
+    public function history()
+    {
+        return $this->hasMany(TickerHistory::class);
+    }
+
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
     }
 
 }

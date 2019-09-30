@@ -9,7 +9,7 @@ class Market
 {
     protected $connection;
 
-    function __construct()
+    public function __construct()
     {
         $config = new EodConfig(env('EOD_API_KEY'));
         $this->connection = new Connection($config);
