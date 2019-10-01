@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class Ticker extends Model
 {
-
-    protected $fillable = ['symbol', 'data'];
+    protected $fillable = ['symbol'];
+    protected $appends = ['data'];
 
     private $market;
     public $symbol;
@@ -24,15 +24,6 @@ class Ticker extends Model
     {
         $updatedAtColumn = $this->getUpdatedAtColumn();
         return $this->$updatedAtColumn;
-    }
-
-    private function saveHistory()
-    {
-        TickerHistory::create([
-            'ticker_id' => $this->id,
-            'data'      => $this->data,
-            'as_of'     => $this->getLastUpdatedTimestamp()
-        ]);
     }
 
     public static function fetch($symbol)
@@ -53,22 +44,23 @@ class Ticker extends Model
         $updatedAt = $this->getLastUpdatedTimestamp();
         $currentTime = $this->freshTimestamp();
         if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 30) {
-            if ($this->data) {
-                $this->saveHistory();
-            }
-            $this->data = $this->market->realTime($this['symbol']);
+            $rawData = $this->market->realTime($this['symbol'])->toArray();
+            $rawData['previous_close'] = $rawData['previousClose'];
+            $rawData['change_percent'] = $rawData['change_p'];
+            TickerData::create(array_merge(['ticker_id' => $this->id], $rawData));
+            $this->setUpdatedAt($this->freshTimestamp());
             $this->save();
         }
-    }
-
-    public function history()
-    {
-        return $this->hasMany(TickerHistory::class);
     }
 
     public function stock()
     {
         return $this->belongsTo(Stock::class);
+    }
+
+    public function data()
+    {
+        return $this->hasMany(TickerData::class)->orderBy('created_at', 'DESC');
     }
 
 }

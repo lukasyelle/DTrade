@@ -41,7 +41,9 @@ class UpdateTickerData extends Command
     {
         $symbol = strtoupper($this->argument('ticker'));
         $ticker = Ticker::fetch($symbol);
-        $ticker->updateData();
+        if ($ticker instanceof Ticker) {
+            $ticker->updateData();
+        }
         return $ticker;
     }
 }
