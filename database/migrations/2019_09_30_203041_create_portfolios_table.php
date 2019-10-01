@@ -17,6 +17,8 @@ class CreatePortfoliosTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('platform_data_id')->unsigned()->index();
+            $table->foreign('platform_data_id')->references('id')->on('platform_data')->onDelete('cascade');
             $table->timestamps();
         });
     }

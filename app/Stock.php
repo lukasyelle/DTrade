@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model {
 
+    protected $fillable = ['ticker_id'];
+    protected $appends = ['value'];
+
+    public function getValueAttribute()
+    {
+        return $this->ticker->data->first()->close;
+    }
+
     public function ticker()
     {
         return $this->belongsTo(Ticker::class);

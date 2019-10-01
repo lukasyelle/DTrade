@@ -30,12 +30,7 @@ class LoginTask extends BrowserTask
                 ->click("button[type='submit']")
                 ->waitForText('Home');
 
-        $browser->waitFor('._2YApulnV3lazBStOvoKx6m');
-        $portfolioValue = $browser->text("._2YApulnV3lazBStOvoKx6m");
-
         $robinhoodAccount->last_login = Carbon::now()->toDateTimeString();
-        $robinhoodAccount->portfolio_value = str_replace('$', '', $portfolioValue);
         $robinhoodAccount->save();
-
     }
 }
