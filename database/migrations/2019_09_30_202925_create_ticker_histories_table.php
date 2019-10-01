@@ -13,8 +13,12 @@ class CreateTickerHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_histories', function (Blueprint $table) {
+        Schema::create('ticker_histories', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('ticker_id')->unsigned()->index();
+            $table->foreign('ticker_id')->references('id')->on('tickers')->onDelete('cascade');
+            $table->json('data');
+            $table->timestamp('as_of');
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateTickerHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_histories');
+        Schema::dropIfExists('ticker_histories');
     }
 }

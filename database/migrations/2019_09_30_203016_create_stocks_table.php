@@ -15,6 +15,8 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('ticker_id')->unsigned()->index();
+            $table->foreign('ticker_id')->references('id')->on('tickers')->onDelete('cascade');
             $table->timestamps();
         });
     }

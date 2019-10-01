@@ -15,6 +15,8 @@ class CreateStockTrendsTable extends Migration
     {
         Schema::create('stock_trends', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('stock_id')->unsigned()->index();
+            $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
             $table->timestamps();
         });
     }
