@@ -30,7 +30,7 @@ abstract class BrowserTask extends BaseTask
 
     /**
      * @param User|null $user
-     * @param Browser $browser
+     * @param Browser   $browser
      *
      * @throws Exception
      */
