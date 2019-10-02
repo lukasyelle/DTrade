@@ -3,20 +3,18 @@
 namespace App\Jobs;
 
 use App\Ticker;
-use Exception;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
-use function GuzzleHttp\Psr7\str;
 
-class UpdateTickerData implements ShouldQueue
+class DownloadTickerHistory implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $symbols;
+    protected $symbols;
 
     /**
      * Create a new job instance.
@@ -25,8 +23,9 @@ class UpdateTickerData implements ShouldQueue
      */
     public function __construct($symbols)
     {
-        $this->symbols = array_map('strtoupper', (is_array($symbols) ? $symbols : [$symbols]));
+        $this->symbols = is_array($symbols) ? $symbols : [$symbols];
     }
+
 
     /**
      * Execute the job.
@@ -36,7 +35,10 @@ class UpdateTickerData implements ShouldQueue
     public function handle()
     {
         foreach ($this->symbols as $symbol) {
-            Artisan::call("update:ticker $symbol");
+            $ticker = Ticker::fetch($symbol);
+            if ($ticker instanceof Ticker) {
+                $ticker->downloadInitialHistory();
+            }
         }
     }
 }

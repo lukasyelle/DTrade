@@ -2,22 +2,16 @@
 
 namespace App;
 
+use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
+use Laratrade\Trader\Facades\Trader;
 
 class Stock extends Model
 {
+    use StockIndicators;
+
     protected $fillable = ['ticker_id'];
-    protected $appends = ['value', 'data'];
-
-    public function getValueAttribute()
-    {
-        return $this->ticker->data->first()->close;
-    }
-
-    public function getDataAttribute()
-    {
-        return $this->ticker->data;
-    }
+    protected $appends = ['symbol', 'data', 'lastUpdate', 'value'];
 
     public function ticker()
     {
@@ -33,4 +27,25 @@ class Stock extends Model
     {
         return $this->belongsToMany(Portfolio::class);
     }
+
+    public function getSymbolAttribute()
+    {
+        return $this->ticker['symbol'];
+    }
+
+    public function getDataAttribute()
+    {
+        return $this->ticker->data;
+    }
+
+    public function getLastUpdateAttribute()
+    {
+        return $this->data->first();
+    }
+
+    public function getValueAttribute()
+    {
+        return $this->lastUpdate->close;
+    }
+
 }

@@ -22,6 +22,6 @@ class Market
 
     public function eod($symbol)
     {
-        return collect(json_decode($this->connection->eod($symbol)->json()));
+        return json_decode($this->connection->eod($symbol)->json());
     }
 }
