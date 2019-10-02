@@ -34,7 +34,7 @@ class Stock extends Model
 
     public function getDataAttribute()
     {
-        return $this->ticker->data;
+        return $this->ticker->data->take(100);
     }
 
     public function getLastUpdateAttribute()
