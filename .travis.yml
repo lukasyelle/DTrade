@@ -16,6 +16,7 @@ before_install:
   - psql -c 'create database travis_ci_test;' -U postgres
 
 install:
+  - pecl install trader
   - composer install --no-interaction
 
 before_script:
