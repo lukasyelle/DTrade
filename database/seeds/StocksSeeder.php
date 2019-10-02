@@ -22,7 +22,7 @@ class StocksSeeder extends Seeder
             'gpro',
             'dnr',
             'pbr.a',
-            'ge'
+            'ge',
         ];
         DownloadTickerHistory::dispatch($desiredTickers);
     }
