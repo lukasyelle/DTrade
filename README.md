@@ -1,6 +1,5 @@
-# DTrade
+# DTrade [![Build Status](https://travis-ci.org/lukasyelle/DTrade.svg?branch=master)](https://travis-ci.org/lukasyelle/DTrade) [![StyleCI](https://github.styleci.io/repos/163559139/shield?branch=master)](https://github.styleci.io/repos/163559139) [![Maintainability](https://api.codeclimate.com/v1/badges/f7a172518dfe07dcd0e8/maintainability)](https://codeclimate.com/github/lukasyelle/DTrade/maintainability)
 DTrade is a stock trading assistance application based on the Laravel framework and integrated into Robinhood.
-
 
 ## Goal
 The goal of this application is to help take some emotion out of trading. This system will accomplish that goal in a few ways:
@@ -13,6 +12,3 @@ The goal of this application is to help take some emotion out of trading. This s
     1) DTrade takes data from an external source to analyze trends internally and come up with targets for buy/sell points.
     3) Included in the targets will be a stop loss, and that can be executed automatically under both `Smart Exit` and `AutoTrade` policies.
 
-[![Build Status](https://travis-ci.org/lukasyelle/DTrade.svg?branch=master)](https://travis-ci.org/lukasyelle/DTrade)
-[![StyleCI](https://github.styleci.io/repos/163559139/shield?branch=master)](https://github.styleci.io/repos/163559139)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f7a172518dfe07dcd0e8/maintainability)](https://codeclimate.com/github/lukasyelle/DTrade/maintainability)
