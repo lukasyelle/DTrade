@@ -8,13 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Artisan;
 
-class UpdateTickerData implements ShouldQueue
+class DownloadTickerHistory implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $symbols;
+    protected $symbols;
 
     /**
      * Create a new job instance.
@@ -23,7 +22,7 @@ class UpdateTickerData implements ShouldQueue
      */
     public function __construct($symbols)
     {
-        $this->symbols = array_map('strtoupper', (is_array($symbols) ? $symbols : [$symbols]));
+        $this->symbols = is_array($symbols) ? $symbols : [$symbols];
     }
 
     /**
@@ -34,7 +33,13 @@ class UpdateTickerData implements ShouldQueue
     public function handle()
     {
         foreach ($this->symbols as $symbol) {
-            Artisan::call("update:ticker $symbol");
+            $tickerExisted = Ticker::symbolExists($symbol);
+            $ticker = Ticker::fetch($symbol);
+            if ($ticker instanceof Ticker && $tickerExisted) {
+                // If the ticker didnt exist, it will download the history on
+                // creation (which will happen in the `fetch` method above).
+                $ticker->downloadInitialHistory();
+            }
         }
     }
 }
