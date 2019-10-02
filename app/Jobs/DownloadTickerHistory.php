@@ -35,8 +35,11 @@ class DownloadTickerHistory implements ShouldQueue
     public function handle()
     {
         foreach ($this->symbols as $symbol) {
+            $tickerExisted = Ticker::symbolExists($symbol);
             $ticker = Ticker::fetch($symbol);
-            if ($ticker instanceof Ticker) {
+            if ($ticker instanceof Ticker && $tickerExisted) {
+                // If the ticker didnt exist, it will download the history on
+                // creation (which will happen in the `fetch` method above).
                 $ticker->downloadInitialHistory();
             }
         }
