@@ -15,8 +15,9 @@ class StockOrderTask extends BrowserTask
 
     /**
      * @param Browser $browser
-     * @param User $user
+     * @param User    $user
      * @param $order
+     *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
     private function submitOrder(Browser $browser, User $user, $order)
@@ -28,13 +29,14 @@ class StockOrderTask extends BrowserTask
         // Handle the cases where robinhood requires you reenter your password.
         if ($browser->element("input[name='password']")) {
             $robinhoodLogin = $user->platforms()->where('platform', 'robinhood')->first();
-            $browser->type("input[name='password']", decrypt($robinhoodLogin->password))->press("Continue");
+            $browser->type("input[name='password']", decrypt($robinhoodLogin->password))->press('Continue');
         }
     }
 
     /**
-     * @param User $user
+     * @param User    $user
      * @param Browser $browser
+     *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
     public function execute(User $user = null, Browser $browser = null)

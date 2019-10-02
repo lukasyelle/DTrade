@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Stock extends Model {
-
+class Stock extends Model
+{
     protected $fillable = ['ticker_id'];
     protected $appends = ['value', 'data'];
 
@@ -33,5 +33,4 @@ class Stock extends Model {
     {
         return $this->belongsToMany(Portfolio::class);
     }
-
 }

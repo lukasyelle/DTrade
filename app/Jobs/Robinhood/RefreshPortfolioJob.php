@@ -10,7 +10,6 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 class RefreshPortfolioJob extends BrowserJob
 {
-
     /**
      * This method is to be overwritten in each Job in order to provide the correct
      * entry point in the construction of a job to add the tasks it will execute before
@@ -27,7 +26,7 @@ class RefreshPortfolioJob extends BrowserJob
             // With a brief test in jQuery, the selector "[data-testid='InstrumentPreviewList'] section" may work.
             // If not, this should "[data-testid='InstrumentPreviewList'] section:first-of-type"
             // This will change if they remove that testid.
-            new Tasks\LogoutTask()
+            new Tasks\LogoutTask(),
         ]);
     }
 
@@ -44,18 +43,16 @@ class RefreshPortfolioJob extends BrowserJob
      */
     protected function driver()
     {
-        $options = (new ChromeOptions)->addArguments([
+        $options = (new ChromeOptions())->addArguments([
             '--disable-gpu',
             '--headless',
             '--window-size=1920,1080',
-            '--no-sandbox'
+            '--no-sandbox',
         ]);
-
 
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
             ChromeOptions::CAPABILITY, $options
         ));
     }
-
 }

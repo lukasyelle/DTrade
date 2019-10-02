@@ -19,16 +19,21 @@ abstract class BrowserJob extends BaseJob
 
     /**
      * @param User|null $user
+     *
      * @throws \Throwable
      */
     public function handle(User $user = null)
     {
         $this->browse(function (Browser $browser) use ($user) {
             if ($this->tasks instanceof Collection) {
-                $this->tasks->each(function(BrowserTask $task) use ($user, $browser) {
-                    if ($this->debug) \Log::debug("Starting '".$task->getName()."'..");
+                $this->tasks->each(function (BrowserTask $task) use ($user, $browser) {
+                    if ($this->debug) {
+                        \Log::debug("Starting '".$task->getName()."'..");
+                    }
                     $task->run($this->user ?: $user, $browser);
-                    if ($this->debug) \Log::debug("Done with '".$task->getName()."'.");
+                    if ($this->debug) {
+                        \Log::debug("Done with '".$task->getName()."'.");
+                    }
                     sleep(2);
                 });
             }

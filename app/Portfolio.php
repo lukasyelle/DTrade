@@ -12,6 +12,7 @@ class Portfolio extends Model
     public function getValueAttribute()
     {
         $stocks = $this->stocks;
+
         return $stocks->value * $stocks->pivot->shares;
     }
 
@@ -24,5 +25,4 @@ class Portfolio extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
