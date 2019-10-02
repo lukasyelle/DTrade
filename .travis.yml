@@ -4,6 +4,7 @@ php:
   - 7.3
 
 addons:
+  chrome: stable
   postgresql: "10"
   apt:
     packages:
@@ -22,12 +23,12 @@ install:
 before_script:
   - php artisan key:generate
   - php artisan migrate
-  - php artisan horizon
-  - cd vendor/laravel/bin/dusk
-  - ./chromedriver-linux
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - php artisan serve &
 
 script:
   - vendor/bin/phpunit
+  - php artisan dusk
 
 after_success:
   - |
