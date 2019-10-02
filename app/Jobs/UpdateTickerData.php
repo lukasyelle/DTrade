@@ -3,14 +3,12 @@
 namespace App\Jobs;
 
 use App\Ticker;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
-use function GuzzleHttp\Psr7\str;
 
 class UpdateTickerData implements ShouldQueue
 {

@@ -4,11 +4,10 @@ namespace App\Jobs;
 
 use App\Ticker;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class DownloadTickerHistory implements ShouldQueue
 {
@@ -25,7 +24,6 @@ class DownloadTickerHistory implements ShouldQueue
     {
         $this->symbols = is_array($symbols) ? $symbols : [$symbols];
     }
-
 
     /**
      * Execute the job.
