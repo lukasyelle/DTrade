@@ -47,19 +47,19 @@ class Ticker extends Model
         foreach ($rawData as $index => $dataPoint) {
             $previous = $index > 0 ? $rawData[$index - 1] : $dataPoint;
             $change = $dataPoint->close - $previous->close;
-            $changePercent = ($change/$previous->close) * 100;
+            $changePercent = ($change / $previous->close) * 100;
             $data = [
-                'ticker_id' => $this->id,
-                'open' => $dataPoint->open,
-                'high' => $dataPoint->high,
-                'low' => $dataPoint->low,
-                'close' => $dataPoint->close,
-                'volume' => $dataPoint->volume,
+                'ticker_id'      => $this->id,
+                'open'           => $dataPoint->open,
+                'high'           => $dataPoint->high,
+                'low'            => $dataPoint->low,
+                'close'          => $dataPoint->close,
+                'volume'         => $dataPoint->volume,
                 'previous_close' => $previous->close,
-                'change' => round($change, 2),
+                'change'         => round($change, 2),
                 'change_percent' => round($changePercent, 3),
-                'created_at' => Carbon::createFromDate($dataPoint->date),
-                'updated_at' => $this->freshTimestamp(),
+                'created_at'     => Carbon::createFromDate($dataPoint->date),
+                'updated_at'     => $this->freshTimestamp(),
             ];
             DB::table('ticker_data')->insert($data);
         }
@@ -83,6 +83,7 @@ class Ticker extends Model
             ]);
             Stock::create(['ticker_id' => $tickerId]);
             DownloadTickerHistory::dispatch($symbol);
+
             return self::fetch($symbol);
         }
 
@@ -102,5 +103,4 @@ class Ticker extends Model
             $this->save();
         }
     }
-
 }

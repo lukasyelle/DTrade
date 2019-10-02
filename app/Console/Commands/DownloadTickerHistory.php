@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\DownloadTickerHistory as DownloadTickerHistoryJob;
 use App\Ticker;
 use Illuminate\Console\Command;
-use App\Jobs\DownloadTickerHistory as DownloadTickerHistoryJob;
 
 class DownloadTickerHistory extends Command
 {

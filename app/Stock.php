@@ -4,7 +4,6 @@ namespace App;
 
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
-use Laratrade\Trader\Facades\Trader;
 
 class Stock extends Model
 {
@@ -47,5 +46,4 @@ class Stock extends Model
     {
         return $this->lastUpdate->close;
     }
-
 }
