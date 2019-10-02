@@ -1,0 +1,36 @@
+language: php
+
+php:
+  - 7.3
+
+addons:
+  postgresql: "11.3"
+
+before_install:
+  - composer self-update
+  - cp .env.travis .env
+  - psql -c 'create database travis_ci_test;' -U postgres
+
+install:
+  - composer install --no-interaction
+
+before_script:
+  - php artisan key:generate
+  - php artisan migrate
+  - php artisan horizon
+  - cd vendor/laravel/bin/dusk
+  - ./chromedriver-linux
+
+script:
+  - vendor/bin/phpunit
+
+after_success:
+  - |
+    if [ $TRAVIS_BRANCH == "master" ]; then
+      curl https://forge.laravel.com/servers/320283/sites/860947/deploy/http?token=4chtf2VvNzL9CjdFxpqUyXxJJojGMRi8OJd8ZQL2
+    fi
+
+cache:
+  directories:
+    - node_modules
+    - vendor

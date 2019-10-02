@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Stock extends Model {
 
     protected $fillable = ['ticker_id'];
-    protected $appends = ['value'];
+    protected $appends = ['value', 'data'];
 
     public function getValueAttribute()
     {
         return $this->ticker->data->first()->close;
+    }
+
+    public function getDataAttribute()
+    {
+        return $this->ticker->data;
     }
 
     public function ticker()
