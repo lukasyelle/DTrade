@@ -2,15 +2,14 @@
 
 namespace App\Traits;
 
-use \Exception;
-use \Laravel\Dusk\Browser;
-use \Laravel\Dusk\Chrome\SupportsChrome;
-use \Laravel\Dusk\Concerns\ProvidesBrowser;
-use \Facebook\WebDriver\Chrome\ChromeOptions;
-use \Facebook\WebDriver\Remote\RemoteWebDriver;
-use \Facebook\WebDriver\Remote\DesiredCapabilities;
+use Exception;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Laravel\Dusk\Browser;
+use Laravel\Dusk\Chrome\SupportsChrome;
+use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\CreatesApplication;
-
 
 trait BrowserScaffold
 {
@@ -20,7 +19,7 @@ trait BrowserScaffold
 
     private $basePath;
 
-    function __construct()
+    public function __construct()
     {
         $this->createApplication();
 
@@ -37,11 +36,12 @@ trait BrowserScaffold
         Browser::$storeConsoleLogAt = base_path('tests/Browser/console');
     }
 
-    public static function getName(){
+    public static function getName()
+    {
         return 'BrowserScaffold';
     }
 
-    private function storeLogs($browsers, $path, $prefix = "")
+    private function storeLogs($browsers, $path, $prefix = '')
     {
         $browsers->each(function ($browser, $key) use ($path, $prefix) {
             $path = base_path($path);
@@ -53,23 +53,25 @@ trait BrowserScaffold
     /**
      * Capture failure screenshots for each browser.
      *
-     * @param  \Illuminate\Support\Collection  $browsers
+     * @param \Illuminate\Support\Collection $browsers
+     *
      * @return void
      */
     protected function captureFailuresFor($browsers)
     {
-        $this->storeLogs($browsers, "tests/Browser/screenshots","failure-");
+        $this->storeLogs($browsers, 'tests/Browser/screenshots', 'failure-');
     }
 
     /**
      * Store the console output for the given browsers.
      *
-     * @param  \Illuminate\Support\Collection  $browsers
+     * @param \Illuminate\Support\Collection $browsers
+     *
      * @return void
      */
     protected function storeConsoleLogsFor($browsers)
     {
-        $this->storeLogs($browsers, "tests/Browser/console","failure-");
+        $this->storeLogs($browsers, 'tests/Browser/console', 'failure-');
     }
 
     /**
@@ -88,9 +90,9 @@ trait BrowserScaffold
         ]);
         */
 
-        $options = (new ChromeOptions)->addArguments([
+        $options = (new ChromeOptions())->addArguments([
             '--window-size=1920,1080',
-            '--no-sandbox'
+            '--no-sandbox',
         ]);
 
         return RemoteWebDriver::create(
@@ -112,12 +114,12 @@ trait BrowserScaffold
     /**
      * Return the default user to authenticate.
      *
-     * @return \App\User|int|null
      * @throws \Exception
+     *
+     * @return \App\User|int|null
      */
     protected function user()
     {
-        throw new Exception("User resolver has not been set.");
+        throw new Exception('User resolver has not been set.');
     }
-
 }

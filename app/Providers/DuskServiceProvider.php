@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Laravel\Dusk\Browser;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\Browser;
 
 class DuskServiceProvider extends ServiceProvider
 {
@@ -14,12 +14,10 @@ class DuskServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         Browser::$baseUrl = config('app.url');
 
         Browser::$storeScreenshotsAt = base_path('tests/Browser/screenshots');
 
         Browser::$storeConsoleLogAt = base_path('tests/Browser/console');
-
     }
 }

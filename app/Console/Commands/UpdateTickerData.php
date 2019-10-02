@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Ticker;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class UpdateTickerData extends Command
 {
@@ -44,6 +43,7 @@ class UpdateTickerData extends Command
         if ($ticker instanceof Ticker) {
             $ticker->updateData();
         }
+
         return $ticker;
     }
 }
