@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'api_token' => env('EOD_API_KEY')
+    'api_token' => env('EOD_API_KEY'),
 ];

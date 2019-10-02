@@ -7,9 +7,9 @@ use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Collection;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 abstract class BaseJob implements ShouldQueue
 {
@@ -29,14 +29,14 @@ abstract class BaseJob implements ShouldQueue
         $this->tags = collect($tags);
         $this->tasks = collect([]);
         $this->setup();
-        $namespace = __NAMESPACE__ . "\\";
+        $namespace = __NAMESPACE__.'\\';
         $className = get_class();
-        $name = str_replace($namespace,"", $className);
+        $name = str_replace($namespace, '', $className);
         $this->addTag($name);
         $this->addTaskTags();
 
         if ($this->debug) {
-            \Log::debug("Debug mode activated on Browser Jobs.");
+            \Log::debug('Debug mode activated on Browser Jobs.');
             \Log::debug($this->user);
             \Log::debug($this->tags);
             \Log::debug($this->tasks);
@@ -49,7 +49,8 @@ abstract class BaseJob implements ShouldQueue
     public function toString()
     {
         $concreteClass = get_class($this);
-        $tags = join(', ', $this->tags());
+        $tags = implode(', ', $this->tags());
+
         return "Job '$concreteClass' with tags '$tags'";
     }
 
@@ -61,7 +62,8 @@ abstract class BaseJob implements ShouldQueue
     abstract public function setup();
 
     /**
-     * Helper function to add a task to the collection of tasks
+     * Helper function to add a task to the collection of tasks.
+     *
      * @param BaseTask $task
      */
     private function addTask(BaseTask $task)
@@ -71,6 +73,7 @@ abstract class BaseJob implements ShouldQueue
 
     /**
      * Add tasks to the job, each task must be an instance of BaseTask.
+     *
      * @param array|BaseTask $tasks
      */
     public function addTasks($tasks)
@@ -91,7 +94,7 @@ abstract class BaseJob implements ShouldQueue
 
     private function addTaskTags()
     {
-        $this->tasks->each(function(BaseTask $task){
+        $this->tasks->each(function (BaseTask $task) {
             $this->addTag($task->getName());
         });
     }
@@ -103,15 +106,20 @@ abstract class BaseJob implements ShouldQueue
 
     /**
      * @param User|null $user
+     *
      * @throws \Throwable
      */
     public function handle(User $user = null)
     {
         if ($this->tasks instanceof Collection) {
-            $this->tasks->each(function(BaseTask $task) use ($user) {
-                if ($this->debug) \Log::debug("Starting '".$task->getName()."'..");
+            $this->tasks->each(function (BaseTask $task) use ($user) {
+                if ($this->debug) {
+                    \Log::debug("Starting '".$task->getName()."'..");
+                }
                 $task->run($this->user ?: $user);
-                if ($this->debug) \Log::debug("Done with '".$task->getName()."'.");
+                if ($this->debug) {
+                    \Log::debug("Done with '".$task->getName()."'.");
+                }
                 sleep(2);
             });
         }
@@ -120,8 +128,9 @@ abstract class BaseJob implements ShouldQueue
     }
 
     /**
-     * This method may be overwritten in each Job in order to provide a callback after executing the job
+     * This method may be overwritten in each Job in order to provide a callback after executing the job.
      */
-    public function tearDown(){}
-
+    public function tearDown()
+    {
+    }
 }

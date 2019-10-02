@@ -23,19 +23,22 @@ class Ticker extends Model
     private function getLastUpdatedTimestamp()
     {
         $updatedAtColumn = $this->getUpdatedAtColumn();
+
         return $this->$updatedAtColumn;
     }
 
     public static function fetch($symbol)
     {
-        $ticker = Ticker::where('symbol', $symbol)->first();
+        $ticker = self::where('symbol', $symbol)->first();
         if ($ticker == null) {
             DB::table('tickers')->insert([
-                'symbol' => $symbol,
+                'symbol'     => $symbol,
                 'created_at' => Carbon::now(),
             ]);
-            return Ticker::fetch($symbol);
+
+            return self::fetch($symbol);
         }
+
         return $ticker;
     }
 
@@ -62,5 +65,4 @@ class Ticker extends Model
     {
         return $this->hasMany(TickerData::class)->orderBy('created_at', 'DESC');
     }
-
 }
