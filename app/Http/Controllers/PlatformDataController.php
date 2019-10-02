@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class PlatformDataController extends Controller
 {
-    public function store(Request $request){
-
+    public function store(Request $request)
+    {
         $validatedData = $request->validate([
             'platform' => 'required',
             'username' => 'required',
@@ -22,6 +22,5 @@ class PlatformDataController extends Controller
         $platform->save();
 
         $request->user()->platforms()->associate($platform);
-
     }
 }

@@ -7,13 +7,14 @@ use Exception;
 
 abstract class BaseTask
 {
-
     public $params;
     public $requiredParams = null;
 
     /**
      * BaseTask constructor.
+     *
      * @param null $params
+     *
      * @throws Exception
      */
     public function __construct($params = null)
@@ -23,10 +24,13 @@ abstract class BaseTask
         $this->verifyRequiredParams();
     }
 
-    public function setup(){}
+    public function setup()
+    {
+    }
 
     /**
      * @throws Exception
+     *
      * @return bool
      */
     public function verifyRequiredParams()
@@ -38,14 +42,16 @@ abstract class BaseTask
                     if ($diff->count() == 0) {
                         return true;
                     } else {
-                        throw new Exception("One or more parameters missing from task. Diff: ".json_encode($diff));
+                        throw new Exception('One or more parameters missing from task. Diff: '.json_encode($diff));
                     }
                 } else {
                     return true;
                 }
             }
+
             throw new Exception('Error verifying that required parameters in task exist. Task requires: '.json_encode($this->requiredParams));
         }
+
         return true;
     }
 
@@ -57,16 +63,20 @@ abstract class BaseTask
      * 3a. $this->requiredParams is an array
      * 1b. $params is true
      * 2b. $params is a single parameter
-     * 3b. $params is an array of parameters
+     * 3b. $params is an array of parameters.
      *
      * @param $params
+     *
      * @throws Exception
+     *
      * @return bool
      */
     public function addRequiredParams($params)
     {
         if ($params !== true) {
-            if (!is_array($params)) $params = [$params];
+            if (!is_array($params)) {
+                $params = [$params];
+            }
             if (!is_array($this->requiredParams)) {
                 if ($this->requiredParams == true || $this->requiredParams == null) {
                     $this->requiredParams = [];
@@ -77,7 +87,9 @@ abstract class BaseTask
             $this->requiredParams = array_merge($this->requiredParams, $params);
         }
 
-        if ($this->requiredParams == null) $this->requiredParams = $params;
+        if ($this->requiredParams == null) {
+            $this->requiredParams = $params;
+        }
 
         return $this->verifyRequiredParams();
     }
@@ -85,23 +97,27 @@ abstract class BaseTask
     /**
      * @param User|null $user
      */
-    public function run(User $user = null){
+    public function run(User $user = null)
+    {
         $this->execute($user);
         $this->tearDown();
     }
 
     /**
      * @param User|null $user
+     *
      * @return
      */
     abstract public function execute(User $user = null);
 
-    public function tearDown(){}
+    public function tearDown()
+    {
+    }
 
     public function getName()
     {
         $className = get_class($this);
+
         return substr($className, strrpos($className, '\\') + 1);
     }
-
 }

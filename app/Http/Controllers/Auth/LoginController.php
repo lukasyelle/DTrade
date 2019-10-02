@@ -47,7 +47,7 @@ class LoginController extends Controller
     {
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-        if ($request->remember_me){
+        if ($request->remember_me) {
             $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
@@ -59,7 +59,8 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
@@ -71,7 +72,7 @@ class LoginController extends Controller
                 $token->delete();
             });
         } else {
-            \Log::warn("User API Token not revoked");
+            \Log::warn('User API Token not revoked');
         }
 
         $this->guard()->logout();

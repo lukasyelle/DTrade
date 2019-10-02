@@ -19,7 +19,8 @@
         "laravel/tinker": "^1.0",
         "pusher/pusher-php-server": "^3.3",
         "radicalloop/eodhistoricaldata": "^1.0",
-        "spatie/laravel-permission": "^2.29"
+        "spatie/laravel-permission": "^2.29",
+        "ext-json": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

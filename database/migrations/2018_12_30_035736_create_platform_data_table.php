@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePlatformDataTable extends Migration
 {
@@ -20,7 +20,6 @@ class CreatePlatformDataTable extends Migration
             $table->string('platform');
             $table->string('username');
             $table->longText('password');
-            $table->float('portfolio_value')->default(0.0);
             $table->timestamp('last_login')->nullable();
             $table->timestamps();
         });
