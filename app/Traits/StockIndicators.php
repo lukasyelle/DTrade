@@ -151,11 +151,13 @@ trait StockIndicators
     private function nDayHistoricalProfitability($nDays)
     {
         $close = $this->close;
+
         return collect($close)->map(function ($currentClose, $index) use ($close, $nDays) {
             $hasNext = $index < (count($close) - $nDays);
             if ($hasNext == false) {
-                return null;
+                return;
             }
+
             return $close[$index + $nDays] > $currentClose;
         });
     }
@@ -200,8 +202,7 @@ trait StockIndicators
 
         return [
             'profitability' => $profitability,
-            'indicators' => $paddedIndicators,
+            'indicators'    => $paddedIndicators,
         ];
     }
-
 }
