@@ -27,6 +27,11 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
+    public static function fetch($ticker)
+    {
+        return Ticker::fetch($ticker)->stock;
+    }
+
     public function getSymbolAttribute()
     {
         return $this->ticker['symbol'];
