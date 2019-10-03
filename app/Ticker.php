@@ -31,7 +31,7 @@ class Ticker extends Model
 
     public function data()
     {
-        return $this->hasMany(TickerData::class)->orderBy('created_at', 'ASC');
+        return $this->hasMany(TickerData::class)->orderBy('created_at', 'DESC');
     }
 
     private function getLastUpdatedTimestamp()
