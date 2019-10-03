@@ -44,7 +44,7 @@ class Stock extends Model
 
     public function getLastUpdateAttribute()
     {
-        return $this->data->first();
+        return $this->data->last();
     }
 
     public function getValueAttribute()
