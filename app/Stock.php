@@ -39,7 +39,7 @@ class Stock extends Model
 
     public function getDataAttribute()
     {
-        return $this->ticker->data->take(1000)->reverse();
+        return $this->ticker->data->take(365)->reverse();
     }
 
     public function getLastUpdateAttribute()
