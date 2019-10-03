@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Collection;
 use Laratrade\Trader\Facades\Trader;
 
 trait StockIndicators
@@ -126,22 +127,81 @@ trait StockIndicators
     public function trendIndicators()
     {
         $data = [];
-        $dx = $this->dx();
-        $rsi = $this->rsi();
-        $sar = $this->sar();
+        $dx = collect($this->dx());
+        $rsi = collect($this->rsi());
+        $sar = collect($this->sar());
         $close = $this->close;
-        $sarDelta = collect($sar)->map(function ($sar, $index) use ($close) {
+        $sarDelta = $sar->map(function ($sar, $index) use ($close) {
             return $close[$index] - $sar;
-        })->toArray();
+        });
 
         foreach (range(0, count($close) - 1) as $index) {
             $data[$index] = [
-                'dx'   => $dx[$index],
-                'rsi'  => $rsi[$index],
-                'sard' => $sarDelta[$index],
+                'dx'   => $dx->get($index),
+                'rsi'  => $rsi->get($index),
+                'sard' => $sarDelta->get($index),
             ];
         }
 
-        return $data;
+        return collect($data)->filter(function ($row) {
+            return !($row['dx'] == null || $row['rsi'] == null || $row['sard'] == null);
+        });
     }
+
+    private function nDayHistoricalProfitability($nDays)
+    {
+        $close = $this->close;
+        return collect($close)->map(function ($currentClose, $index) use ($close, $nDays) {
+            $hasNext = $index < (count($close) - $nDays);
+            if ($hasNext == false) {
+                return null;
+            }
+            return $close[$index + $nDays] > $currentClose;
+        });
+    }
+
+    public function nextDayHistoricalProfitability()
+    {
+        return $this->nDayHistoricalProfitability(1);
+    }
+
+    public function fiveDayHistoricalProfitability()
+    {
+        return $this->nDayHistoricalProfitability(5);
+    }
+
+    public function tenDayHistoricalProfitability()
+    {
+        return $this->nDayHistoricalProfitability(10);
+    }
+
+    public function formatProfitabilityAndIndicators(Collection $profitability)
+    {
+        // Get the total number of points to go through
+        $numberPoints = count($profitability);
+
+        // Snag the indicators for the time period, pad the beginning because
+        // some of them have offset starting points (rsi starts at 14)
+        $indicators = $this->trendIndicators();
+        $paddedIndicators = $indicators->pad(-$numberPoints, null);
+
+        // Loop through all of the points and filter out days that have a null
+        // value for either the indicator or the profit projection.
+        // This is done to ensure the profit projections and indicators begin
+        // and end at the same index.
+        foreach (range(0, $numberPoints - 1) as $index) {
+            $profitProjection = $profitability->get($index);
+            $pointIndicators = $paddedIndicators->get($index);
+            if ($profitProjection === null || $pointIndicators === null) {
+                $profitability->forget($index);
+                $paddedIndicators->forget($index);
+            }
+        }
+
+        return [
+            'profitability' => $profitability,
+            'indicators' => $paddedIndicators,
+        ];
+    }
+
 }
