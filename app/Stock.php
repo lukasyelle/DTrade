@@ -27,6 +27,11 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
+    public static function fetch($ticker)
+    {
+        return Ticker::fetch($ticker)->stock;
+    }
+
     public function getSymbolAttribute()
     {
         return $this->ticker['symbol'];
@@ -34,12 +39,12 @@ class Stock extends Model
 
     public function getDataAttribute()
     {
-        return $this->ticker->data->take(100);
+        return $this->ticker->data->take(365)->reverse();
     }
 
     public function getLastUpdateAttribute()
     {
-        return $this->data->first();
+        return $this->data->last();
     }
 
     public function getValueAttribute()
