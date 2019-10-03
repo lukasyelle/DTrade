@@ -130,15 +130,15 @@ trait StockIndicators
         $rsi = $this->rsi();
         $sar = $this->sar();
         $close = $this->close;
-        $sarDelta = collect($sar)->map(function($sar, $index) use ($close){
+        $sarDelta = collect($sar)->map(function ($sar, $index) use ($close) {
             return $close[$index] - $sar;
         })->toArray();
 
         foreach (range(0, count($close) - 1) as $index) {
             $data[$index] = [
-                "dx" => $dx[$index],
-                "rsi" => $rsi[$index],
-                "sard" => $sarDelta[$index],
+                'dx'   => $dx[$index],
+                'rsi'  => $rsi[$index],
+                'sard' => $sarDelta[$index],
             ];
         }
 
