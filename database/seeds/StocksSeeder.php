@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\DownloadTickerHistory;
+use App\Jobs\Stocks\DownloadTickerHistory;
 use Illuminate\Database\Seeder;
 
 class StocksSeeder extends Seeder
@@ -21,7 +21,6 @@ class StocksSeeder extends Seeder
             'f',
             'gpro',
             'dnr',
-            'pbr.a',
             'ge',
         ];
         DownloadTickerHistory::dispatch($desiredTickers);
