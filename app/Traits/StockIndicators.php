@@ -214,30 +214,35 @@ trait StockIndicators
     {
         $classifier = new SVC(Kernel::LINEAR, $cost = 1000);
         $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
+
         return $classifier->predict(array_values($this->trendIndicators()->last()));
     }
 
     public function makeProjectionFor($profitWindow)
     {
         $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
+
         return $this->makeInformedProjection($formattedData);
     }
 
     public function nextDayProjection()
     {
         $nextDayProfit = $this->nextDayHistoricalProfitability();
+
         return $this->makeProjectionFor($nextDayProfit);
     }
 
     public function fiveDayProjection()
     {
         $fiveDayProfit = $this->fiveDayHistoricalProfitability();
+
         return $this->makeProjectionFor($fiveDayProfit);
     }
 
     public function tenDayProjection()
     {
         $tenDayProfit = $this->tenDayHistoricalProfitability();
+
         return $this->makeProjectionFor($tenDayProfit);
     }
 }
