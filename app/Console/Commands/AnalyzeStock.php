@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Stocks\AnalyzeStock as AnalyzeStockJob;
 use Illuminate\Console\Command;
 
 class AnalyzeStock extends Command
@@ -11,32 +12,24 @@ class AnalyzeStock extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'analyze:stock {symbol}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Generates projections for a stock for the next day, five days, and ten days.';
 
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
-        //
+        $symbol = $this->argument('symbol');
+        AnalyzeStockJob::dispatch($symbol);
+        $this->info("Launched job to analyze `$symbol`");
     }
 }

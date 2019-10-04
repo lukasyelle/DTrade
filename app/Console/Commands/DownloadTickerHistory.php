@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\DownloadTickerHistory as DownloadTickerHistoryJob;
+use App\Jobs\Stocks\DownloadTickerHistory as DownloadTickerHistoryJob;
 use App\Ticker;
 use Illuminate\Console\Command;
 
@@ -21,16 +21,6 @@ class DownloadTickerHistory extends Command
      * @var string
      */
     protected $description = 'This command dispatches the downloadTickerHistory job for a specific symbol';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
