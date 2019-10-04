@@ -238,30 +238,35 @@ trait StockIndicators
         $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
         $projection = collect($classifier->predictProbability(array_values($this->trendIndicators()->last())));
         $projection['verdict'] = $projection->search($projection->max());
+
         return $projection->toArray();
     }
 
     public function makeProjectionFor($profitWindow)
     {
         $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
+
         return $this->makeInformedProjection($formattedData);
     }
 
     public function nextDayProjection()
     {
         $nextDayProfit = $this->nextDayHistoricalProfitability();
+
         return $this->makeProjectionFor($nextDayProfit);
     }
 
     public function fiveDayProjection()
     {
         $fiveDayProfit = $this->fiveDayHistoricalProfitability();
+
         return $this->makeProjectionFor($fiveDayProfit);
     }
 
     public function tenDayProjection()
     {
         $tenDayProfit = $this->tenDayHistoricalProfitability();
+
         return $this->makeProjectionFor($tenDayProfit);
     }
 }
