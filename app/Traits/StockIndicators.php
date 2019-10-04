@@ -172,7 +172,7 @@ trait StockIndicators
                 $magnitude = 'small';
             }
 
-            return $magnitude . ' ' . ($delta > 0 ? 'profit' : 'loss');
+            return $magnitude.' '.($delta > 0 ? 'profit' : 'loss');
         });
     }
 
