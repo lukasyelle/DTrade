@@ -160,7 +160,19 @@ trait StockIndicators
                 return;
             }
 
-            return ($close[$index + $nDays] > $currentClose) ? 'profit' : 'loss';
+            $nextClose = $close[$index + $nDays];
+            $delta = $nextClose - $currentClose;
+            $average = ($nextClose + $currentClose) / 2;
+            $percentageChange = (abs($delta) / $average) * 100;
+            if ($percentageChange >= 5) {
+                $magnitude = 'large';
+            } elseif ($percentageChange >= 1) {
+                $magnitude = 'moderate';
+            } else {
+                $magnitude = 'small';
+            }
+
+            return $magnitude . ' ' . ($delta > 0 ? 'profit' : 'loss');
         });
     }
 
@@ -212,9 +224,21 @@ trait StockIndicators
 
     public function makeInformedProjection($formattedData)
     {
-        $classifier = new SVC(Kernel::LINEAR, $cost = 1000);
+        $classifier = new SVC(
+            Kernel::LINEAR,
+            1.0,
+            3,
+            null,
+            0.0,
+            0.001,
+            100,
+            true,
+            true
+        );
         $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
-        return $classifier->predict(array_values($this->trendIndicators()->last()));
+        $projection = collect($classifier->predictProbability(array_values($this->trendIndicators()->last())));
+        $projection['verdict'] = $projection->search($projection->max());
+        return $projection->toArray();
     }
 
     public function makeProjectionFor($profitWindow)
