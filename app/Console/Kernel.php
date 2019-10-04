@@ -29,12 +29,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            $symbols = Stock::all()->pluck('symbol');
+            $symbols = Stock::all()->pluck('symbol')->toArray();
             UpdateTickerData::dispatch($symbols);
         })->dailyAt('16:00');
 
         $schedule->call(function () {
-            $symbols = Stock::all()->pluck('symbol');
+            $symbols = Stock::all()->pluck('symbol')->toArray();
             AnalyzeStock::dispatch($symbols);
         })->dailyAt('16:10');
     }
