@@ -3,7 +3,6 @@
 namespace App\Jobs\Stocks;
 
 use App\Ticker;
-use Illuminate\Support\Facades\Artisan;
 
 class UpdateTickerData extends StockJob
 {
