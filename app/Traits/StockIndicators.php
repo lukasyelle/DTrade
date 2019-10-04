@@ -34,7 +34,9 @@ trait StockIndicators
         return $this->close;
     }
 
-    // ----===== Stock analysis methods =====----
+    // ---------======================================================---------
+    // ---------=============== Stock analysis methods ===============---------
+    // ---------======================================================---------
 
     public function getSmaAttribute()
     {
@@ -125,6 +127,10 @@ trait StockIndicators
     {
         return Trader::sar($this->high, $this->low, $acceleration, $maximum);
     }
+
+    // ---------======================================================---------
+    // ---------======= Data manipulation and Machine Learning =======---------
+    // ---------======================================================---------
 
     public function trendIndicators()
     {
