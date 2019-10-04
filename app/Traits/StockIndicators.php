@@ -4,6 +4,8 @@ namespace App\Traits;
 
 use Illuminate\Support\Collection;
 use Laratrade\Trader\Facades\Trader;
+use Phpml\Classification\SVC;
+use Phpml\SupportVectorMachine\Kernel;
 
 trait StockIndicators
 {
@@ -158,7 +160,7 @@ trait StockIndicators
                 return;
             }
 
-            return $close[$index + $nDays] > $currentClose;
+            return ($close[$index + $nDays] > $currentClose) ? 'profit' : 'loss';
         });
     }
 
@@ -201,8 +203,41 @@ trait StockIndicators
         }
 
         return [
-            'profitability' => $profitability,
-            'indicators'    => $paddedIndicators,
+            'profitability' => $profitability->values(),
+            'indicators'    => $paddedIndicators->map(function ($item) {
+                return array_values($item);
+            })->values(),
         ];
+    }
+
+    public function makeInformedProjection($formattedData)
+    {
+        $classifier = new SVC(Kernel::LINEAR, $cost = 1000);
+        $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
+        return $classifier->predict(array_values($this->trendIndicators()->last()));
+    }
+
+    public function makeProjectionFor($profitWindow)
+    {
+        $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
+        return $this->makeInformedProjection($formattedData);
+    }
+
+    public function nextDayProjection()
+    {
+        $nextDayProfit = $this->nextDayHistoricalProfitability();
+        return $this->makeProjectionFor($nextDayProfit);
+    }
+
+    public function fiveDayProjection()
+    {
+        $fiveDayProfit = $this->fiveDayHistoricalProfitability();
+        return $this->makeProjectionFor($fiveDayProfit);
+    }
+
+    public function tenDayProjection()
+    {
+        $tenDayProfit = $this->tenDayHistoricalProfitability();
+        return $this->makeProjectionFor($tenDayProfit);
     }
 }
