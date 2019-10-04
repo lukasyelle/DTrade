@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Jobs\DownloadTickerHistory;
+use App\Jobs\Stocks\DownloadTickerHistory;
 use App\Traits\StockIndicators;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
