@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Ticker;
+use App\Jobs\Stocks\UpdateTickerData as UpdateTickerDataJob;
 use Illuminate\Console\Command;
 
 class UpdateTickerData extends Command
@@ -12,38 +12,24 @@ class UpdateTickerData extends Command
      *
      * @var string
      */
-    protected $signature = 'update:ticker {ticker}';
+    protected $signature = 'update:data {$symbol}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This command is used to update the data for a particular stock ticker';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'This command is used to update the data for a particular stock ticker.';
 
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
-        $symbol = strtoupper($this->argument('ticker'));
-        $ticker = Ticker::fetch($symbol);
-        if ($ticker instanceof Ticker) {
-            $ticker->updateData();
-        }
-
-        return $ticker;
+        $symbol = strtoupper($this->argument('symbol'));
+        UpdateTickerDataJob::dispatch($symbol);
+        $this->info("Job dispatched to pull the latest market data for `$symbol`.");
     }
 }

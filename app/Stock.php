@@ -10,16 +10,16 @@ class Stock extends Model
     use StockIndicators;
 
     protected $fillable = ['ticker_id'];
-    protected $appends = ['symbol', 'data', 'lastUpdate', 'value'];
+    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'projections'];
 
     public function ticker()
     {
         return $this->belongsTo(Ticker::class);
     }
 
-    public function trends()
+    public function projections()
     {
-        return $this->hasMany(StockTrend::class);
+        return $this->hasMany(StockProjection::class);
     }
 
     public function portfolios()
