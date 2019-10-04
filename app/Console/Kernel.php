@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Jobs\Stocks\AnalyzeStock;
+use App\Jobs\Stocks\UpdateTickerData;
+use App\Stock;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,8 +28,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $symbols = Stock::all()->pluck('symbol');
+            UpdateTickerData::dispatch($symbols);
+        })->dailyAt(1600);
+
+        $schedule->call(function () {
+            $symbols = Stock::all()->pluck('symbol');
+            AnalyzeStock::dispatch($symbols);
+        })->dailyAt(1700);
     }
 
     /**
