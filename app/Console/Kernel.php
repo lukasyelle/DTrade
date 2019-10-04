@@ -31,12 +31,12 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol');
             UpdateTickerData::dispatch($symbols);
-        })->dailyAt(1600);
+        })->dailyAt('16:00');
 
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol');
             AnalyzeStock::dispatch($symbols);
-        })->dailyAt(1700);
+        })->dailyAt('16:10');
     }
 
     /**
