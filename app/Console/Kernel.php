@@ -32,13 +32,13 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol')->toArray();
             UpdateTickerData::dispatch($symbols);
-            Log::debug('Scheduled jobs kicked off to download data for `'.join('`, ', $symbols).'``.');
+            Log::debug('Scheduled jobs kicked off to download data for `'.implode('`, ', $symbols).'``.');
         })->twiceDaily(12, 16);
 
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol')->toArray();
             AnalyzeStock::dispatch($symbols);
-            Log::debug('Scheduled jobs kicked off to analyze `'.join('`, ', $symbols).'``.');
+            Log::debug('Scheduled jobs kicked off to analyze `'.implode('`, ', $symbols).'``.');
         })->dailyAt('16:30');
 
         $schedule->call(function () {
