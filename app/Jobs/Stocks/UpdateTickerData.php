@@ -13,11 +13,9 @@ class UpdateTickerData extends StockJob
      */
     public function handle()
     {
-        foreach ($this->symbols as $symbol) {
-            $ticker = Ticker::fetch($symbol);
-            if ($ticker instanceof Ticker) {
-                $ticker->updateData();
-            }
+        $ticker = Ticker::fetch($this->symbol);
+        if ($ticker instanceof Ticker) {
+            $ticker->updateData();
         }
     }
 }

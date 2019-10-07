@@ -106,8 +106,6 @@ return [
                 'balance'    => 'simple',
                 'processes'  => 10,
                 'tries'      => 3,
-                'timeout'    => 300, // Five minutes
-                'retry_after'=> 600, // Ten Minutes
             ],
         ],
 
@@ -118,8 +116,6 @@ return [
                 'balance'    => 'simple',
                 'processes'  => 10,
                 'tries'      => 1,
-                'timeout'    => 300, // Five minutes
-                'retry_after'=> 600, // Ten Minutes
             ],
         ],
     ],
