@@ -257,6 +257,7 @@ trait StockIndicators
         if ($this instanceof Stock) {
             TrainedStockModel::store($classifier, $this);
         }
+
         return $classifier;
     }
 
@@ -271,6 +272,7 @@ trait StockIndicators
 
         $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
         $classifier = $this->trainClassifierOnData($formattedData);
+
         return $this->makeInformedProjection($classifier);
     }
 
