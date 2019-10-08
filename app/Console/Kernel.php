@@ -7,6 +7,7 @@ use App\Jobs\Stocks\UpdateTickerData;
 use App\Stock;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -31,12 +32,19 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol')->toArray();
             UpdateTickerData::dispatch($symbols);
-        })->dailyAt('16:00');
+            Log::debug('Scheduled jobs kicked off to download data for `'.implode('`, ', $symbols).'``.');
+        })->twiceDaily(12, 16);
 
         $schedule->call(function () {
             $symbols = Stock::all()->pluck('symbol')->toArray();
             AnalyzeStock::dispatch($symbols);
-        })->dailyAt('16:10');
+            Log::debug('Scheduled jobs kicked off to analyze `'.implode('`, ', $symbols).'``.');
+        })->dailyAt('16:30');
+
+        $schedule->call(function () {
+            \Artisan::call('horizon:snapshot');
+            \Log::debug('horizon:snapshot');
+        })->everyFiveMinutes();
     }
 
     /**

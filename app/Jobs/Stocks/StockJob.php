@@ -12,7 +12,9 @@ abstract class StockJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $symbols;
+    public $timeout = 400;
+
+    protected $symbol;
 
     /**
      * Create a new job instance.
@@ -21,6 +23,14 @@ abstract class StockJob implements ShouldQueue
      */
     public function __construct($symbols)
     {
-        $this->symbols = array_map('strtoupper', (is_array($symbols) ? $symbols : [$symbols]));
+        if (is_array($symbols)) {
+            $this->symbol = array_pop($symbols);
+            if (count($symbols)) {
+                $jobClass = get_class($this);
+                $jobClass::dispatch($symbols);
+            }
+        } else {
+            $this->symbol = $symbols;
+        }
     }
 }
