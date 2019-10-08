@@ -33,6 +33,7 @@ class StockProjection extends Model
         })->each(function ($column) use (&$probabilityOutcome) {
             $probabilityOutcome += $this->$column;
         });
+
         return $probabilityOutcome;
     }
 
