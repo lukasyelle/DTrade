@@ -103,9 +103,9 @@ trait StockAnalysis
         return $report->getF1score();
     }
 
-    public function testAccuracy()
+    public function testAccuracy($numberDays = 1, $numberTests = 500)
     {
-        $profitWindow = $this->nextDayHistoricalProfitability();
+        $profitWindow = $this->nDayHistoricalProfitability($numberDays);
         $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
 
         $dataset = new ArrayDataset(
@@ -113,7 +113,7 @@ trait StockAnalysis
             $targets = $formattedData['profitability']->toArray()
         );
 
-        $results = collect()->pad(500, null)->map(function () use ($dataset) {
+        $results = collect()->pad($numberTests, null)->map(function () use ($dataset) {
             return $this->runTest($dataset);
         });
 

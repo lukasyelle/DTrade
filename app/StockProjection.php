@@ -18,8 +18,31 @@ class StockProjection extends Model
         'probability_small_profit',
     ];
 
+    protected $appends = ['probabilityProfit', 'probabilityLoss'];
+
     public function stock()
     {
         return $this->belongsTo(Stock::class);
+    }
+
+    public function probabilityBroadOutcome(string $outcome)
+    {
+        $probabilityOutcome = 0.0;
+        collect($this->fillable)->filter(function ($column) use ($outcome) {
+            return strpos($column, $outcome) > -1;
+        })->each(function ($column) use (&$probabilityOutcome) {
+            $probabilityOutcome += $this->$column;
+        });
+        return $probabilityOutcome;
+    }
+
+    public function getProbabilityLossAttribute()
+    {
+        return $this->probabilityBroadOutcome('loss');
+    }
+
+    public function getProbabilityProfitAttribute()
+    {
+        return $this->probabilityBroadOutcome('profit');
     }
 }
