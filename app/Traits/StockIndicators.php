@@ -2,9 +2,12 @@
 
 namespace App\Traits;
 
+use App\Stock;
+use App\TrainedStockModel;
 use Illuminate\Support\Collection;
 use Laratrade\Trader\Facades\Trader;
 use Phpml\Classification\SVC;
+use Phpml\Estimator;
 use Phpml\SupportVectorMachine\Kernel;
 
 trait StockIndicators
@@ -228,7 +231,15 @@ trait StockIndicators
         ];
     }
 
-    public function makeInformedProjection($formattedData)
+    public function makeInformedProjection(Estimator $classifier)
+    {
+        $projection = collect($classifier->predictProbability(array_values($this->trendIndicators()->last())));
+        $projection['verdict'] = $projection->search($projection->max());
+
+        return $projection->toArray();
+    }
+
+    public function trainClassifierOnData($formattedData)
     {
         $classifier = new SVC(
             Kernel::LINEAR,
@@ -242,17 +253,25 @@ trait StockIndicators
             true
         );
         $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
-        $projection = collect($classifier->predictProbability(array_values($this->trendIndicators()->last())));
-        $projection['verdict'] = $projection->search($projection->max());
-
-        return $projection->toArray();
+        \Log::debug("Trained a classifier on new data for `$this->symbol`.");
+        if ($this instanceof Stock) {
+            TrainedStockModel::store($classifier, $this);
+        }
+        return $classifier;
     }
 
     public function makeProjectionFor($profitWindow)
     {
-        $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
+        if ($this instanceof Stock) {
+            $classifier = $this->getLastTrainedModel();
+            if ($classifier instanceof Estimator) {
+                return $this->makeInformedProjection($classifier);
+            }
+        }
 
-        return $this->makeInformedProjection($formattedData);
+        $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
+        $classifier = $this->trainClassifierOnData($formattedData);
+        return $this->makeInformedProjection($classifier);
     }
 
     public function nextDayProjection()
