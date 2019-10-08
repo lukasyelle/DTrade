@@ -4,8 +4,6 @@ namespace App;
 
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
-use Phpml\Estimator;
 
 class Stock extends Model
 {
@@ -69,10 +67,10 @@ class Stock extends Model
                 // Used a cached model only if you are analyzing the stock more
                 // than once a day. Otherwise train a new model on up to date
                 // data.
-                return null;
+                return;
             }
+
             return $model->retrieve();
         }
-        return null;
     }
 }
