@@ -128,7 +128,7 @@ trait StockIndicators
     }
 
     // ---------======================================================---------
-    // ---------======= Data manipulation and Machine Learning =======---------
+    // ---------================= Data  manipulation =================---------
     // ---------======================================================---------
 
     private function computeCloseDelta(Collection $indicatedPriceLevels, array $close)
