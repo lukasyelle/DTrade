@@ -135,27 +135,40 @@ trait StockIndicators
     // ---------======= Data manipulation and Machine Learning =======---------
     // ---------======================================================---------
 
+    private function computeCloseDelta(Collection $indicatedPriceLevels, array $close)
+    {
+        return $indicatedPriceLevels->map(function ($indicatedPrice, $index) use ($close) {
+            return $close[$index] - $indicatedPrice;
+        });
+    }
+
     public function trendIndicators()
     {
         $data = [];
+        $close = $this->close;
         $dx = collect($this->dx());
         $rsi = collect($this->rsi());
         $sar = collect($this->sar());
-        $close = $this->close;
-        $sarDelta = $sar->map(function ($sar, $index) use ($close) {
-            return $close[$index] - $sar;
-        });
+        $wma = collect($this->wma());
+        $sarDelta = $this->computeCloseDelta($sar, $close);
+        $wmaDelta = $this->computeCloseDelta($wma, $close);
 
         foreach (range(0, count($close) - 1) as $index) {
             $data[$index] = [
                 'dx'   => $dx->get($index),
                 'rsi'  => $rsi->get($index),
                 'sard' => $sarDelta->get($index),
+                'wmad' => $wmaDelta->get($index),
             ];
         }
 
         return collect($data)->filter(function ($row) {
-            return !($row['dx'] == null || $row['rsi'] == null || $row['sard'] == null);
+            return !(
+                $row['dx'] == null ||
+                $row['rsi'] == null ||
+                $row['sard'] == null ||
+                $row['wmad'] == null
+            );
         });
     }
 
@@ -229,71 +242,5 @@ trait StockIndicators
                 return array_values($item);
             })->values(),
         ];
-    }
-
-    public function makeInformedProjection(Estimator $classifier)
-    {
-        $projection = collect($classifier->predictProbability(array_values($this->trendIndicators()->last())));
-        $projection['verdict'] = $projection->search($projection->max());
-
-        return $projection->toArray();
-    }
-
-    public function trainClassifierOnData($formattedData)
-    {
-        $classifier = new SVC(
-            Kernel::LINEAR,
-            1.0,
-            3,
-            null,
-            0.0,
-            0.001,
-            100,
-            true,
-            true
-        );
-        $classifier->train($formattedData['indicators']->toArray(), $formattedData['profitability']->toArray());
-        \Log::debug("Trained a classifier on new data for `$this->symbol`.");
-        if ($this instanceof Stock) {
-            TrainedStockModel::store($classifier, $this);
-        }
-
-        return $classifier;
-    }
-
-    public function makeProjectionFor($profitWindow)
-    {
-        if ($this instanceof Stock) {
-            $classifier = $this->getLastTrainedModel();
-            if ($classifier instanceof Estimator) {
-                return $this->makeInformedProjection($classifier);
-            }
-        }
-
-        $formattedData = $this->formatProfitabilityAndIndicators($profitWindow);
-        $classifier = $this->trainClassifierOnData($formattedData);
-
-        return $this->makeInformedProjection($classifier);
-    }
-
-    public function nextDayProjection()
-    {
-        $nextDayProfit = $this->nextDayHistoricalProfitability();
-
-        return $this->makeProjectionFor($nextDayProfit);
-    }
-
-    public function fiveDayProjection()
-    {
-        $fiveDayProfit = $this->fiveDayHistoricalProfitability();
-
-        return $this->makeProjectionFor($fiveDayProfit);
-    }
-
-    public function tenDayProjection()
-    {
-        $tenDayProfit = $this->tenDayHistoricalProfitability();
-
-        return $this->makeProjectionFor($tenDayProfit);
     }
 }

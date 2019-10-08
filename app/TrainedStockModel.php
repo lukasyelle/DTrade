@@ -2,19 +2,23 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Phpml\CrossValidation\StratifiedRandomSplit;
+use Phpml\Dataset\ArrayDataset;
 use Phpml\Estimator;
 
 class TrainedStockModel extends Model
 {
-    protected $fillable = ['stock_id', 'model'];
+    protected $fillable = ['stock_id', 'model', 'profit_window'];
 
-    public static function store(Estimator $estimator, Stock $stock)
+    public static function store(Estimator $estimator, Stock $stock, $profit_window)
     {
         $model = base64_encode(serialize($estimator));
-        $result = self::create([
-            'stock_id'  => $stock->id,
-            'model'     => $model,
+        self::create([
+            'stock_id'      => $stock->id,
+            'model'         => $model,
+            'profit_window' => $profit_window,
         ]);
     }
 

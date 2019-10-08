@@ -2,12 +2,13 @@
 
 namespace App;
 
+use App\Traits\StockAnalysis;
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    use StockIndicators;
+    use StockIndicators, StockAnalysis;
 
     protected $fillable = ['ticker_id'];
     protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'projections'];
@@ -57,9 +58,9 @@ class Stock extends Model
         return $this->lastUpdate->close;
     }
 
-    public function getLastTrainedModel()
+    public function getLastTrainedModel($profitWindow = 1)
     {
-        $model = $this->trainedModels->last();
+        $model = $this->trainedModels()->where('profit_window', $profitWindow)->get()->last();
         if ($model !== null && $model instanceof TrainedStockModel) {
             $modelTrainedAt = $model->created_at;
             $lastDataPointTakenAt = $this->data->last()->created_at;

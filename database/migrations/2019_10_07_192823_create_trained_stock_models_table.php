@@ -18,6 +18,7 @@ class CreateTrainedStockModelsTable extends Migration
             $table->integer('stock_id')->unsigned()->index();
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
             $table->longText('model');
+            $table->integer('profit_window');
             $table->timestamps();
         });
     }
