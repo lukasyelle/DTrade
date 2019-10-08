@@ -3,12 +3,8 @@
 namespace App\Traits;
 
 use App\Stock;
-use App\TrainedStockModel;
 use Illuminate\Support\Collection;
 use Laratrade\Trader\Facades\Trader;
-use Phpml\Classification\SVC;
-use Phpml\Estimator;
-use Phpml\SupportVectorMachine\Kernel;
 
 trait StockIndicators
 {

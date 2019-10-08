@@ -94,6 +94,7 @@ trait StockAnalysis
         $testLables = $dataset->getTestLabels();
         $predictedLabels = collect($testSamples)->map(function ($sample) use ($classifier) {
             $probabilities = collect($classifier->predictProbability($sample));
+
             return $probabilities->search($probabilities->max());
         })->toArray();
 
@@ -112,7 +113,7 @@ trait StockAnalysis
             $targets = $formattedData['profitability']->toArray()
         );
 
-        $results = collect()->pad(500, null)->map(function() use ($dataset) {
+        $results = collect()->pad(500, null)->map(function () use ($dataset) {
             return $this->runTest($dataset);
         });
 
