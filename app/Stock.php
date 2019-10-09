@@ -38,7 +38,7 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
-    public static function fetch($ticker) : Stock
+    public static function fetch($ticker) : self
     {
         return Ticker::fetch($ticker)->stock;
     }
@@ -78,7 +78,5 @@ class Stock extends Model
 
             return $model->retrieve();
         }
-
-        return;
     }
 }
