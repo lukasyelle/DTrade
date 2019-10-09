@@ -15,6 +15,7 @@ class CheckAccuracy extends StockJob
         $results = collect($stock->testAccuracy($numDays));
         $finish = Carbon::now();
         $duration = $now->diffInSeconds($finish);
+
         return $results->put('duration', $duration);
     }
 
