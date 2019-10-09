@@ -12,7 +12,7 @@ class CheckAccuracy extends StockJob
     private function runTrial(Stock $stock, int $numDays)
     {
         $now = Carbon::now();
-        $results = collect($stock->testAccuracy($numDays));
+        $results = collect($stock->testAccuracy($numDays, 50));
         $finish = Carbon::now();
         $duration = $now->diffInSeconds($finish);
 
