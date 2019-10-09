@@ -11,7 +11,7 @@ class Stock extends Model
     use StockIndicators, StockAnalysis;
 
     protected $fillable = ['ticker_id'];
-    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'projections'];
+    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'projections', 'accuracy'];
 
     public function ticker()
     {
@@ -20,7 +20,7 @@ class Stock extends Model
 
     public function projections()
     {
-        return $this->hasMany(StockProjection::class);
+        return $this->hasMany(StockProjection::class)->orderBy('id', 'DESC');
     }
 
     public function trainedModels()
@@ -30,7 +30,7 @@ class Stock extends Model
 
     public function accuracy()
     {
-        return $this->hasMany(ModelAccuracy::class);
+        return $this->hasMany(ModelAccuracy::class)->orderBy('id', 'DESC');
     }
 
     public function portfolios()
@@ -61,6 +61,16 @@ class Stock extends Model
     public function getValueAttribute()
     {
         return $this->lastUpdate->close;
+    }
+
+    public function getProjectionsAttribute()
+    {
+        return $this->projections()->limit(3)->get();
+    }
+
+    public function getAccuracyAttribute()
+    {
+        return $this->accuracy()->limit(3)->get();
     }
 
     public function getLastTrainedModel($profitWindow = 1)
