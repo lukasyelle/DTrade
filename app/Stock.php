@@ -28,12 +28,17 @@ class Stock extends Model
         return $this->hasMany(TrainedStockModel::class);
     }
 
+    public function accuracy()
+    {
+        return $this->hasMany(ModelAccuracy::class);
+    }
+
     public function portfolios()
     {
         return $this->belongsToMany(Portfolio::class);
     }
 
-    public static function fetch($ticker)
+    public static function fetch($ticker) : self
     {
         return Ticker::fetch($ticker)->stock;
     }

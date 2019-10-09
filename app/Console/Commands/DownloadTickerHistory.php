@@ -13,7 +13,7 @@ class DownloadTickerHistory extends Command
      *
      * @var string
      */
-    protected $signature = 'download:history {symbol} {--force}';
+    protected $signature = 'stock:download {symbol} {--force}';
 
     /**
      * The console command description.
