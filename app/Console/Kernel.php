@@ -3,10 +3,12 @@
 namespace App\Console;
 
 use App\Jobs\Stocks\AnalyzeStock;
+use App\Jobs\Stocks\CheckAccuracy;
 use App\Jobs\Stocks\UpdateTickerData;
 use App\Stock;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
@@ -20,6 +22,17 @@ class Kernel extends ConsoleKernel
         //
     ];
 
+    public static function updateAndAnalyzeStocks()
+    {
+        $symbols = Stock::all()->pluck('symbol')->toArray();
+        UpdateTickerData::withChain([
+            new AnalyzeStock($symbols),
+            new CheckAccuracy($symbols),
+        ])->dispatch($symbols);
+        $symbolsString = '`'.implode('`, ', $symbols).'``.';
+        Log::debug("Launched chained jobs to update, analyze, and check prediction accuracy for $symbolsString");
+    }
+
     /**
      * Define the application's command schedule.
      *
@@ -30,20 +43,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            $symbols = Stock::all()->pluck('symbol')->toArray();
-            UpdateTickerData::dispatch($symbols);
-            Log::debug('Scheduled jobs kicked off to download data for `'.implode('`, ', $symbols).'``.');
-        })->twiceDaily(12, 16);
+            self::updateAndAnalyzeStocks();
+        })->weekdays()->twiceDaily(12, 16);
 
         $schedule->call(function () {
-            $symbols = Stock::all()->pluck('symbol')->toArray();
-            AnalyzeStock::dispatch($symbols);
-            Log::debug('Scheduled jobs kicked off to analyze `'.implode('`, ', $symbols).'``.');
-        })->dailyAt('16:30');
-
-        $schedule->call(function () {
-            \Artisan::call('horizon:snapshot');
-            \Log::debug('horizon:snapshot');
+            Artisan::call('horizon:snapshot');
+            Log::debug('horizon:snapshot');
         })->everyFiveMinutes();
     }
 

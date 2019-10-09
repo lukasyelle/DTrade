@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Stocks\CheckAccuracy as CheckAccuracyJob;
 use Illuminate\Console\Command;
 
 class CheckAccuracy extends Command
@@ -11,14 +12,14 @@ class CheckAccuracy extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'stock:accuracy {symbol}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check the accuracy of the ML model for the given stock symbol. Dispatches the `CheckAccuracy` job.';
 
     /**
      * Create a new command instance.
@@ -37,6 +38,8 @@ class CheckAccuracy extends Command
      */
     public function handle()
     {
-        //
+        $symbol = $this->argument('symbol');
+        CheckAccuracyJob::dispatch($symbol);
+        $this->info("Launched job to check the accuracy of the SVM for `$symbol`");
     }
 }

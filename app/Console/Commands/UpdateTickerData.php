@@ -12,7 +12,7 @@ class UpdateTickerData extends Command
      *
      * @var string
      */
-    protected $signature = 'update:data {symbol}';
+    protected $signature = 'stock:update {symbol}';
 
     /**
      * The console command description.

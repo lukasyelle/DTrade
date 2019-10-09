@@ -12,7 +12,7 @@ class AnalyzeStock extends Command
      *
      * @var string
      */
-    protected $signature = 'analyze:stock {symbol}';
+    protected $signature = 'stock:analyze {symbol}';
 
     /**
      * The console command description.
