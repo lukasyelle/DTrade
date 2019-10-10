@@ -3,7 +3,6 @@
 namespace App\Charts;
 
 use App\Stock;
-use App\StockProjection;
 use Carbon\Carbon;
 use ConsoleTVs\Charts\Classes\Echarts\Chart;
 
@@ -46,11 +45,12 @@ class TestChart extends Chart
 //        $this->dataset('DX','line', $indicatorsWithClosing->pluck('dx'));
 //        $projections = Stock::inRandomOrder()->first()->projections()->limit(3);
 
-        $data = collect(["Next Day"=>[],"Five Day"=>[],"Ten Day"=>[]])->map(function($item, $key) {
+        $data = collect(['Next Day'=>[], 'Five Day'=>[], 'Ten Day'=>[]])->map(function ($item, $key) {
             $projection = $this->stock->projections()->limit(3)->where('projection_for', strtolower($key))->get();
             \Log::debug($projection);
+
             return [
-                'name' => $key,
+                'name'  => $key,
                 'value' => [
                     floatval($projection->pluck('probability_small_profit')->first()),
                     floatval($projection->pluck('probability_moderate_profit')->first()),
@@ -58,7 +58,7 @@ class TestChart extends Chart
                     floatval($projection->pluck('probability_small_loss')->first()),
                     floatval($projection->pluck('probability_moderate_loss')->first()),
                     floatval($projection->pluck('probability_large_loss')->first()),
-                ]
+                ],
             ];
         });
 
@@ -66,9 +66,9 @@ class TestChart extends Chart
 
         $options = [
             'tooltip' => ['trigger' => 'axis'],
-            'legend' => [
-                'x' => 'center',
-                'data' => ['Next Day','Five Day','Ten Day']
+            'legend'  => [
+                'x'    => 'center',
+                'data' => ['Next Day', 'Five Day', 'Ten Day'],
             ],
             'xAxis' => [
                 'show' => false,
@@ -86,21 +86,21 @@ class TestChart extends Chart
                         ['text'=> 'Moderate Loss', 'max' => $max + .1],
                         ['text'=> 'Large Loss', 'max' => $max + .1],
                     ],
-                    'center' => ['50%','50%'],
-                    'radius' => 150
+                    'center' => ['50%', '50%'],
+                    'radius' => 150,
                 ],
             ],
             'series' => [
                 [
-                    'type' => 'radar',
-                    'tooltip' => ['trigger' => 'item'],
+                    'type'      => 'radar',
+                    'tooltip'   => ['trigger' => 'item'],
                     'itemStyle' => ['normal' => ['areaStyle' => ['type' => 'default']]],
-                    'data' =>  $data->values()->toArray()
+                    'data'      => $data->values()->toArray(),
                 ],
-            ]
+            ],
         ];
 
-        $this->options($options,false);
+        $this->options($options, false);
         $this->dataset('empty', 'radar', []);
     }
 }
