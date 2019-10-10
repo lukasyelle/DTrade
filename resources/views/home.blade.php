@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('head')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="{{ mix('/css/home.css') }}">
 @endsection
 
