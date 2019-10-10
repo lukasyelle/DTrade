@@ -3,6 +3,7 @@
 @section('title', 'Home')
 
 @section('head')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="{{ mix('/css/home.css') }}">
 @endsection
 
@@ -12,6 +13,9 @@
             <el-card>
                 <div slot="header">
                     <h3>Dashboard</h3>
+                    <div>
+                        {!! $chart->container() !!}
+                    </div>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -27,4 +31,8 @@
         </el-col>
     </el-row>
 </div>
+@endsection
+
+@section('scripts')
+    {!! $chart->script() !!}
 @endsection
