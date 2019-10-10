@@ -26,9 +26,10 @@ class HomeController extends Controller
     public function index()
     {
         $chart = new TestChart(Stock::inRandomOrder()->first());
+
         return view('home', [
             'portfolios' => Auth::user()->portfolios(),
-            'chart' => $chart
+            'chart'      => $chart,
         ]);
     }
 }

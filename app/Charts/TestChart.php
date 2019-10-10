@@ -32,7 +32,7 @@ class TestChart extends Chart
         $indicatorsWithClosing = $this->stock->trendIndicators()->map(function ($indicatorSet, $index) use ($dataPoints) {
             return array_merge([
                 'date' => $dataPoints->pluck('created_at')->get($index),
-                'price'=> $dataPoints->pluck('close')->get($index)
+                'price'=> $dataPoints->pluck('close')->get($index),
             ], $indicatorSet);
         });
 
@@ -40,8 +40,8 @@ class TestChart extends Chart
             return $date->toDateString();
         }));
 
-        $this->dataset('Price','line', $dataPoints->pluck('close'));
-        $this->dataset('RSI','line', $indicatorsWithClosing->pluck('rsi'));
-        $this->dataset('DX','line', $indicatorsWithClosing->pluck('dx'));
+        $this->dataset('Price', 'line', $dataPoints->pluck('close'));
+        $this->dataset('RSI', 'line', $indicatorsWithClosing->pluck('rsi'));
+        $this->dataset('DX', 'line', $indicatorsWithClosing->pluck('dx'));
     }
 }
