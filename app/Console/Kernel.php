@@ -24,12 +24,14 @@ class Kernel extends ConsoleKernel
 
     public static function updateAndAnalyzeStocks()
     {
-        $symbols = Stock::all()->pluck('symbol')->toArray();
-        UpdateTickerData::withChain([
-            new AnalyzeStock($symbols),
-            new CheckAccuracy($symbols),
-        ])->dispatch($symbols);
-        $symbolsString = '`'.implode('`, ', $symbols).'``.';
+        $symbols = Stock::all()->pluck('symbol');
+        $symbols->each(function ($symbol) {
+            UpdateTickerData::withChain([
+                new AnalyzeStock($symbol),
+                new CheckAccuracy($symbol),
+            ])->dispatch($symbol);
+        });
+        $symbolsString = '`'.implode('`, ', $symbols->toArray()).'``.';
         Log::debug("Launched chained jobs to update, analyze, and check prediction accuracy for $symbolsString");
     }
 

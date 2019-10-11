@@ -44,7 +44,7 @@ trait StockIndicators
 
     public function sma($timePeriod = 30)
     {
-        return Trader::sma($this->real, $timePeriod);
+        return array_pad(Trader::sma($this->real, $timePeriod), -356, 0);
     }
 
     public function getEmaAttribute()
@@ -54,7 +54,7 @@ trait StockIndicators
 
     public function ema($timePeriod = 30)
     {
-        return Trader::ema($this->real, $timePeriod);
+        return  array_pad(Trader::ema($this->real, $timePeriod), -356, 0);
     }
 
     public function getWmaAttribute()
@@ -64,7 +64,7 @@ trait StockIndicators
 
     public function wma($timePeriod = 30)
     {
-        return Trader::wma($this->real, $timePeriod);
+        return  array_pad(Trader::wma($this->real, $timePeriod), -356, 0);
     }
 
     public function getRsiAttribute()
@@ -74,7 +74,7 @@ trait StockIndicators
 
     public function rsi($timePeriod = 14)
     {
-        return Trader::rsi($this->real, $timePeriod);
+        return  array_pad(Trader::rsi($this->real, $timePeriod), -356, 0);
     }
 
     public function getUltoscAttribute()
@@ -84,7 +84,7 @@ trait StockIndicators
 
     public function ultosc($tpd1 = 7, $tpd2 = 14, $tpd3 = 28)
     {
-        return Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3);
+        return  array_pad(Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3), -356, 0);
     }
 
     public function getTypPriceAttribute()
@@ -114,7 +114,7 @@ trait StockIndicators
 
     public function dx($timePeriod = 14)
     {
-        return Trader::dx($this->high, $this->low, $this->close, $timePeriod);
+        return array_pad(Trader::dx($this->high, $this->low, $this->close, $timePeriod), -356, 0);
     }
 
     public function getSarAttribute()
@@ -146,15 +146,17 @@ trait StockIndicators
         $rsi = collect($this->rsi());
         $sar = collect($this->sar());
         $wma = collect($this->wma());
-        $sarDelta = $this->computeCloseDelta($sar, $close);
-        $wmaDelta = $this->computeCloseDelta($wma, $close);
+        $ultosc = collect($this->ultosc());
+        $sarDelta = $this->computeCloseDelta($sar->reverse(), $close);
+        $wmaDelta = $this->computeCloseDelta($wma->reverse(), $close);
 
         foreach (range(0, count($close) - 1) as $index) {
             $data[$index] = [
-                'dx'   => $dx->get($index),
-                'rsi'  => $rsi->get($index),
-                'sard' => $sarDelta->get($index),
-                'wmad' => $wmaDelta->get($index),
+                'dx'        => $dx->get($index),
+                'rsi'       => $rsi->get($index),
+                'sard'      => $sarDelta->get($index),
+                'wmad'      => $wmaDelta->get($index),
+                'ultosc'    => $ultosc->get($index),
             ];
         }
 
@@ -163,7 +165,8 @@ trait StockIndicators
                 $row['dx'] == null ||
                 $row['rsi'] == null ||
                 $row['sard'] == null ||
-                $row['wmad'] == null
+                $row['wmad'] == null ||
+                $row['ultosc'] == null
             );
         });
     }

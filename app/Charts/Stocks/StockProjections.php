@@ -64,7 +64,7 @@ class StockProjections extends StockChart
                         ['text'=> 'Moderate Loss', 'max' => $max + .1],
                         ['text'=> 'Large Loss', 'max' => $max + .1],
                     ],
-                    'center' => ['50%', '50%'],
+                    'center' => ['50%', '55%'],
                     'radius' => 150,
                 ],
             ],

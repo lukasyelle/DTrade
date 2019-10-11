@@ -13,7 +13,6 @@ abstract class StockChart extends Chart
     {
         parent::__construct();
 
-        $this->title($stock->symbol);
         $this->stock = $stock;
         $this->setup();
     }
