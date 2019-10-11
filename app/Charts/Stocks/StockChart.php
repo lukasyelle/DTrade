@@ -26,6 +26,7 @@ abstract class StockChart extends Chart
     protected function limitedDataset(string $name, string $type, array $dataset, int $limit = 300)
     {
         $dataset = $this->limit($dataset, $limit);
+
         return $this->dataset($name, $type, $dataset);
     }
 

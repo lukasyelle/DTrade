@@ -2,8 +2,6 @@
 
 namespace App\Charts\Stocks;
 
-use Carbon\Carbon;
-
 class StockPriceChart extends StockChart
 {
     protected function setup()
