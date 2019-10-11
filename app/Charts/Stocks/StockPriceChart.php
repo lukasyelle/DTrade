@@ -8,16 +8,12 @@ class StockPriceChart extends StockChart
 {
     protected function setup()
     {
-        $dataPoints = $this->stock->data;
-        $this->labels($dataPoints->pluck('created_at')->map(function (Carbon $date) {
-            return $date->toDateString();
-        }));
-        $this->options(['symbolSize' => 1]);
-        $this->dataset('Price', 'line', array_values($this->stock->close));
-        $this->dataset('SAR', 'scatter', array_values($this->stock->sar))->options([
+        $this->addLimitedDateLabels();
+        $this->limitedDataset('Price', 'line', array_values($this->stock->close));
+        $this->limitedDataset('SAR', 'scatter', array_values($this->stock->sar))->options([
             'symbolSize' => 3,
         ]);
-        $this->dataset('EMA', 'line', array_pad(array_values($this->stock->ema), -365, 0));
-        $this->dataset('WMA', 'line', array_pad(array_values($this->stock->wma), -365, 0));
+        $this->limitedDataset('EMA', 'line', array_values($this->stock->ema));
+        $this->limitedDataset('WMA', 'line', array_values($this->stock->wma));
     }
 }
