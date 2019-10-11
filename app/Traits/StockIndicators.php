@@ -162,8 +162,11 @@ trait StockIndicators
 
         return collect($data)->filter(function ($row) {
             foreach ($row as $key => $value) {
-                if ($value == null || $value == 0) return false;
+                if ($value == null || $value == 0) {
+                    return false;
+                }
             }
+
             return true;
         });
     }
