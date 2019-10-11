@@ -43,6 +43,7 @@ class StockProjections extends StockChart
     private function radarOptions(Collection $data)
     {
         $max = floatval($data->flatten()->max());
+
         return [
             'radar' => [
                 [
