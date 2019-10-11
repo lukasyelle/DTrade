@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Artisan::call('horizon:snapshot');
             Log::debug('horizon:snapshot');
-        })->everyFiveMinutes();
+        })->hourly();
     }
 
     /**
