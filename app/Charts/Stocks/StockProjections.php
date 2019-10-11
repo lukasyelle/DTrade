@@ -41,19 +41,7 @@ class StockProjections extends StockChart
     private function setOptions(Collection $data)
     {
         $max = floatval($data->flatten()->max());
-
         $options = [
-            'tooltip' => ['trigger' => 'axis'],
-            'legend'  => [
-                'x'    => 'center',
-                'data' => ['Next Day', 'Five Day', 'Ten Day'],
-            ],
-            'xAxis' => [
-                'show' => false,
-            ],
-            'yAxis' => [
-                'show' => false,
-            ],
             'radar' => [
                 [
                     'indicator' => [
@@ -78,6 +66,7 @@ class StockProjections extends StockChart
             ],
         ];
 
+        $this->displayAxes(false);
         $this->options($options, false);
     }
 }
