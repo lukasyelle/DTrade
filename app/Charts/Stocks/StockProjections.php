@@ -9,8 +9,10 @@ class StockProjections extends StockChart
     public function setup()
     {
         $data = $this->formatData();
+        $options = $this->radarOptions($data);
 
-        $this->setOptions($data);
+        $this->options($options, false);
+        $this->displayAxes(false);
 
         // Set an empty dataset, as the graphing package I am using requires a
         // one to be set to determine the type of the chart, but doesnt support
@@ -38,10 +40,10 @@ class StockProjections extends StockChart
         });
     }
 
-    private function setOptions(Collection $data)
+    private function radarOptions(Collection $data)
     {
         $max = floatval($data->flatten()->max());
-        $options = [
+        return [
             'radar' => [
                 [
                     'indicator' => [
@@ -65,8 +67,5 @@ class StockProjections extends StockChart
                 ],
             ],
         ];
-
-        $this->displayAxes(false);
-        $this->options($options, false);
     }
 }
