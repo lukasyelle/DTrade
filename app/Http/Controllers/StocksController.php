@@ -27,7 +27,7 @@ class StocksController extends Controller
     public function index()
     {
         return view('stocks.list', [
-            'stocks' => Stock::all()
+            'stocks' => Stock::all(),
         ]);
     }
 
@@ -47,5 +47,4 @@ class StocksController extends Controller
             ],
         ]);
     }
-
 }
