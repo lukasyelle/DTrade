@@ -2,16 +2,16 @@
 
 namespace App\Charts\Stocks;
 
-use Carbon\Carbon;
-
 class StockPriceChart extends StockChart
 {
     protected function setup()
     {
-        $dataPoints = $this->stock->data;
-        $this->labels($dataPoints->pluck('created_at')->map(function (Carbon $date) {
-            return $date->toDateString();
-        }));
-        $this->dataset('Closing Price', 'line', $dataPoints->pluck('close'));
+        $this->addLimitedDateLabels();
+        $this->limitedDataset('Price', 'line', array_values($this->stock->close));
+        $this->limitedDataset('SAR', 'scatter', array_values($this->stock->sar))->options([
+            'symbolSize' => 3,
+        ]);
+        $this->limitedDataset('EMA', 'line', array_values($this->stock->ema));
+        $this->limitedDataset('WMA', 'line', array_values($this->stock->wma));
     }
 }

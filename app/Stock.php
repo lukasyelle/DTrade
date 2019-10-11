@@ -5,13 +5,14 @@ namespace App;
 use App\Traits\StockAnalysis;
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Stock extends Model
 {
     use StockIndicators, StockAnalysis;
 
     protected $fillable = ['ticker_id'];
-    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'projections', 'accuracy'];
+    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'nextDay', 'fiveDay', 'tenDay', 'projections', 'accuracy'];
 
     public function ticker()
     {
@@ -71,6 +72,36 @@ class Stock extends Model
     public function getAccuracyAttribute()
     {
         return $this->accuracy()->limit(3)->get();
+    }
+
+    private function getDatasetFor(Collection $dataset, string $key, string $timePeriod)
+    {
+        return $dataset->filter(function ($projection) use ($key, $timePeriod) {
+            return $projection->$key === $timePeriod;
+        })->first();
+    }
+
+    private function getProjectionAndAccuracyFor(string $timePeriod)
+    {
+        $projection = $this->getDatasetFor($this->projections, 'projection_for', $timePeriod);
+        $accuracy = $this->getDatasetFor($this->accuracy, 'time_period', $timePeriod);
+
+        return ['projection' => $projection, 'accuracy' => $accuracy];
+    }
+
+    public function getNextDayAttribute()
+    {
+        return $this->getProjectionAndAccuracyFor('next day');
+    }
+
+    public function getFiveDayAttribute()
+    {
+        return $this->getProjectionAndAccuracyFor('five day');
+    }
+
+    public function getTenDayAttribute()
+    {
+        return $this->getProjectionAndAccuracyFor('ten day');
     }
 
     public function getLastTrainedModel($profitWindow = 1)

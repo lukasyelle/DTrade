@@ -1,0 +1,19 @@
+.stocks {
+    .el-header {
+        height: auto !important;
+
+        h1 {
+            font-size: 2em;
+        }
+    }
+    .el-row {
+        .el-col {
+            margin-bottom: 20px;
+        }
+    }
+    .el-card {
+        &__header {
+            text-align: center;
+        }
+    }
+}

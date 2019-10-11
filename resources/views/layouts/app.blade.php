@@ -21,9 +21,9 @@
             </el-main>
         </el-container>
 
-        @yield("scripts")
-
     </div>
+
+    @yield("scripts")
 
 </body>
 </html>
