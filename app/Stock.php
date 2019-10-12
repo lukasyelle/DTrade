@@ -63,6 +63,7 @@ class Stock extends Model
     public function getLastUpdatedAtAttribute()
     {
         $lastUpdate = $this->lastUpdate;
+
         return $lastUpdate->created_at->format('H:i');
     }
 
