@@ -45,7 +45,17 @@ Vue.component(
 
 Vue.component(
     'stock-row-card',
-    require('./components/stocks/StockRowCard.vue').default
+    require('./components/stocks/RowCard.vue').default
+);
+
+Vue.component(
+    'stock-today-card',
+    require('./components/stocks/TodayCard').default
+);
+
+Vue.component(
+    'stock-summary-projections-card',
+    require('./components/stocks/SummaryProjectionsCard').default
 );
 
 /**
