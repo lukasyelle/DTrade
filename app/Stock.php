@@ -111,6 +111,7 @@ class Stock extends Model
         if ($probabilityProfit > $probabilityLoss) {
             return ['profit' => $probabilityProfit];
         }
+
         return ['loss' => $probabilityLoss];
     }
 
