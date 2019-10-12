@@ -14,48 +14,18 @@
         <el-main>
             <el-row :gutter="20">
                 <el-col :lg="10" :md="16" :xs="24">
+                    <stock-today-card :stock="{{ $stock }}"></stock-today-card>
+                </el-col>
+                <el-col :lg="14" :md="12">
+                    <stock-summary-projections-card :stock="{{ $stock }}"></stock-summary-projections-card>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col>
                     <el-card>
                         <h3 slot="header">Detailed Projections</h3>
                         {!! $charts['projections']->container() !!}
                     </el-card>
-                </el-col>
-                <el-col :lg="14" :md="12">
-                    <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-card>
-                                <h3 slot="header">Next Day</h3>
-                                <div>
-                                    {{ $stock->nextDay['accuracy'] }}% chance of a
-                                    {{ ucfirst($stock->nextDay['verdict']) }}
-                                </div>
-                            </el-card>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-card>
-                                <h3 slot="header">Five Day</h3>
-                                <div>
-                                    {{ $stock->fiveDay['accuracy'] }}% chance of a
-                                    {{ ucfirst($stock->fiveDay['verdict']) }}
-                                </div>
-                            </el-card>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-card>
-                                <h3 slot="header">Ten Day</h3>
-                                <div>
-                                    {{ $stock->tenDay['accuracy'] }}% chance of a
-                                    {{ ucfirst($stock->tenDay['verdict']) }}
-                                </div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-card>
-
-                            </el-card>
-                        </el-col>
-                    </el-row>
                 </el-col>
             </el-row>
             <el-row>

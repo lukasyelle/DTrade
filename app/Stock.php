@@ -13,7 +13,7 @@ class Stock extends Model
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
-    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'quickLook'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook'];
 
     public function ticker()
     {
@@ -60,6 +60,12 @@ class Stock extends Model
         return $this->data->last();
     }
 
+    public function getLastUpdatedAtAttribute()
+    {
+        $lastUpdate = $this->lastUpdate;
+        return $lastUpdate->created_at->format('H:i');
+    }
+
     public function getValueAttribute()
     {
         return $this->lastUpdate->close;
@@ -98,7 +104,7 @@ class Stock extends Model
 
         return [
             'verdict'   => $verdict,
-            'accuracy'  => $accuracy,
+            'accuracy'  => round($accuracy),
         ];
     }
 
@@ -117,7 +123,7 @@ class Stock extends Model
 
     public function getQuickLookAttribute()
     {
-        $lastUpdatedOn = $this->lastUpdate->created_at->format('d/m/Y - H:i');
+        $lastUpdatedOn = $this->lastUpdate->created_at->format('m/d/Y - H:i');
         $nextDayBroad = $this->getProbabilityLikelyOutcomeFor('next day');
         $fiveDayBroad = $this->getProbabilityLikelyOutcomeFor('five day');
         $tenDayBroad = $this->getProbabilityLikelyOutcomeFor('ten day');
