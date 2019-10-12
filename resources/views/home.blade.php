@@ -14,7 +14,6 @@
                 <div slot="header">
                     <h3>Dashboard</h3>
                     <div>
-                        {!! $chart->container() !!}
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,8 +30,4 @@
         </el-col>
     </el-row>
 </div>
-@endsection
-
-@section('scripts')
-    {!! $chart->script() !!}
 @endsection

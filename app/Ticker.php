@@ -13,7 +13,6 @@ class Ticker extends Model
     use StockIndicators;
 
     protected $fillable = ['symbol'];
-    protected $appends = ['data'];
 
     private $market;
     public $symbol;

@@ -9,14 +9,11 @@
         </el-header>
         <el-main>
             <el-row :gutter="20">
-                <el-col :span="16">
+                <el-col>
                     @foreach($stocks as $stock)
                         <el-row>
                             <el-col>
-                                <el-card onclick="window.location.href='/stocks/{{ $stock->symbol }}'" class="cursor">
-                                    <h3>{{ $stock->symbol }} - ${{ $stock->value }} (as of {{ $stock->lastUpdate->created_at->toDateString() }})</h3>
-                                    {{ round($stock->nextDay['projection']->probabilityProfit * 100) }}% Chance Of Next Day Profit
-                                </el-card>
+                                <stock-row-card :stock="{{ $stock }}"></stock-row-card>
                             </el-col>
                         </el-row>
                     @endforeach

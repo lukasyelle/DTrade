@@ -25,9 +25,8 @@
                             <el-card>
                                 <h3 slot="header">Next Day</h3>
                                 <div>
-                                    @php $verdict = $stock->nextDay['projection']['verdict'] @endphp
-                                    {{ $stock->nextDay['accuracy']['accuracy_'.str_replace(' ', '_', $verdict)] * 100 }}% chance of a
-                                    {{ ucfirst($verdict) }}
+                                    {{ $stock->nextDay['accuracy'] }}% chance of a
+                                    {{ ucfirst($stock->nextDay['verdict']) }}
                                 </div>
                             </el-card>
                         </el-col>
@@ -35,9 +34,8 @@
                             <el-card>
                                 <h3 slot="header">Five Day</h3>
                                 <div>
-                                    @php $verdict = $stock->fiveDay['projection']['verdict'] @endphp
-                                    {{ $stock->fiveDay['accuracy']['accuracy_'.str_replace(' ', '_', $verdict)] * 100 }}% chance of a
-                                    {{ ucfirst($verdict) }}
+                                    {{ $stock->fiveDay['accuracy'] }}% chance of a
+                                    {{ ucfirst($stock->fiveDay['verdict']) }}
                                 </div>
                             </el-card>
                         </el-col>
@@ -45,9 +43,8 @@
                             <el-card>
                                 <h3 slot="header">Ten Day</h3>
                                 <div>
-                                    @php $verdict = $stock->tenDay['projection']['verdict'] @endphp
-                                    {{ $stock->fiveDay['accuracy']['accuracy_'.str_replace(' ', '_', $verdict)] * 100 }}% chance of a
-                                    {{ ucfirst($verdict) }}
+                                    {{ $stock->tenDay['accuracy'] }}% chance of a
+                                    {{ ucfirst($stock->tenDay['verdict']) }}
                                 </div>
                             </el-card>
                         </el-col>

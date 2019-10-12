@@ -4258,6 +4258,75 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['stock'],
+  data: function data() {
+    return {
+      timePeriods: ['nextDay', 'fiveDay', 'tenDay'],
+      timePeriodsReadable: {
+        'nextDay': 'next day',
+        'fiveDay': 'five day',
+        'tenDay': 'ten day'
+      }
+    };
+  },
+  methods: {
+    goToStock: function goToStock() {
+      window.location.href = '/stocks/' + this.stock.symbol;
+    },
+    nDayClass: function nDayClass(day) {
+      if ('profit' in day) {
+        return day.profit > 60 ? 'profit good-chance' : 'profit low-chance';
+      } else {
+        return 'loss';
+      }
+    },
+    getProfitLossChance: function getProfitLossChance(day) {
+      return 'profit' in day ? day.profit : day.loss;
+    },
+    getProfitLoss: function getProfitLoss(day) {
+      return 'profit' in day ? 'profit' : 'loss';
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-runtime/core-js/object/assign.js":
 /*!*************************************************************!*\
   !*** ./node_modules/babel-runtime/core-js/object/assign.js ***!
@@ -10544,7 +10613,26 @@ exports.push([module.i, ".portfolio .el-card__header[data-v-f24ce722] {\n  paddi
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css?1c71":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--9-2!./node_modules/sass-loader/lib/loader.js??ref--9-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".stock-card[data-v-6933482a] {\n  color: #333333;\n  font-family: \"Montserrat\", sans-serif;\n  border-radius: 5px;\n}\n.stock-card .el-col[data-v-6933482a] {\n  margin: 0;\n}\n.stock-card__margin-wrapper[data-v-6933482a] {\n  margin-top: 10px;\n  margin-bottom: 10px;\n  display: inline-block;\n  border-top: 1px solid #fcfcfc;\n  border-bottom: 1px solid #fcfcfc;\n}\n.stock-card__margin-wrapper.top-border[data-v-6933482a] {\n  width: 35%;\n  text-align: right;\n  border-top-color: #333333;\n}\n@media screen and (max-width: 768px) {\n.stock-card__margin-wrapper.top-border[data-v-6933482a] {\n    width: calc(45% - 10px);\n}\n}\n.stock-card__margin-wrapper.bottom-border[data-v-6933482a] {\n  width: 50%;\n  text-align: left;\n  float: right;\n  border-bottom-color: #333333;\n  margin-top: 10px;\n}\n@media screen and (max-width: 768px) {\n.stock-card__margin-wrapper.bottom-border[data-v-6933482a] {\n    width: calc(55% - 10px);\n}\n}\n.stock-card__margin-wrapper.bottom-border h4[data-v-6933482a] {\n  height: 38px;\n}\n.stock-card__margin-wrapper h1[data-v-6933482a] {\n  margin: 0;\n  font-size: 48px;\n}\n@media screen and (max-width: 768px) {\n.stock-card__margin-wrapper h1[data-v-6933482a] {\n    font-size: 40px;\n}\n}\n.stock-card__margin-wrapper h4[data-v-6933482a] {\n  margin: 0;\n  font-weight: lighter;\n  text-transform: capitalize;\n}\n.stock-card__projections-wrapper div[data-v-6933482a] {\n  width: 33.33%;\n  height: 118px;\n  float: left;\n  text-align: center;\n  overflow: hidden;\n}\n.stock-card__projections-wrapper div[data-v-6933482a]:last-of-type {\n  border-top-right-radius: 5px;\n  border-bottom-right-radius: 5px;\n}\n@media screen and (max-width: 768px) {\n.stock-card__projections-wrapper div[data-v-6933482a]:last-of-type {\n    border-top-right-radius: 0;\n}\n.stock-card__projections-wrapper div[data-v-6933482a]:first-of-type {\n    border-bottom-left-radius: 5px;\n}\n}\n.stock-card__projections-wrapper div h1[data-v-6933482a] {\n  font-size: 32px;\n  margin-bottom: 0;\n}\n.stock-card__projections-wrapper div h2[data-v-6933482a] {\n  font-size: 14px;\n  margin-top: 0;\n  text-transform: uppercase;\n}\n.stock-card__projections-wrapper div h4[data-v-6933482a] {\n  font-size: 10px;\n  margin-top: 15px;\n  text-transform: uppercase;\n}\n.stock-card__projections-wrapper div.profit.good-chance[data-v-6933482a] {\n  background-color: rgba(153, 225, 217, 0.54);\n}\n.stock-card__projections-wrapper div.profit.low-chance[data-v-6933482a] {\n  background-color: #fffae3;\n}\n.stock-card__projections-wrapper div.loss[data-v-6933482a] {\n  background-color: rgba(247, 86, 124, 0.54);\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css":
 /*!*******************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--8-1!./node_modules/postcss-loader/src??ref--8-2!./node_modules/element-ui/lib/theme-chalk/index.css ***!
   \*******************************************************************************************************************************************/
@@ -61900,7 +61988,7 @@ module.exports = "/fonts/vendor/element-ui/lib/theme-chalk/element-icons.woff?53
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../css-loader??ref--8-1!../../../postcss-loader/src??ref--8-2!./index.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css?1c71");
+var content = __webpack_require__(/*! !../../../css-loader??ref--8-1!../../../postcss-loader/src??ref--8-2!./index.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -108869,6 +108957,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--9-2!./node_modules/sass-loader/lib/loader.js??ref--9-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--9-2!../../../../node_modules/sass-loader/lib/loader.js??ref--9-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/passport/AuthorizedClients.vue?vue&type=style&index=0&id=397d14ca&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--8-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/passport/AuthorizedClients.vue?vue&type=style&index=0&id=397d14ca&scoped=true&lang=css& ***!
@@ -110906,6 +111024,115 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "light-background stock-card material-hover cursor transition",
+      on: { click: _vm.goToStock }
+    },
+    [
+      _c(
+        "el-row",
+        [
+          _c("el-col", { attrs: { sm: 14, xs: 24 } }, [
+            _c(
+              "div",
+              { staticClass: "stock-card__margin-wrapper top-border" },
+              [
+                _c("h1", [_vm._v(_vm._s(_vm.stock.symbol))]),
+                _vm._v(" "),
+                _c("h4", [
+                  _vm._v("Last Update"),
+                  _c("br"),
+                  _vm._v(_vm._s(_vm.stock.quickLook.lastUpdate))
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "stock-card__margin-wrapper bottom-border" },
+              [
+                _c("h1", [_vm._v("$" + _vm._s(_vm.stock.quickLook.price))]),
+                _vm._v(" "),
+                _c("h4", [
+                  _vm._v(
+                    _vm._s(_vm.stock.quickLook.change) +
+                      " (" +
+                      _vm._s(_vm.stock.quickLook.changePercent) +
+                      "%)"
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("el-col", { attrs: { sm: 10, xs: 24 } }, [
+            _c(
+              "div",
+              { staticClass: "stock-card__projections-wrapper" },
+              _vm._l(_vm.timePeriods, function(timePeriod) {
+                return _c(
+                  "div",
+                  { class: _vm.nDayClass(_vm.stock.quickLook[timePeriod]) },
+                  [
+                    _c("h1", [
+                      _vm._v(
+                        _vm._s(
+                          _vm.getProfitLossChance(
+                            _vm.stock.quickLook[timePeriod]
+                          )
+                        ) + "%"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("h2", [_vm._v("chance")]),
+                    _vm._v(" "),
+                    _c("h4", [
+                      _vm._v(_vm._s(_vm.timePeriodsReadable[timePeriod])),
+                      _c("br"),
+                      _vm._v(
+                        _vm._s(
+                          _vm.getProfitLoss(_vm.stock.quickLook[timePeriod])
+                        )
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -123029,7 +123256,8 @@ var map = {
 	"./components/ExampleComponent.vue": "./resources/js/components/ExampleComponent.vue",
 	"./components/passport/AuthorizedClients.vue": "./resources/js/components/passport/AuthorizedClients.vue",
 	"./components/passport/Clients.vue": "./resources/js/components/passport/Clients.vue",
-	"./components/passport/PersonalAccessTokens.vue": "./resources/js/components/passport/PersonalAccessTokens.vue"
+	"./components/passport/PersonalAccessTokens.vue": "./resources/js/components/passport/PersonalAccessTokens.vue",
+	"./components/stocks/StockRowCard.vue": "./resources/js/components/stocks/StockRowCard.vue"
 };
 
 
@@ -123103,6 +123331,7 @@ files.keys().map(function (key) {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue"));
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue"));
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue"));
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('stock-row-card', __webpack_require__(/*! ./components/stocks/StockRowCard.vue */ "./resources/js/components/stocks/StockRowCard.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -123687,6 +123916,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PersonalAccessTokens_vue_vue_type_template_id_49962cc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PersonalAccessTokens_vue_vue_type_template_id_49962cc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/stocks/StockRowCard.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/stocks/StockRowCard.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StockRowCard.vue?vue&type=template&id=6933482a&scoped=true& */ "./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true&");
+/* harmony import */ var _StockRowCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StockRowCard.vue?vue&type=script&lang=js& */ "./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& */ "./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _StockRowCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "6933482a",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/stocks/StockRowCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./StockRowCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--9-2!../../../../node_modules/sass-loader/lib/loader.js??ref--9-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=style&index=0&id=6933482a&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_9_2_node_modules_sass_loader_lib_loader_js_ref_9_3_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_style_index_0_id_6933482a_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./StockRowCard.vue?vue&type=template&id=6933482a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stocks/StockRowCard.vue?vue&type=template&id=6933482a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StockRowCard_vue_vue_type_template_id_6933482a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
