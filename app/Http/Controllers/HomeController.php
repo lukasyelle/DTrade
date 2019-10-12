@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\TestChart;
-use App\Stock;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -25,11 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $chart = new TestChart(Stock::inRandomOrder()->first());
-
         return view('home', [
             'portfolios' => Auth::user()->portfolios(),
-            'chart'      => $chart,
         ]);
     }
 }

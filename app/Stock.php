@@ -12,7 +12,8 @@ class Stock extends Model
     use StockIndicators, StockAnalysis;
 
     protected $fillable = ['ticker_id'];
-    protected $appends = ['symbol', 'data', 'lastUpdate', 'value', 'nextDay', 'fiveDay', 'tenDay', 'projections', 'accuracy'];
+    protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'quickLook'];
 
     public function ticker()
     {
@@ -89,19 +90,62 @@ class Stock extends Model
         return ['projection' => $projection, 'accuracy' => $accuracy];
     }
 
+    private function getVerdictFor(string $timePeriod)
+    {
+        $projectionAndAccuracy = $this->getProjectionAndAccuracyFor($timePeriod);
+        $verdict = $projectionAndAccuracy['projection']['verdict'];
+        $accuracy = $projectionAndAccuracy['accuracy']['accuracy_'.str_replace(' ', '_', $verdict)] * 100;
+
+        return [
+            'verdict'   => $verdict,
+            'accuracy'  => $accuracy,
+        ];
+    }
+
+    private function getProbabilityLikelyOutcomeFor(string $timePeriod)
+    {
+        $projection = $this->getDatasetFor($this->projections, 'projection_for', $timePeriod);
+        $probabilityProfit = round($projection->probabilityProfit * 100);
+        $probabilityLoss = round($projection->probabilityLoss * 100);
+
+        if ($probabilityProfit > $probabilityLoss) {
+            return ['profit' => $probabilityProfit];
+        }
+
+        return ['loss' => $probabilityLoss];
+    }
+
+    public function getQuickLookAttribute()
+    {
+        $lastUpdatedOn = $this->lastUpdate->created_at->format('d/m/Y - H:i');
+        $nextDayBroad = $this->getProbabilityLikelyOutcomeFor('next day');
+        $fiveDayBroad = $this->getProbabilityLikelyOutcomeFor('five day');
+        $tenDayBroad = $this->getProbabilityLikelyOutcomeFor('ten day');
+
+        return collect([
+            'price'         => $this->value,
+            'change'        => $this->lastUpdate->change,
+            'changePercent' => $this->lastUpdate->change_percent,
+            'lastUpdate'    => $lastUpdatedOn,
+            'nextDay'       => $nextDayBroad,
+            'fiveDay'       => $fiveDayBroad,
+            'tenDay'        => $tenDayBroad,
+        ]);
+    }
+
     public function getNextDayAttribute()
     {
-        return $this->getProjectionAndAccuracyFor('next day');
+        return $this->getVerdictFor('next day');
     }
 
     public function getFiveDayAttribute()
     {
-        return $this->getProjectionAndAccuracyFor('five day');
+        return $this->getVerdictFor('five day');
     }
 
     public function getTenDayAttribute()
     {
-        return $this->getProjectionAndAccuracyFor('ten day');
+        return $this->getVerdictFor('ten day');
     }
 
     public function getLastTrainedModel($profitWindow = 1)

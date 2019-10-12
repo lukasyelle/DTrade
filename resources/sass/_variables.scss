@@ -18,12 +18,17 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $dim: #606266;
-$dark: #0f0f0f;
-$light: #f0f0f0;
+$dark: #333333;
+$light: #fcfcfc;
 $bright: #ffffff;
 $highlight: #ff7700;
 
-$body-bg: #f8fafc;
+$body-bg: #eee;
+
+$less-dark: rgba(51, 51, 51, .74);
+$loss-red: rgba(247, 86, 124, .54);
+$profit-yellow: rgba(255, 250, 227, 1);
+$profit-green: rgba(153, 225, 217, .54);
 
 // General Variables
-$mobile-breakpoint: 640px;
+$mobile: 768px;

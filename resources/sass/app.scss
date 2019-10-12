@@ -1,7 +1,5 @@
-
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Raleway:300,400|Slabo+27px|Nunito");
-
+@import url("https://fonts.googleapis.com/css?family=Tinos|Montserrat:400,500,700|Raleway:300,400|Nunitos&display=swap");
 // Local imports
 @import 'variables';
 @import 'formatting_classes';
@@ -10,16 +8,26 @@
 
 body {
 
-  margin: 0;
-  padding: 0;
-  background-color: $body-bg;
-  font-family: "Raleway", "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: $body-bg;
+    font-family: "Montserrat", "Raleway", "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+
+}
+
+.el-menu {
+
+    background-color: $light !important;
+    font-family: "Nunito", Helvetica, Arial, sans-serif;
+    font-size: 2em !important;
+    font-weight: lighter;
 
 }
 
 h1, h2, h3, h4, h5 {
 
-  margin-top: 10px;
-  margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
 }
