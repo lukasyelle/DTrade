@@ -36,6 +36,6 @@ class User extends Authenticatable
 
     public function portfolios()
     {
-        return $this->platforms()->select('platform', 'portfolio_value', 'updated_at')->get();
+        return $this->platforms()->select('platform', 'updated_at')->get();
     }
 }

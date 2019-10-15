@@ -43,6 +43,21 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+Vue.component(
+    'stock-row-card',
+    require('./components/stocks/RowCard.vue').default
+);
+
+Vue.component(
+    'stock-today-card',
+    require('./components/stocks/TodayCard').default
+);
+
+Vue.component(
+    'stock-summary-projections-card',
+    require('./components/stocks/SummaryProjectionsCard').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -11,10 +11,18 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::prefix('/stocks')->name('stocks.')->group(function () {
+    Route::get('/', 'StocksController@index')->name('all');
+    Route::prefix('{stock}')->group(function () {
+        Route::get('/', 'StocksController@get')->name('stock');
+    });
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes();
