@@ -28,19 +28,7 @@ abstract class BrowserTask extends BaseTask
         $this->tearDown();
     }
 
-    /**
-     * @param User|null $user
-     * @param Browser   $browser
-     *
-     * @throws Exception
-     */
-    public function execute(User $user = null, Browser $browser = null)
-    {
-        throw(new Exception('Implement the execute method on all browser tasks.'));
-    }
-
-    // This is the better implementation (requires php 7.3.x)
-    // abstract public function execute(User $user = null, Browser $browser = null);
+    abstract public function execute(User $user = null, Browser $browser = null);
 
     public function getName()
     {
