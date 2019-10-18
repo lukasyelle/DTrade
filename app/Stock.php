@@ -52,7 +52,7 @@ class Stock extends Model
 
     public function getDataAttribute()
     {
-        return $this->ticker->data->take(365)->reverse();
+        return $this->ticker->data()->take(365)->get()->reverse();
     }
 
     public function getLastUpdateAttribute()
@@ -124,19 +124,21 @@ class Stock extends Model
 
     public function getQuickLookAttribute()
     {
+        $lastProjectionUpdate = $this->projections->first()->created_at->format('m/d/Y - H:i');
         $lastUpdatedOn = $this->lastUpdate->created_at->format('m/d/Y - H:i');
         $nextDayBroad = $this->getProbabilityLikelyOutcomeFor('next day');
         $fiveDayBroad = $this->getProbabilityLikelyOutcomeFor('five day');
         $tenDayBroad = $this->getProbabilityLikelyOutcomeFor('ten day');
 
         return collect([
-            'price'         => $this->value,
-            'change'        => $this->lastUpdate->change,
-            'changePercent' => $this->lastUpdate->change_percent,
-            'lastUpdate'    => $lastUpdatedOn,
-            'nextDay'       => $nextDayBroad,
-            'fiveDay'       => $fiveDayBroad,
-            'tenDay'        => $tenDayBroad,
+            'price'                 => $this->value,
+            'change'                => $this->lastUpdate->change,
+            'changePercent'         => $this->lastUpdate->change_percent,
+            'lastProjectionUpdate'  => $lastProjectionUpdate,
+            'lastUpdate'            => $lastUpdatedOn,
+            'nextDay'               => $nextDayBroad,
+            'fiveDay'               => $fiveDayBroad,
+            'tenDay'                => $tenDayBroad,
         ]);
     }
 
