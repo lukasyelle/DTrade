@@ -55,6 +55,7 @@ class Stock extends Model
     {
         $allData = $this->hasManyThrough(TickerData::class, Ticker::class, 'id', 'ticker_id', 'ticker_id')->orderBy('created_at', 'ASC');
         $count = $allData->count();
+
         return $allData->offset($count - 365);
     }
 
