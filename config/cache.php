@@ -75,6 +75,10 @@ return [
             'connection' => 'cache',
         ],
 
+        'request' => [
+            'driver' => 'array'
+        ]
+
     ],
 
     /*
