@@ -53,7 +53,7 @@ class Stock extends Model
 
     public function data()
     {
-        return $this->hasManyThrough(TickerData::class, Ticker::class, 'id','ticker_id', 'ticker_id')->limit(365);
+        return $this->hasManyThrough(TickerData::class, Ticker::class, 'id', 'ticker_id', 'ticker_id')->limit(365);
     }
 
     public function getLastUpdateAttribute()
