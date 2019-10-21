@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Support\Database\CacheQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 class StockProjection extends Model
 {
+    use CacheQueryBuilder;
+
     protected $fillable = [
         'stock_id',
         'projection_for',

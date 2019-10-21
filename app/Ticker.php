@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Jobs\Stocks\DownloadTickerHistory;
+use App\Support\Database\CacheQueryBuilder;
 use App\Traits\StockIndicators;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -10,9 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class Ticker extends Model
 {
-    use StockIndicators;
+    use StockIndicators, CacheQueryBuilder;
 
     protected $fillable = ['symbol'];
+    protected $hidden = ['data'];
 
     private $market;
     public $symbol;
