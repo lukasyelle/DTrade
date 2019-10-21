@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Support\Database\CacheQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelAccuracy extends Model
 {
+    use CacheQueryBuilder;
+
     protected $fillable = [
         'stock_id',
         'time_period',
