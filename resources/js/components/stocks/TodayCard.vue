@@ -43,7 +43,7 @@
                 return this.stock.lastUpdate.change > 0 ? 'profit' : 'loss';
             },
             verdict: function () {
-                let percentageChange = this.stock.lastUpdate.change_percent,
+                let percentageChange = Math.abs(this.stock.lastUpdate.change_percent),
                     magnitude = 'small';
                 if (percentageChange >= 5) {
                     magnitude = 'large';
