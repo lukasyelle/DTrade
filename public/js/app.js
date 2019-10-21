@@ -4427,7 +4427,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.stock.lastUpdate.change > 0 ? 'profit' : 'loss';
     },
     verdict: function verdict() {
-      var percentageChange = this.stock.lastUpdate.change_percent,
+      var percentageChange = Math.abs(this.stock.lastUpdate.change_percent),
           magnitude = 'small';
 
       if (percentageChange >= 5) {
