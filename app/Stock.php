@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Support\Database\CacheQueryBuilder;
 use App\Traits\StockAnalysis;
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Support\Collection;
 
 class Stock extends Model
 {
-    use StockIndicators, StockAnalysis;
+    use StockIndicators, StockAnalysis, CacheQueryBuilder;
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
@@ -50,9 +51,9 @@ class Stock extends Model
         return $this->ticker['symbol'];
     }
 
-    public function getDataAttribute()
+    public function data()
     {
-        return $this->ticker->data->take(365)->reverse();
+        return $this->hasManyThrough(TickerData::class, Ticker::class, 'id', 'ticker_id', 'ticker_id')->limit(365);
     }
 
     public function getLastUpdateAttribute()
@@ -124,19 +125,21 @@ class Stock extends Model
 
     public function getQuickLookAttribute()
     {
+        $lastProjectionUpdate = $this->projections->first()->created_at->format('m/d/Y - H:i');
         $lastUpdatedOn = $this->lastUpdate->created_at->format('m/d/Y - H:i');
         $nextDayBroad = $this->getProbabilityLikelyOutcomeFor('next day');
         $fiveDayBroad = $this->getProbabilityLikelyOutcomeFor('five day');
         $tenDayBroad = $this->getProbabilityLikelyOutcomeFor('ten day');
 
         return collect([
-            'price'         => $this->value,
-            'change'        => $this->lastUpdate->change,
-            'changePercent' => $this->lastUpdate->change_percent,
-            'lastUpdate'    => $lastUpdatedOn,
-            'nextDay'       => $nextDayBroad,
-            'fiveDay'       => $fiveDayBroad,
-            'tenDay'        => $tenDayBroad,
+            'price'                 => $this->value,
+            'change'                => $this->lastUpdate->change,
+            'changePercent'         => $this->lastUpdate->change_percent,
+            'lastProjectionUpdate'  => $lastProjectionUpdate,
+            'lastUpdate'            => $lastUpdatedOn,
+            'nextDay'               => $nextDayBroad,
+            'fiveDay'               => $fiveDayBroad,
+            'tenDay'                => $tenDayBroad,
         ]);
     }
 

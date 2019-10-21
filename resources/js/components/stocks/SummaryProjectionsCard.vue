@@ -2,7 +2,7 @@
     <div class="stock-card bright-background material-shadow">
         <div class="stock-card__header">
             <h1>Projections</h1>
-            <span>Last Updated {{ stock.quickLook.lastUpdate }}</span>
+            <span>Last Updated {{ stock.quickLook.lastProjectionUpdate }}</span>
             <a href="#">Update Now</a>
         </div>
         <div class="stock-card__projections">
