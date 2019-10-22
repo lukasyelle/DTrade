@@ -9,6 +9,6 @@ class StockIndicators extends StockChart
         $this->addLimitedDateLabels();
         $this->limitedDataset('RSI', 'line', array_values($this->stock->rsi));
         $this->limitedDataset('DX', 'line', array_values($this->stock->dx));
-        $this->limitedDataset('Ultra Oscillator', 'line', array_values($this->stock->ultosc));
+        $this->limitedDataset('Ultimate Oscillator', 'line', array_values($this->stock->ultosc));
     }
 }
