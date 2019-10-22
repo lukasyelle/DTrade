@@ -34,7 +34,7 @@ class StockProjection extends Model
         $probabilities = collect();
         collect($this->fillable)->filter(function ($column) use ($outcome) {
             return strpos($column, $outcome) > -1;
-        })->each(function ($column) use (&$probabilities)  {
+        })->each(function ($column) use (&$probabilities) {
             $probabilities[$column] = $this->$column;
         });
 
