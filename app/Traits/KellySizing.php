@@ -63,10 +63,6 @@ trait KellySizing
             $lossAmount = $this->getPotentialLossAmount();
             $winProbability = $this->probabilityProfit;
 
-            \Log::debug("Potential Profit: $profitAmount");
-            \Log::debug("Potential Loss: $lossAmount");
-            \Log::debug("Win Probability: $winProbability");
-
             // The kelly formula being used is: W/A – (1 – W)/B
             // Where W is the win probability, B is the profit (%) in the event
             // of a win, and A is the potential loss (%).
