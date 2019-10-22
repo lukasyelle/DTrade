@@ -22,7 +22,7 @@ class StockProjection extends Model
         'probability_small_profit',
     ];
 
-    protected $appends = ['probabilityProfit', 'probabilityLoss'];
+    protected $appends = ['probabilityProfit', 'probabilityLoss', 'kellyPositionSize'];
 
     public function stock()
     {

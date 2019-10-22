@@ -6,13 +6,6 @@ use App\StockProjection;
 
 trait KellySizing
 {
-    public function __construct()
-    {
-        if ($this instanceof StockProjection) {
-            array_push($this->appends, 'kellyPositionSize');
-        }
-    }
-
     /**
      * This method determines the most likely outcome out of a given broad
      * outcome, and returns the approximated percentage attributed to that
