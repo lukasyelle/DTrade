@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Support\Database\CacheQueryBuilder;
+use App\Traits\KellySizing;
 use Illuminate\Database\Eloquent\Model;
 
 class StockProjection extends Model
 {
-    use CacheQueryBuilder;
+    use CacheQueryBuilder, KellySizing;
 
     protected $fillable = [
         'stock_id',
@@ -28,13 +29,23 @@ class StockProjection extends Model
         return $this->belongsTo(Stock::class);
     }
 
+    public function getBroadOutcome(string $outcome)
+    {
+        $probabilities = collect();
+        collect($this->fillable)->filter(function ($column) use ($outcome) {
+            return strpos($column, $outcome) > -1;
+        })->each(function ($column) use (&$probabilities) {
+            $probabilities[$column] = $this->$column;
+        });
+
+        return $probabilities;
+    }
+
     public function probabilityBroadOutcome(string $outcome)
     {
         $probabilityOutcome = 0.0;
-        collect($this->fillable)->filter(function ($column) use ($outcome) {
-            return strpos($column, $outcome) > -1;
-        })->each(function ($column) use (&$probabilityOutcome) {
-            $probabilityOutcome += $this->$column;
+        $this->getBroadOutcome($outcome)->each(function ($probability) use (&$probabilityOutcome) {
+            $probabilityOutcome += $probability;
         });
 
         return $probabilityOutcome;
