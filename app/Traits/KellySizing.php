@@ -2,11 +2,10 @@
 
 namespace App\Traits;
 
-use App\Stock;
 use App\StockProjection;
 
-trait KellySizing {
-
+trait KellySizing
+{
     public function __construct()
     {
         if ($this instanceof StockProjection) {
@@ -26,7 +25,8 @@ trait KellySizing {
      *
      * @return float - The mapped profit/loss percent to be expected.
      */
-    private function getVerdictFor(string $profitOrLoss) {
+    private function getVerdictFor(string $profitOrLoss)
+    {
         if ($this instanceof StockProjection) {
             $probabilities = $this->getBroadOutcome($profitOrLoss)->toArray();
             $mostLikelyMagnitude = array_keys($probabilities, max($probabilities))[0];
@@ -42,6 +42,7 @@ trait KellySizing {
                     break;
             }
         }
+
         return 0.0;
     }
 
@@ -55,7 +56,8 @@ trait KellySizing {
         return $this->getVerdictFor('loss');
     }
 
-    public function getKellyPositionSizeAttribute() {
+    public function getKellyPositionSizeAttribute()
+    {
         if ($this instanceof StockProjection) {
             $profitAmount = $this->getPotentialProfitAmount();
             $lossAmount = $this->getPotentialLossAmount();
@@ -71,7 +73,7 @@ trait KellySizing {
             // https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/
             return ($winProbability / $lossAmount) - ((1 - $winProbability) / $profitAmount);
         }
+
         return 0;
     }
-
 }
