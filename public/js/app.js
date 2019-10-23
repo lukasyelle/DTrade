@@ -4424,7 +4424,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['stock'],
   computed: {
     profitOrLoss: function profitOrLoss() {
-      return this.stock.lastUpdate.change > 0 ? 'profit' : 'loss';
+      return this.stock.lastUpdate.change >= 0 ? 'profit' : 'loss';
     },
     verdict: function verdict() {
       var percentageChange = Math.abs(this.stock.lastUpdate.change_percent),
@@ -4434,6 +4434,8 @@ __webpack_require__.r(__webpack_exports__);
         magnitude = 'large';
       } else if (percentageChange >= 1) {
         magnitude = 'moderate';
+      } else if (percentageChange === 0) {
+        return 'no change';
       }
 
       return magnitude + ' ' + this.profitOrLoss;
@@ -10786,7 +10788,7 @@ exports.push([module.i, ".stock-card[data-v-684d2d2a] {\n  padding: 10px 15px;\n
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css?1c71":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css":
 /*!*******************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--8-1!./node_modules/postcss-loader/src??ref--8-2!./node_modules/element-ui/lib/theme-chalk/index.css ***!
   \*******************************************************************************************************************************************/
@@ -62142,7 +62144,7 @@ module.exports = "/fonts/vendor/element-ui/lib/theme-chalk/element-icons.woff?53
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../css-loader??ref--8-1!../../../postcss-loader/src??ref--8-2!./index.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css?1c71");
+var content = __webpack_require__(/*! !../../../css-loader??ref--8-1!../../../postcss-loader/src??ref--8-2!./index.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/element-ui/lib/theme-chalk/index.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
