@@ -249,6 +249,7 @@ trait StockIndicators
             $nextClose = $close[$index + $nDays];
             $delta = $nextClose - $currentClose;
             $average = ($nextClose + $currentClose) / 2;
+            $average = $average ? $average : 1;
             $percentageChange = (abs($delta) / $average) * 100;
             if ($percentageChange >= 5) {
                 $magnitude = 'large';
