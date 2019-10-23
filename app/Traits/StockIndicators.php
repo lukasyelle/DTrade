@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Stock;
 use Illuminate\Support\Collection;
 use Laratrade\Trader\Facades\Trader;
 
@@ -10,27 +9,27 @@ trait StockIndicators
 {
     public function getOpenAttribute()
     {
-        return $this->data->pluck('open')->values()->toArray();
+        return $this->data->pluck('open')->values()->pad(-365, 0)->toArray();
     }
 
     public function getHighAttribute()
     {
-        return $this->data->pluck('high')->values()->toArray();
+        return $this->data->pluck('high')->values()->pad(-365, 0)->toArray();
     }
 
     public function getLowAttribute()
     {
-        return $this->data->pluck('low')->values()->toArray();
+        return $this->data->pluck('low')->values()->pad(-365, 0)->toArray();
     }
 
     public function getCloseAttribute()
     {
-        return $this->data->pluck('close')->values()->toArray();
+        return $this->data->pluck('close')->values()->pad(-365, 0)->toArray();
     }
 
     public function getVolumeAttribute()
     {
-        return $this->data->pluck('volume')->values()->toArray();
+        return $this->data->pluck('volume')->values()->pad(-365, 0)->toArray();
     }
 
     public function getRealAttribute()
@@ -69,7 +68,7 @@ trait StockIndicators
 
     public function wma($timePeriod = 30)
     {
-        return  array_pad(Trader::wma($this->real, $timePeriod), -365, 0);
+        return array_pad(Trader::wma($this->real, $timePeriod), -365, 0);
     }
 
     public function getRsiAttribute()
@@ -79,7 +78,7 @@ trait StockIndicators
 
     public function rsi($timePeriod = 14)
     {
-        return  array_pad(Trader::rsi($this->real, $timePeriod), -365, 0);
+        return array_pad(Trader::rsi($this->real, $timePeriod), -365, 0);
     }
 
     public function getUltoscAttribute()
@@ -89,7 +88,7 @@ trait StockIndicators
 
     public function ultosc($tpd1 = 7, $tpd2 = 14, $tpd3 = 28)
     {
-        return  array_pad(Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3), -365, 0);
+        return array_pad(Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3), -365, 0);
     }
 
     public function getTypPriceAttribute()
@@ -202,8 +201,8 @@ trait StockIndicators
     private function indicators()
     {
         $close = $this->close;
-        $sar = collect($this->sar());
-        $wma = collect($this->wma());
+        $sar = collect($this->sar())->values();
+        $wma = collect($this->wma())->values();
 
         return [
             'dx'        => collect($this->dx()),
