@@ -46,9 +46,14 @@ class Ticker extends Model
     {
         $rawData = $this->market->eod($this['symbol']);
         foreach ($rawData as $index => $dataPoint) {
+            // Get either the previous data point or the current one if its the
+            // first entry in the set.
             $previous = $index > 0 ? $rawData[$index - 1] : $dataPoint;
-            $change = $dataPoint->close - $previous->close;
-            $changePercent = ($change / $previous->close) * 100;
+            $previousClose = $previous->close;
+            $change = $dataPoint->close - $previousClose;
+            // Prevent Division By Zero error
+            $previousClose = $previousClose ? $previousClose : 1;
+            $changePercent = ($change / $previousClose) * 100;
             $data = [
                 'ticker_id'      => $this->id,
                 'open'           => $dataPoint->open,
