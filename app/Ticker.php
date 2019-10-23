@@ -73,11 +73,11 @@ class Ticker extends Model
         return self::where('symbol', strtoupper($symbol))->exists();
     }
 
-    public static function fetch($symbol)
+    public static function fetch($symbol, $recurse = true)
     {
         $symbol = strtoupper($symbol);
         $ticker = self::where('symbol', $symbol)->first();
-        if ($ticker == null) {
+        if ($ticker == null && $recurse) {
             $tickerId = DB::table('tickers')->insertGetId([
                 'symbol'     => $symbol,
                 'created_at' => Carbon::now(),
@@ -85,7 +85,7 @@ class Ticker extends Model
             Stock::create(['ticker_id' => $tickerId]);
             DownloadTickerHistory::dispatch($symbol);
 
-            return self::fetch($symbol);
+            return self::fetch($symbol, false);
         }
 
         return $ticker;
