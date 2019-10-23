@@ -28,6 +28,11 @@ trait StockIndicators
         return $this->data->pluck('close')->values()->toArray();
     }
 
+    public function getVolumeAttribute()
+    {
+        return $this->data->pluck('volume')->values()->toArray();
+    }
+
     public function getRealAttribute()
     {
         return $this->close;
@@ -127,6 +132,16 @@ trait StockIndicators
         return Trader::sar($this->high, $this->low, $acceleration, $maximum);
     }
 
+    public function getObvAttribute()
+    {
+        return $this->obv();
+    }
+
+    public function obv()
+    {
+        return Trader::obv($this->real, $this->volume);
+    }
+
     // ---------======================================================---------
     // ---------================= Data  manipulation =================---------
     // ---------======================================================---------
@@ -138,26 +153,77 @@ trait StockIndicators
         });
     }
 
+    /**
+     * This method will return the slope of a given set of values, assumed to be
+     * y-values, equally spaced by 1 x-value each.
+     *
+     * @param array $values - the array of y-values.
+     *
+     * @return float - the slope of the points.
+     */
+    private function computeSlope(array $values)
+    {
+        $n = count($values);
+        $x = range(0, $n - 1);
+        $y = $values;
+        $x_sum = array_sum($x);
+        $y_sum = array_sum($y);
+
+        $xx_sum = 0;
+        $xy_sum = 0;
+
+        for ($i = 0; $i < $n; $i++) {
+            $xy_sum += ($x[$i] * $y[$i]);
+            $xx_sum += ($x[$i] * $x[$i]);
+        }
+
+        $slope = (($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $xx_sum) - ($x_sum * $x_sum));
+
+        return $slope;
+    }
+
+    public function computeObvSlope()
+    {
+        $obv = collect($this->obv());
+
+        return $obv->map(function ($volume, $index) use ($obv) {
+            if ($index > 0) {
+                // Get the current and previous OBV reading to determine its
+                // current slope for every time period.
+                $obvWindow = $obv->slice($index - 1, 2)->values();
+
+                return $this->computeSlope($obvWindow->toArray());
+            }
+
+            return 0;
+        });
+    }
+
+    private function indicators()
+    {
+        $close = $this->close;
+        $sar = collect($this->sar());
+        $wma = collect($this->wma());
+
+        return [
+            'dx'        => collect($this->dx()),
+            'rsi'       => collect($this->rsi()),
+            'ultosc'    => collect($this->ultosc()),
+            'sard'      => $this->computeCloseDelta($sar, $close),
+            'wmad'      => $this->computeCloseDelta($wma, $close),
+        ];
+    }
+
     public function trendIndicators()
     {
         $data = [];
         $close = $this->close;
-        $dx = collect($this->dx());
-        $rsi = collect($this->rsi());
-        $sar = collect($this->sar());
-        $wma = collect($this->wma());
-        $ultosc = collect($this->ultosc());
-        $sarDelta = $this->computeCloseDelta($sar, $close);
-        $wmaDelta = $this->computeCloseDelta($wma, $close);
+        $indicators = $this->indicators();
 
         foreach (range(0, count($close) - 1) as $index) {
-            $data[$index] = [
-                'dx'        => $dx->get($index),
-                'rsi'       => $rsi->get($index),
-                'sard'      => $sarDelta->get($index),
-                'wmad'      => $wmaDelta->get($index),
-                'ultosc'    => $ultosc->get($index),
-            ];
+            foreach ($indicators as $indicator => $values) {
+                $data[$index][$indicator] = $values->get($index);
+            }
         }
 
         return collect($data)->filter(function ($row) {
