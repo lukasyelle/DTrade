@@ -4424,7 +4424,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['stock'],
   computed: {
     profitOrLoss: function profitOrLoss() {
-      return this.stock.lastUpdate.change > 0 ? 'profit' : 'loss';
+      return this.stock.lastUpdate.change >= 0 ? 'profit' : 'loss';
     },
     verdict: function verdict() {
       var percentageChange = Math.abs(this.stock.lastUpdate.change_percent),
@@ -4434,6 +4434,8 @@ __webpack_require__.r(__webpack_exports__);
         magnitude = 'large';
       } else if (percentageChange >= 1) {
         magnitude = 'moderate';
+      } else if (percentageChange === 0) {
+        return 'no change';
       }
 
       return magnitude + ' ' + this.profitOrLoss;

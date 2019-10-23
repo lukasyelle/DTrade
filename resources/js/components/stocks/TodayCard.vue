@@ -40,7 +40,7 @@
         props: ['stock'],
         computed: {
             profitOrLoss: function () {
-                return this.stock.lastUpdate.change > 0 ? 'profit' : 'loss';
+                return this.stock.lastUpdate.change >= 0 ? 'profit' : 'loss';
             },
             verdict: function () {
                 let percentageChange = Math.abs(this.stock.lastUpdate.change_percent),
@@ -49,6 +49,8 @@
                     magnitude = 'large';
                 } else if (percentageChange >= 1) {
                     magnitude = 'moderate';
+                } else if (percentageChange === 0) {
+                    return 'no change';
                 }
                 return magnitude + ' ' + this.profitOrLoss;
             },
