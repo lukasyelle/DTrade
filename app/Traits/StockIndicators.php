@@ -132,6 +132,16 @@ trait StockIndicators
         return Trader::sar($this->high, $this->low, $acceleration, $maximum);
     }
 
+    public function getObvAttribute()
+    {
+        return $this->obv();
+    }
+
+    public function obv()
+    {
+        return Trader::obv($this->real, $this->volume);
+    }
+
     // ---------======================================================---------
     // ---------================= Data  manipulation =================---------
     // ---------======================================================---------
@@ -140,6 +150,49 @@ trait StockIndicators
     {
         return $indicatedPriceLevels->map(function ($indicatedPrice, $index) use ($close) {
             return $indicatedPrice == 0 ? 0 : $close[$index] - $indicatedPrice;
+        });
+    }
+
+    /**
+     * This method will return the slope of a given set of values, assumed to be
+     * y-values, equally spaced by 1 x-value each.
+     *
+     * @param array $values - the array of y-values.
+     *
+     * @return float - the slope of the points.
+     */
+    private function computeSlope(array $values)
+    {
+        $n = count($values);
+        $x = range(0, $n - 1);
+        $y = $values;
+        $x_sum = array_sum($x);
+        $y_sum = array_sum($y);
+
+        $xx_sum = 0;
+        $xy_sum = 0;
+
+        for($i = 0; $i < $n; $i++) {
+            $xy_sum += ( $x[$i] * $y[$i] );
+            $xx_sum += ( $x[$i] * $x[$i] );
+        }
+
+        $slope = ( ( $n * $xy_sum ) - ( $x_sum * $y_sum ) ) / ( ( $n * $xx_sum ) - ( $x_sum * $x_sum ) );
+
+        return $slope;
+    }
+
+    public function computeObvSlope()
+    {
+        $obv = collect($this->obv());
+        return $obv->map(function ($volume, $index) use ($obv) {
+            if ($index > 0) {
+                // Get the current and previous OBV reading to determine its
+                // current slope for every time period.
+                $obvWindow = $obv->slice($index - 1, 2)->values();
+                return $this->computeSlope($obvWindow->toArray());
+            }
+            return 0;
         });
     }
 
