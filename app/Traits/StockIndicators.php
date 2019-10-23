@@ -172,12 +172,12 @@ trait StockIndicators
         $xx_sum = 0;
         $xy_sum = 0;
 
-        for($i = 0; $i < $n; $i++) {
-            $xy_sum += ( $x[$i] * $y[$i] );
-            $xx_sum += ( $x[$i] * $x[$i] );
+        for ($i = 0; $i < $n; $i++) {
+            $xy_sum += ($x[$i] * $y[$i]);
+            $xx_sum += ($x[$i] * $x[$i]);
         }
 
-        $slope = ( ( $n * $xy_sum ) - ( $x_sum * $y_sum ) ) / ( ( $n * $xx_sum ) - ( $x_sum * $x_sum ) );
+        $slope = (($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $xx_sum) - ($x_sum * $x_sum));
 
         return $slope;
     }
@@ -185,13 +185,16 @@ trait StockIndicators
     public function computeObvSlope()
     {
         $obv = collect($this->obv());
+
         return $obv->map(function ($volume, $index) use ($obv) {
             if ($index > 0) {
                 // Get the current and previous OBV reading to determine its
                 // current slope for every time period.
                 $obvWindow = $obv->slice($index - 1, 2)->values();
+
                 return $this->computeSlope($obvWindow->toArray());
             }
+
             return 0;
         });
     }
