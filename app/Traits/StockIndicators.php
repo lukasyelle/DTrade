@@ -28,6 +28,11 @@ trait StockIndicators
         return $this->data->pluck('close')->values()->toArray();
     }
 
+    public function getVolumeAttribute()
+    {
+        return $this->data->pluck('volume')->values()->toArray();
+    }
+
     public function getRealAttribute()
     {
         return $this->close;
@@ -138,26 +143,31 @@ trait StockIndicators
         });
     }
 
+    private function indicators()
+    {
+        $close = $this->close;
+        $sar = collect($this->sar());
+        $wma = collect($this->wma());
+
+        return [
+            'dx'        => collect($this->dx()),
+            'rsi'       => collect($this->rsi()),
+            'ultosc'    => collect($this->ultosc()),
+            'sard'      => $this->computeCloseDelta($sar, $close),
+            'wmad'      => $this->computeCloseDelta($wma, $close),
+        ];
+    }
+
     public function trendIndicators()
     {
         $data = [];
         $close = $this->close;
-        $dx = collect($this->dx());
-        $rsi = collect($this->rsi());
-        $sar = collect($this->sar());
-        $wma = collect($this->wma());
-        $ultosc = collect($this->ultosc());
-        $sarDelta = $this->computeCloseDelta($sar, $close);
-        $wmaDelta = $this->computeCloseDelta($wma, $close);
+        $indicators = $this->indicators();
 
         foreach (range(0, count($close) - 1) as $index) {
-            $data[$index] = [
-                'dx'        => $dx->get($index),
-                'rsi'       => $rsi->get($index),
-                'sard'      => $sarDelta->get($index),
-                'wmad'      => $wmaDelta->get($index),
-                'ultosc'    => $ultosc->get($index),
-            ];
+            foreach ($indicators as $indicator => $values) {
+                $data[$index][$indicator] = $values->get($index);
+            }
         }
 
         return collect($data)->filter(function ($row) {
