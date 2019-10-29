@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             self::updateAndAnalyzeStocks();
-        })->twiceDaily(12, 16);
+        })->twiceDaily(12, 16)->weekdays();
 
         $schedule->call(function () {
             Artisan::call('horizon:snapshot');
