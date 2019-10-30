@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68cb0d39bb50a0dbd44c088d2b9c412f",
+    "content-hash": "bc2e2d5fb1b686b945cbdc2437d01355",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1283,6 +1283,46 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "kokspflanze/alpha-vantage-api",
+            "version": "0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kokspflanze/alpha-vantage-api.git",
+                "reference": "464626c348d89190044175da82240cef2cdd1b3e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kokspflanze/alpha-vantage-api/zipball/464626c348d89190044175da82240cef2cdd1b3e",
+                "reference": "464626c348d89190044175da82240cef2cdd1b3e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2.2 || ^7.4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlphaVantage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Alpha Vantage API client",
+            "homepage": "https://github.com/kokspflanze/alpha-vantage-api",
+            "keywords": [
+                "alpha-vantage",
+                "alphavantage",
+                "api"
+            ],
+            "time": "2019-08-26T18:56:08+00:00"
         },
         {
             "name": "laratrade/trader",

@@ -35,6 +35,11 @@ class Ticker extends Model
         return $this->hasMany(TickerData::class)->orderBy('created_at', 'DESC');
     }
 
+    public function dataSource()
+    {
+        return $this->belongsTo(AlphaVantageApi::class, 'alpha_vantage_api_id', 'id');
+    }
+
     private function getLastUpdatedTimestamp()
     {
         $updatedAtColumn = $this->getUpdatedAtColumn();

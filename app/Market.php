@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
 use RadicalLoop\Eod\Api\Stock as Connection;
 use RadicalLoop\Eod\Config as EodConfig;
 
@@ -11,6 +12,9 @@ class Market
 
     public function __construct()
     {
+        if (Auth::check()) {
+
+        }
         $config = new EodConfig(env('EOD_API_KEY'));
         $this->connection = new Connection($config);
     }

@@ -9,7 +9,7 @@ class TickerData extends Model
 {
     use CacheQueryBuilder;
 
-    protected $fillable = ['ticker_id', 'high', 'low', 'open', 'close', 'previous_close', 'change', 'change_percent', 'volume'];
+    protected $fillable = ['ticker_id', 'open', 'high', 'low', 'close', 'previous_close', 'change', 'change_percent', 'volume'];
 
     public function ticker()
     {
