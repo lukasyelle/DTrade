@@ -115,6 +115,7 @@ class AlphaVantageApi extends Model
             return $rawData->map(function (array $quote, $date) {
                 $formattedQuote = $this->quoteFormatter($quote);
                 $formattedQuote['date'] = $date;
+
                 return $formattedQuote;
             })->reverse()->values();
         }
