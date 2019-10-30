@@ -7,29 +7,39 @@ use Laratrade\Trader\Facades\Trader;
 
 trait StockIndicators
 {
+    private function padArray(array $array)
+    {
+        return array_pad($array, -365, 0);
+    }
+
+    private function paddedDataValues(string $key)
+    {
+        return $this->data->pluck($key)->values()->pad(-365, 0)->toArray();
+    }
+
     public function getOpenAttribute()
     {
-        return $this->data->pluck('open')->values()->pad(-365, 0)->toArray();
+        return $this->paddedDataValues('open');
     }
 
     public function getHighAttribute()
     {
-        return $this->data->pluck('high')->values()->pad(-365, 0)->toArray();
+        return $this->paddedDataValues('high');
     }
 
     public function getLowAttribute()
     {
-        return $this->data->pluck('low')->values()->pad(-365, 0)->toArray();
+        return $this->paddedDataValues('low');
     }
 
     public function getCloseAttribute()
     {
-        return $this->data->pluck('close')->values()->pad(-365, 0)->toArray();
+        return $this->paddedDataValues('close');
     }
 
     public function getVolumeAttribute()
     {
-        return $this->data->pluck('volume')->values()->pad(-365, 0)->toArray();
+        return $this->paddedDataValues('volume');
     }
 
     public function getRealAttribute()
@@ -48,7 +58,8 @@ trait StockIndicators
 
     public function sma($timePeriod = 30)
     {
-        return array_pad(Trader::sma($this->real, $timePeriod), -365, 0);
+        $sma = Trader::sma($this->real, $timePeriod);
+        return $this->padArray($sma);
     }
 
     public function getEmaAttribute()
@@ -58,7 +69,8 @@ trait StockIndicators
 
     public function ema($timePeriod = 30)
     {
-        return  array_pad(Trader::ema($this->real, $timePeriod), -365, 0);
+        $ema = Trader::ema($this->real, $timePeriod);
+        return  $this->padArray($ema);
     }
 
     public function getWmaAttribute()
@@ -68,7 +80,8 @@ trait StockIndicators
 
     public function wma($timePeriod = 30)
     {
-        return array_pad(Trader::wma($this->real, $timePeriod), -365, 0);
+        $wma = Trader::wma($this->real, $timePeriod);
+        return $this->padArray($wma);
     }
 
     public function getRsiAttribute()
@@ -78,7 +91,8 @@ trait StockIndicators
 
     public function rsi($timePeriod = 14)
     {
-        return array_pad(Trader::rsi($this->real, $timePeriod), -365, 0);
+        $rsi = Trader::rsi($this->real, $timePeriod);
+        return $this->padArray($rsi);
     }
 
     public function getUltoscAttribute()
@@ -88,7 +102,8 @@ trait StockIndicators
 
     public function ultosc($tpd1 = 7, $tpd2 = 14, $tpd3 = 28)
     {
-        return array_pad(Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3), -365, 0);
+        $ultosc = Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3);
+        return $this->padArray($ultosc);
     }
 
     public function getTypPriceAttribute()
@@ -118,7 +133,8 @@ trait StockIndicators
 
     public function dx($timePeriod = 14)
     {
-        return array_pad(Trader::dx($this->high, $this->low, $this->close, $timePeriod), -365, 0);
+        $dx = Trader::dx($this->high, $this->low, $this->close, $timePeriod);
+        return $this->padArray($dx);
     }
 
     public function getSarAttribute()
