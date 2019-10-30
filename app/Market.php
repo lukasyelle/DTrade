@@ -13,7 +13,6 @@ class Market
     public function __construct()
     {
         if (Auth::check()) {
-
         }
         $config = new EodConfig(env('EOD_API_KEY'));
         $this->connection = new Connection($config);

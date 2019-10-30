@@ -47,7 +47,6 @@ class AlphaVantageApi extends Model
         if ($this->api instanceof AlphaVantage\Client) {
             return $this->api->timeSeries();
         }
-        return null;
     }
 
     /**
@@ -67,15 +66,16 @@ class AlphaVantageApi extends Model
         $newQuote = [];
         foreach ($quote as $key => $value) {
             // Remove leading whitespace and non-alphanumeric characters from the key
-            $key = trim(preg_replace("/[^A-Za-z ]/", "", $key));
+            $key = trim(preg_replace('/[^A-Za-z ]/', '', $key));
             $key = str_replace(' ', '_', $key);
             // Change 'price' to 'close' if necessary
             $key = $key == 'price' ? 'close' : $key;
 
             // Remove symbols (mainly %) from the value string
-            $value = preg_replace("/[^A-Za-z0-9.-]/", "", $value);
+            $value = preg_replace('/[^A-Za-z0-9.-]/', '', $value);
             $newQuote[$key] = $value;
         }
+
         return $newQuote;
     }
 
@@ -92,9 +92,9 @@ class AlphaVantageApi extends Model
         if ($timeSeries) {
             $unformattedQuote = $timeSeries->globalQuote($symbol);
             $unformattedQuote = $unformattedQuote['Global Quote'];
+
             return $this->quoteFormatter($unformattedQuote);
         }
-        return null;
     }
 
     /**
@@ -111,12 +111,12 @@ class AlphaVantageApi extends Model
         if ($timeSeries) {
             $rawData = $timeSeries->daily($symbol, 'full');
             $rawData = collect($rawData['Time Series (Daily)']);
+
             return $rawData->map(function (array $quote, $date) {
                 $formattedQuote = $this->quoteFormatter($quote);
                 $formattedQuote['date'] = $date;
                 return $formattedQuote;
             })->reverse()->values();
         }
-        return null;
     }
 }
