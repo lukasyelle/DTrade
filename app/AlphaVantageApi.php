@@ -111,9 +111,11 @@ class AlphaVantageApi extends Model
         if ($timeSeries) {
             $rawData = $timeSeries->daily($symbol, 'full');
             $rawData = collect($rawData['Time Series (Daily)']);
-            return $rawData->map(function (array $quote) {
-                return $this->quoteFormatter($quote);
-            })->reverse();
+            return $rawData->map(function (array $quote, $date) {
+                $formattedQuote = $this->quoteFormatter($quote);
+                $formattedQuote['date'] = $date;
+                return $formattedQuote;
+            })->reverse()->values();
         }
         return null;
     }
