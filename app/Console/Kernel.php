@@ -54,8 +54,7 @@ class Kernel extends ConsoleKernel
         // updates to finish.
         $schedule->call(function () {
             $stocks = Stock::all()->toArray();
-            $markDailyDataJob = new MarkEndOfDayData($stocks);
-            $markDailyDataJob->dispatch($stocks);
+            MarkEndOfDayData::dispatch($stocks);
         })->dailyAt('16:01');
 
         $schedule->call(function () {
