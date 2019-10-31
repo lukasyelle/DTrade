@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->platforms()->select('platform', 'updated_at')->get();
     }
+
+    public function dataSource()
+    {
+        return $this->hasOne(AlphaVantageApi::class);
+    }
 }

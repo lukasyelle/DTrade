@@ -19,7 +19,7 @@ abstract class StockJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string|array $symbols - the ticker symbol(s) to update.
+     * @param string|array $symbols - the ticker symbol(s) in question.
      */
     public function __construct($symbols)
     {

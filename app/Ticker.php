@@ -16,15 +16,6 @@ class Ticker extends Model
     protected $fillable = ['symbol'];
     protected $hidden = ['data'];
 
-    private $market;
-    public $symbol;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->market = new Market();
-    }
-
     public function stock()
     {
         return $this->hasOne(Stock::class);
@@ -33,6 +24,11 @@ class Ticker extends Model
     public function data()
     {
         return $this->hasMany(TickerData::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function dataSource()
+    {
+        return $this->belongsTo(AlphaVantageApi::class, 'alpha_vantage_api_id', 'id');
     }
 
     private function getLastUpdatedTimestamp()
@@ -44,15 +40,16 @@ class Ticker extends Model
 
     public function downloadInitialHistory()
     {
-        $rawData = $this->market->eod($this['symbol']);
+        $rawData = $this->dataSource->dailyHistory($this['symbol']);
         foreach ($rawData as $index => $dataPoint) {
             // Get either the previous data point or the current one if its the
             // first entry in the set.
-            $previous = $index > 0 ? $rawData[$index - 1] : $dataPoint;
-            $previousClose = $previous->close;
+            $dataPoint = (object) $dataPoint;
+            $previous = $index > 0 ? (object) $rawData[$index - 1] : $dataPoint;
+            $previousClose = (float) $previous->close;
             $change = $dataPoint->close - $previousClose;
             // Prevent Division By Zero error
-            $previousClose = $previousClose ? $previousClose : 1;
+            $previousClose = $previousClose != 0 ? $previousClose : 1;
             $changePercent = ($change / $previousClose) * 100;
             $data = [
                 'ticker_id'      => $this->id,
@@ -100,11 +97,13 @@ class Ticker extends Model
     {
         $updatedAt = $this->getLastUpdatedTimestamp();
         $currentTime = $this->freshTimestamp();
-        if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 30) {
-            $rawData = $this->market->realTime($this['symbol'])->toArray();
-            $rawData['previous_close'] = $rawData['previousClose'];
-            $rawData['change_percent'] = $rawData['change_p'];
-            TickerData::create(array_merge(['ticker_id' => $this->id], $rawData));
+        if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 15) {
+            $rawData = $this->dataSource->quote($this['symbol']);
+            $staticData = [
+                'ticker_id'     => $this->id,
+                'is_intraday'   => true,
+            ];
+            TickerData::create(array_merge($staticData, $rawData));
             $this->setUpdatedAt($this->freshTimestamp());
             $this->save();
         }
