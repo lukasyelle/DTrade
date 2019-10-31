@@ -15,6 +15,7 @@ trait StockIndicators
     private function paddedDataValues(string $key)
     {
         $dailyData = $this->data()->where('is_intraday', false)->get();
+
         return $dailyData->pluck($key)->values()->pad(-365, 0)->toArray();
     }
 
@@ -60,6 +61,7 @@ trait StockIndicators
     public function sma($timePeriod = 30)
     {
         $sma = Trader::sma($this->real, $timePeriod);
+
         return $this->padArray($sma);
     }
 
@@ -71,6 +73,7 @@ trait StockIndicators
     public function ema($timePeriod = 30)
     {
         $ema = Trader::ema($this->real, $timePeriod);
+
         return  $this->padArray($ema);
     }
 
@@ -82,6 +85,7 @@ trait StockIndicators
     public function wma($timePeriod = 30)
     {
         $wma = Trader::wma($this->real, $timePeriod);
+
         return $this->padArray($wma);
     }
 
@@ -93,6 +97,7 @@ trait StockIndicators
     public function rsi($timePeriod = 14)
     {
         $rsi = Trader::rsi($this->real, $timePeriod);
+
         return $this->padArray($rsi);
     }
 
@@ -104,6 +109,7 @@ trait StockIndicators
     public function ultosc($tpd1 = 7, $tpd2 = 14, $tpd3 = 28)
     {
         $ultosc = Trader::ultosc($this->high, $this->low, $this->close, $tpd1, $tpd2, $tpd3);
+
         return $this->padArray($ultosc);
     }
 
@@ -135,6 +141,7 @@ trait StockIndicators
     public function dx($timePeriod = 14)
     {
         $dx = Trader::dx($this->high, $this->low, $this->close, $timePeriod);
+
         return $this->padArray($dx);
     }
 
