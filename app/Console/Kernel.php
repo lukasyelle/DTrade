@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\Stocks\AnalyzeStock;
 use App\Jobs\Stocks\CheckAccuracy;
+use App\Jobs\Stocks\MarkEndOfDayData;
 use App\Jobs\Stocks\UpdateTickerData;
 use App\Stock;
 use Illuminate\Console\Scheduling\Schedule;
@@ -47,6 +48,15 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             self::updateAndAnalyzeStocks();
         })->twiceDaily(12, 16)->weekdays();
+
+        // At the end of the trading day mark the last intraday update as the
+        // EOD data point. Dispatch a minute after market close to allow pending
+        // updates to finish.
+        $schedule->call(function () {
+            $stocks = Stock::all()->toArray();
+            $markDailyDataJob = new MarkEndOfDayData($stocks);
+            $markDailyDataJob->dispatch($stocks);
+        })->dailyAt('16:01');
 
         $schedule->call(function () {
             Artisan::call('horizon:snapshot');

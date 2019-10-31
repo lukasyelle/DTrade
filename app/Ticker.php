@@ -99,7 +99,11 @@ class Ticker extends Model
         $currentTime = $this->freshTimestamp();
         if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 30) {
             $rawData = $this->dataSource->quote($this['symbol']);
-            TickerData::create(array_merge(['ticker_id' => $this->id], $rawData));
+            $staticData = [
+                'ticker_id'     => $this->id,
+                'is_intraday'   => true,
+            ];
+            TickerData::create(array_merge($staticData, $rawData));
             $this->setUpdatedAt($this->freshTimestamp());
             $this->save();
         }
