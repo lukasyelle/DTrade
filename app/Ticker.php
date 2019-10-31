@@ -97,7 +97,7 @@ class Ticker extends Model
     {
         $updatedAt = $this->getLastUpdatedTimestamp();
         $currentTime = $this->freshTimestamp();
-        if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 30) {
+        if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 15) {
             $rawData = $this->dataSource->quote($this['symbol']);
             $staticData = [
                 'ticker_id'     => $this->id,
