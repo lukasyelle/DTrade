@@ -6,6 +6,7 @@ use App\Support\Database\CacheQueryBuilder;
 use App\Traits\StockAnalysis;
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 
 class Stock extends Model
@@ -51,9 +52,22 @@ class Stock extends Model
         return $this->ticker['symbol'];
     }
 
-    public function data()
+    /**
+     * Helper method to get the data of the given stock, limited to 365 results
+     *
+     * @param $eod bool - whether ot not to only include end of day daya in the results
+     *
+     * @return HasManyThrough
+     */
+    public function data($eod = true)
     {
-        $allData = $this->hasManyThrough(TickerData::class, Ticker::class, 'id', 'ticker_id', 'ticker_id')->orderBy('created_at', 'ASC');
+        $allData = $this->hasManyThrough(TickerData::class, Ticker::class, 'id', 'ticker_id', 'ticker_id');
+
+        if ($eod) {
+            $allData = $allData->eod();
+        }
+
+        $allData->orderBy('created_at', 'ASC');
         $count = $allData->count();
 
         return $allData->offset($count - 365);
