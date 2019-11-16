@@ -26,6 +26,7 @@ class TickerData extends Model
      * Scope a query to only include End of day data.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeEod($query)
@@ -37,6 +38,7 @@ class TickerData extends Model
      * Scope a query to only include End of day data.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeIntraday($query)
@@ -44,5 +46,4 @@ class TickerData extends Model
         return $query->where('is_intraday', true)
                      ->whereDate('created_at', Carbon::today());
     }
-
 }
