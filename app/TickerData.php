@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Support\Database\CacheQueryBuilder;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class TickerData extends Model
@@ -19,5 +20,30 @@ class TickerData extends Model
     public function stock()
     {
         return $this->ticker->stock();
+    }
+
+    /**
+     * Scope a query to only include End of day data.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEod($query)
+    {
+        return $query->where('is_intraday', false);
+    }
+
+    /**
+     * Scope a query to only include intraday data.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIntraday($query)
+    {
+        return $query->where('is_intraday', true)
+                     ->whereDate('created_at', Carbon::today());
     }
 }

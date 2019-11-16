@@ -32,7 +32,8 @@ abstract class StockChart extends Chart
 
     public function addLimitedDateLabels()
     {
-        $dates = $this->stock->data->pluck('created_at')->map(function (Carbon $date) {
+        $data = $this->stock->data()->eod()->get();
+        $dates = $data->pluck('created_at')->map(function (Carbon $date) {
             return $date->toDateString();
         })->toArray();
         $this->labels($this->limit($dates));
