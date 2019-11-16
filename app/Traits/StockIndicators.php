@@ -14,7 +14,7 @@ trait StockIndicators
 
     private function paddedDataValues(string $key)
     {
-        $dailyData = $this->data()->eod()->get();
+        $dailyData = $this->data(true)->get();
 
         return $dailyData->pluck($key)->values()->pad(-365, 0)->toArray();
     }
