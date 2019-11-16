@@ -35,7 +35,7 @@ class TickerData extends Model
     }
 
     /**
-     * Scope a query to only include End of day data.
+     * Scope a query to only include intraday data.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      *
