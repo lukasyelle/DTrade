@@ -149,6 +149,7 @@ class AlphaVantageApi extends Model
         // 10n/11 is simplified from 60n/66. This enforces a maximum of 66
         // updates in 60 minutes and thus 400 updates per trading session.
         $computedInterval = (10 * $numberOfTickers) / 11;
+
         return $computedInterval > 15 ? round($computedInterval) : 15;
     }
 
