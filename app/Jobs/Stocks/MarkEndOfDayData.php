@@ -15,7 +15,7 @@ class MarkEndOfDayData extends StockJob
     public function handle()
     {
         $stock = Stock::fetch($this->symbol);
-        $lastDataPoint = $stock->data->last();
+        $lastDataPoint = $stock->data(false)->get()->last();
         if ($lastDataPoint instanceof TickerData && $lastDataPoint->is_intraday) {
             $lastDataPoint->is_intraday = false;
             $lastDataPoint->save();
