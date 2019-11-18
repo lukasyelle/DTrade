@@ -53,7 +53,7 @@ class Stock extends Model
     }
 
     /**
-     * Helper method to get the data of the given stock, limited to 365 results
+     * Helper method to get the data of the given stock, limited to 365 results.
      *
      * @param $eod bool - whether ot not to only include end of day daya in the results
      *
