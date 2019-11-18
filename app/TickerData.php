@@ -44,6 +44,6 @@ class TickerData extends Model
     public function scopeIntraday($query)
     {
         return $query->where('is_intraday', true)
-                     ->whereDate('created_at', Carbon::today());
+                     ->whereDate('ticker_data.created_at', Carbon::today());
     }
 }
