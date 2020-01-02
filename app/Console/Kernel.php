@@ -24,6 +24,9 @@ class Kernel extends ConsoleKernel
         //
     ];
 
+    // How long to wait between updating the most outdated stocks.
+    public static $updateInterval = 12;
+
     public static function analyzeStocks()
     {
         $symbols = Stock::all()->pluck('symbol');
@@ -35,14 +38,19 @@ class Kernel extends ConsoleKernel
         Log::debug("Launched chained jobs to analyze, and check prediction accuracy for $symbolsString");
     }
 
-    public static function keepTickersUpdated()
+    public static function sleepFor($numberSeconds, Carbon &$now = null)
     {
-        $now = Carbon::now();
-        $updateInterval = 12;
+        $now = ($now === null) ? Carbon::now() : $now;
+        time_sleep_until($now->addSeconds($numberSeconds)->timestamp);
+    }
 
-        for ($i = 0; $i < (60 / $updateInterval); $i++) {
+    public static function keepTickersUpdated(Carbon &$now = null)
+    {
+        $now = ($now === null) ? Carbon::now() : $now;
+
+        for ($i = 0; $i < (60 / Kernel::$updateInterval); $i++) {
             UpdateAlphaVantageApiTickers::dispatch();
-            time_sleep_until($now->addSeconds($updateInterval)->timestamp);
+            Kernel::sleepFor(Kernel::$updateInterval, $now);
         }
     }
 
