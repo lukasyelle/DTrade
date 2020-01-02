@@ -18,7 +18,7 @@ class UpdateStocks extends Command
      *
      * @var string
      */
-    protected $signature = 'stock:update {?symbol} {--all}';
+    protected $signature = 'stock:update {symbol?} {--all}';
 
     /**
      * The console command description.
