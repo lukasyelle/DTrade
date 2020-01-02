@@ -27,7 +27,6 @@ class UpdateStocks extends Command
      */
     protected $description = 'This command is used to update the data for a particular stock ticker.';
 
-
     /**
      * A collection of all stocks to update.
      *
@@ -41,7 +40,6 @@ class UpdateStocks extends Command
      * @var Collection
      */
     protected $symbols;
-
 
     private function updateAllStocks()
     {
@@ -79,7 +77,6 @@ class UpdateStocks extends Command
         $this->alert('Jobs dispatched. They will take a while to complete.');
     }
 
-
     /**
      * Execute the console command.
      *
@@ -88,7 +85,6 @@ class UpdateStocks extends Command
     public function handle()
     {
         if ($this->option('all')) {
-
             $this->stocks = Stock::all();
             $this->symbols = $this->stocks->pluck('symbol')->toArray();
 
@@ -96,13 +92,10 @@ class UpdateStocks extends Command
             $this->markEndOfDay();
             $this->analyzeAllStocks();
             $this->checkAllAccuracyMeasurements();
-
         } else {
-
             $symbol = strtoupper($this->argument('symbol'));
             UpdateTickerDataJob::dispatch($symbol);
             $this->info("Job dispatched to pull the latest market data for `$symbol`.");
-
         }
     }
 }

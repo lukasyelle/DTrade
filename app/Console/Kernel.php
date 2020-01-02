@@ -48,9 +48,9 @@ class Kernel extends ConsoleKernel
     {
         $now = ($now === null) ? Carbon::now() : $now;
 
-        for ($i = 0; $i < (60 / Kernel::$updateInterval); $i++) {
+        for ($i = 0; $i < (60 / self::$updateInterval); $i++) {
             UpdateAlphaVantageApiTickers::dispatch();
-            Kernel::sleepFor(Kernel::$updateInterval, $now);
+            self::sleepFor(self::$updateInterval, $now);
         }
     }
 
