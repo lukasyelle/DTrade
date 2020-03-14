@@ -11,8 +11,9 @@ use Illuminate\Support\Collection;
 
 class Stock extends Model
 {
-    use StockIndicators, StockAnalysis, CacheQueryBuilder;
-
+    use StockIndicators;
+    use StockAnalysis;
+    use CacheQueryBuilder;
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
     protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook'];
@@ -42,7 +43,7 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
-    public static function fetch($ticker) : self
+    public static function fetch($ticker): self
     {
         return Ticker::fetch($ticker)->stock;
     }

@@ -11,8 +11,9 @@ use Illuminate\Support\Collection;
 
 class PortfoliosUpdated implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
     public $portfolios;
 
     /**

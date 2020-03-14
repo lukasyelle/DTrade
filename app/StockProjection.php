@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockProjection extends Model
 {
-    use CacheQueryBuilder, KellySizing;
-
+    use CacheQueryBuilder;
+    use KellySizing;
     protected $fillable = [
         'stock_id',
         'projection_for',
