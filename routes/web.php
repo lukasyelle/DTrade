@@ -37,7 +37,6 @@ Route::prefix('portfolio')->name('portfolio.')->group(function () {
 });
 
 Route::prefix('profile')->name('profile.')->group(function () {
-
 });
 
 Auth::routes();

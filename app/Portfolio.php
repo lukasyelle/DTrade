@@ -15,6 +15,7 @@ class Portfolio extends Model
         $this->stocks->each(function (Stock $stock) use (&$value) {
             $value += $stock->value * $stock->pivot->shares;
         });
+
         return $value;
     }
 
