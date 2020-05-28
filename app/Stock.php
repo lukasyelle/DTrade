@@ -52,6 +52,23 @@ class Stock extends Model
         return $this->ticker['symbol'];
     }
 
+    public function getAverageKellySizeAttribute()
+    {
+        $projections = $this->projections()->limit(3)->get();
+        $trueAverage = $projections->pluck('kellyPositionSize')->avg();
+        return round($trueAverage, 2);
+    }
+
+    public function getRecommendedPositionAttribute()
+    {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $avgKellySize = $this->averageKellySize / 10;
+            return ($user->portfolio->cash * $avgKellySize) / $this->value;
+        }
+        return 0;
+    }
+
     /**
      * Helper method to get the data of the given stock, limited to 365 results.
      *
