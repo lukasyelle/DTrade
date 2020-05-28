@@ -13,9 +13,9 @@ use Tests\CreatesApplication;
 
 trait BrowserScaffold
 {
-    use CreatesApplication,
-        ProvidesBrowser,
-        SupportsChrome;
+    use CreatesApplication;
+    use ProvidesBrowser;
+    use SupportsChrome;
 
     private $basePath;
 
@@ -96,9 +96,12 @@ trait BrowserScaffold
         ]);
 
         return RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
-            ChromeOptions::CAPABILITY, $options
-        ));
+            'http://localhost:9515',
+            DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY,
+                $options
+            )
+        );
     }
 
     /**

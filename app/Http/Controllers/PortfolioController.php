@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Portfolio;
 use App\Stock;
-use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
 {
@@ -13,9 +12,10 @@ class PortfolioController extends Controller
         $this->middleware('auth');
     }
 
-    private function portfolio() : Portfolio
+    private function portfolio(): Portfolio
     {
         $user = auth()->user();
+
         return $user->portfolio;
     }
 

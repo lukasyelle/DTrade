@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockProjection extends Model
 {
-    use CacheQueryBuilder, KellySizing;
+    use CacheQueryBuilder;
+    use KellySizing;
 
     protected $fillable = [
         'stock_id',
@@ -25,7 +26,7 @@ class StockProjection extends Model
     protected $appends = [
         'probabilityProfit',
         'probabilityLoss',
-        'kellyPositionSize'
+        'kellyPositionSize',
     ];
 
     public function stock()
