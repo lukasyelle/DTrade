@@ -25,4 +25,8 @@ Route::prefix('/stocks')->name('stocks.')->group(function () {
     });
 });
 
+Route::prefix('profile')->name('profile.')->group(function () {
+    Route::get('alpha-vantage', 'HomeController@index')->name('alpha-vantage');
+});
+
 Auth::routes();
