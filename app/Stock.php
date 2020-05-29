@@ -17,7 +17,7 @@ class Stock extends Model
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
-    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize'];
 
     public function ticker()
     {
@@ -140,12 +140,14 @@ class Stock extends Model
     private function getVerdictFor(string $timePeriod)
     {
         $projectionAndAccuracy = $this->getProjectionAndAccuracyFor($timePeriod);
-        $verdict = $projectionAndAccuracy['projection']['verdict'];
+        $projection = $projectionAndAccuracy['projection'];
+        $verdict = $projection['verdict'];
         $accuracy = $projectionAndAccuracy['accuracy']['accuracy_'.str_replace(' ', '_', $verdict)] * 100;
 
         return [
             'verdict'   => $verdict,
             'accuracy'  => round($accuracy),
+            'kellySize' => round($projection['kellyPositionSize'], 2),
         ];
     }
 

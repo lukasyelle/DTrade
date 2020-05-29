@@ -37,6 +37,7 @@ Route::prefix('portfolio')->name('portfolio.')->group(function () {
 });
 
 Route::prefix('profile')->name('profile.')->group(function () {
+    Route::get('robinhood', 'HomeController@index')->name('robinhood');
 });
 
 Auth::routes();

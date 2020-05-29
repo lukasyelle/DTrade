@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('home', [
-            'portfolio' => Auth::user()->portfolio(),
+            'portfolio' => Auth::user()->portfolio,
         ]);
     }
 }

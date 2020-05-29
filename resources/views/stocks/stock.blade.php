@@ -13,17 +13,24 @@
         </el-header>
         <el-main>
             <el-row :gutter="20">
-                <el-col :lg="10" :md="16" :xs="24">
+                <el-col :lg="10" :md="9" :sm="24">
                     <stock-today-card :stock="{{ $stock }}"></stock-today-card>
                 </el-col>
-                <el-col :lg="14" :md="12">
+                <el-col :lg="14" :md="15" :sm="24">
                     <stock-summary-projections-card :stock="{{ $stock }}"></stock-summary-projections-card>
                 </el-col>
             </el-row>
-            <el-row>
-                <el-col>
-                    <el-card>
-                        <h3 slot="header">Detailed Projections</h3>
+            <el-row :gutter="20">
+                <el-col :lg="14" :md="12">
+                    <stock-recommendations-card
+                        :stock="{{ $stock }}"
+                        :portfolio="{{ $portfolio }}"
+                        robinhood="{{ route('profile.robinhood') }}">
+                    </stock-recommendations-card>
+                </el-col>
+                <el-col :lg="10" :md="12">
+                    <el-card shadow="never">
+                        <h3 slot="header" class="">Detailed Projections</h3>
                         {!! $charts['projections']->container() !!}
                     </el-card>
                 </el-col>
