@@ -58,6 +58,7 @@ class Stock extends Model
     {
         $projections = $this->projections()->limit(3)->get();
         $trueAverage = $projections->pluck('kellyPositionSize')->avg();
+
         return round($trueAverage, 2);
     }
 
@@ -66,8 +67,10 @@ class Stock extends Model
         if (auth()->check()) {
             $user = auth()->user();
             $avgKellySize = $this->averageKellySize / 10;
+
             return ($user->portfolio->cash * $avgKellySize) / $this->value;
         }
+
         return 0;
     }
 

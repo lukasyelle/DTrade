@@ -26,7 +26,7 @@ class StockProjection extends Model
     protected $appends = [
         'probabilityProfit',
         'probabilityLoss',
-        'kellyPositionSize'
+        'kellyPositionSize',
     ];
 
     public function stock()
