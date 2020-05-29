@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class Ticker extends Model
 {
-    use StockIndicators, CacheQueryBuilder;
+    use StockIndicators;
+    use CacheQueryBuilder;
 
     protected $fillable = ['symbol'];
     protected $hidden = ['data'];
