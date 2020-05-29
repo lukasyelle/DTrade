@@ -11,7 +11,7 @@ class DispatchJob extends Command
      *
      * @var string
      */
-    protected $signature = 'dispatch:job {job}';
+    protected $signature = 'job:dispatch {job}';
 
     /**
      * The console command description.
