@@ -13,9 +13,9 @@ use Tests\CreatesApplication;
 
 trait BrowserScaffold
 {
-    use CreatesApplication,
-        ProvidesBrowser,
-        SupportsChrome;
+    use CreatesApplication;
+    use ProvidesBrowser;
+    use SupportsChrome;
 
     private $basePath;
 
