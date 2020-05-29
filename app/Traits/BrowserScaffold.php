@@ -96,7 +96,7 @@ trait BrowserScaffold
 
         $caps = DesiredCapabilities::chrome();
         $caps->setCapability(ChromeOptions::CAPABILITY, $options);
-        $caps->setPlatform(env("APP_PLATFORM"));
+        $caps->setPlatform(env('APP_PLATFORM'));
 
         $host = 'http://localhost:9515';
 
