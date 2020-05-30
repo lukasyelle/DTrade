@@ -12,4 +12,9 @@ class PlatformData extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function portfolio()
+    {
+        return $this->hasOne(Portfolio::class);
+    }
 }
