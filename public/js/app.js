@@ -4319,6 +4319,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       width: 0,
       height: 0,
+      innerHeight: 0,
       windowWidth: 0,
       period: 'average'
     };
@@ -4331,12 +4332,17 @@ __webpack_require__.r(__webpack_exports__);
     calculateHeight: function calculateHeight() {
       this.height = this.$refs.kellyPercent.$el.clientHeight;
     },
+    calculateInnerHeight: function calculateInnerHeight() {
+      this.innerHeight = this.$refs.personalized.children[0].children[0].clientHeight;
+    },
     calculateDimensions: function calculateDimensions() {
       var _this = this;
 
       this.calculateWidth();
       setTimeout(function () {
         _this.calculateHeight();
+
+        _this.calculateInnerHeight();
       }, 0);
     }
   },
@@ -10866,7 +10872,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".recommendations .select[data-v-1a516783] {\n  margin-top: 5px;\n}\n.recommendations .cards[data-v-1a516783] {\n  overflow: hidden;\n}\n.recommendations .cards .card[data-v-1a516783] {\n  float: left;\n  clear: none;\n}\n.recommendations .cards .actions[data-v-1a516783] {\n  margin-left: 18px;\n  text-align: center;\n}\n.recommendations .cards .actions.greyed[data-v-1a516783] {\n  background-color: rgba(0, 0, 0, 0.3);\n  color: #fff;\n}\n.recommendations .cards .actions.greyed a[data-v-1a516783] {\n  color: #99E1D9;\n  text-decoration: none;\n}\n.recommendations .cards .actions.greyed a[data-v-1a516783]:hover {\n  text-decoration: underline;\n}\n.recommendations .cards .text-container[data-v-1a516783] {\n  text-align: center;\n}\n.recommendations .cards .text-container p[data-v-1a516783] {\n  font-size: 16px;\n}\n.recommendations .cards .text-container span[data-v-1a516783] {\n  color: #787878;\n  font-size: 12px;\n}\n.recommendations .cards .text-container span a[data-v-1a516783] {\n  color: #99E1D9;\n  opacity: 0.75;\n  text-decoration: none;\n}\n.recommendations .cards .text-container span a[data-v-1a516783]:hover {\n  opacity: 1;\n  text-decoration: underline;\n}", ""]);
+exports.push([module.i, ".recommendations .select[data-v-1a516783] {\n  margin-top: 5px;\n}\n.recommendations .cards[data-v-1a516783] {\n  overflow: hidden;\n}\n.recommendations .cards .card[data-v-1a516783] {\n  float: left;\n  clear: none;\n}\n.recommendations .cards .actions[data-v-1a516783] {\n  margin-left: 18px;\n  text-align: center;\n}\n.recommendations .cards .actions.greyed[data-v-1a516783] {\n  background-color: rgba(0, 0, 0, 0.3);\n  color: #fff;\n}\n.recommendations .cards .actions.greyed p[data-v-1a516783] {\n  padding: 10px;\n}\n.recommendations .cards .actions.greyed a[data-v-1a516783] {\n  color: #99E1D9;\n  text-decoration: none;\n}\n.recommendations .cards .actions.greyed a[data-v-1a516783]:hover {\n  text-decoration: underline;\n}\n.recommendations .cards .text-container[data-v-1a516783] {\n  text-align: center;\n}\n.recommendations .cards .text-container p[data-v-1a516783] {\n  font-size: 16px;\n}\n.recommendations .cards .text-container span[data-v-1a516783] {\n  color: #787878;\n  font-size: 12px;\n}\n.recommendations .cards .text-container span a[data-v-1a516783] {\n  color: #99E1D9;\n  opacity: 0.75;\n  text-decoration: none;\n}\n.recommendations .cards .text-container span a[data-v-1a516783]:hover {\n  opacity: 1;\n  text-decoration: underline;\n}", ""]);
 
 // exports
 
@@ -10904,7 +10910,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".stock-card[data-v-7637d0c5] {\n  padding: 10px 15px;\n  border-radius: 5px;\n  color: #333333;\n}\n.stock-card h1[data-v-7637d0c5] {\n  display: inline-block;\n  font-weight: normal;\n  font-size: 40px;\n  margin: 0;\n}\n.stock-card__header[data-v-7637d0c5] {\n  padding-bottom: 10px;\n  position: relative;\n}\n.stock-card__header h1[data-v-7637d0c5] {\n  padding-left: 10px;\n}\n.stock-card__header span[data-v-7637d0c5] {\n  padding-left: 10px;\n}\n@media screen and (max-width: 820px) {\n.stock-card__header span[data-v-7637d0c5] {\n    position: absolute;\n    bottom: -10px;\n    left: 0;\n}\n}\n.stock-card__header a[data-v-7637d0c5] {\n  display: inline-block;\n  float: right;\n  margin-top: 23px;\n  color: #333333;\n  padding-right: 10px;\n}\n.stock-card__projections[data-v-7637d0c5] {\n  width: 100%;\n  padding-bottom: 9px;\n  overflow: hidden;\n}\n.stock-card__projections .projection[data-v-7637d0c5] {\n  text-align: center;\n  width: calc(33.33% - 22px);\n  border: 1px solid #eee;\n  border-bottom: 15px solid;\n  border-radius: 5px;\n  margin-right: 10px;\n  margin-left: 10px;\n  float: left;\n}\n@media screen and (max-width: 820px) {\n.stock-card__projections .projection[data-v-7637d0c5] {\n    width: calc(100% - 22px);\n    margin-top: 20px;\n}\n}\n.stock-card__projections .projection.profit.large[data-v-7637d0c5], .stock-card__projections .projection.profit.moderate[data-v-7637d0c5] {\n  border-bottom-color: rgba(153, 225, 217, 0.54);\n}\n.stock-card__projections .projection.profit.small[data-v-7637d0c5] {\n  border-bottom-color: #fff4bf;\n}\n.stock-card__projections .projection.loss[data-v-7637d0c5] {\n  border-bottom-color: rgba(247, 86, 124, 0.54);\n}\n.stock-card__projections .projection h1[data-v-7637d0c5] {\n  word-spacing: 100vw;\n  text-transform: capitalize;\n}\n.stock-card__projections .projection h3[data-v-7637d0c5] {\n  font-weight: normal;\n}\n.stock-card__projections .projection__time-period[data-v-7637d0c5] {\n  text-transform: uppercase;\n  border-bottom: 1px solid #eee;\n  padding-bottom: 10px;\n}\n.stock-card__projections .projection__accuracy[data-v-7637d0c5] {\n  padding-left: 10px;\n  padding-right: 10px;\n}", ""]);
+exports.push([module.i, ".stock-card[data-v-7637d0c5] {\n  padding: 10px 15px;\n  border-radius: 5px;\n  color: #333333;\n}\n.stock-card h1[data-v-7637d0c5] {\n  display: inline-block;\n  font-weight: normal;\n  font-size: 40px;\n  margin: 0;\n}\n.stock-card__header[data-v-7637d0c5] {\n  padding-bottom: 10px;\n  position: relative;\n}\n.stock-card__header h1[data-v-7637d0c5] {\n  padding-left: 10px;\n}\n.stock-card__header span[data-v-7637d0c5] {\n  padding-left: 10px;\n}\n@media screen and (max-width: 820px) {\n.stock-card__header span[data-v-7637d0c5] {\n    position: absolute;\n    bottom: -10px;\n    left: 0;\n}\n}\n.stock-card__header a[data-v-7637d0c5] {\n  display: inline-block;\n  float: right;\n  margin-top: 23px;\n  color: #333333;\n  padding-right: 10px;\n}\n.stock-card__projections[data-v-7637d0c5] {\n  width: 100%;\n  padding-top: 10px;\n  padding-bottom: 9px;\n  overflow: hidden;\n}\n.stock-card__projections .projection[data-v-7637d0c5] {\n  text-align: center;\n  width: calc(33.33% - 22px);\n  border: 1px solid #eee;\n  border-bottom: 15px solid;\n  border-radius: 5px;\n  margin-right: 10px;\n  margin-left: 10px;\n  float: left;\n}\n@media screen and (max-width: 820px) {\n.stock-card__projections .projection[data-v-7637d0c5] {\n    width: calc(100% - 22px);\n    margin-top: 20px;\n}\n}\n.stock-card__projections .projection.profit.large[data-v-7637d0c5], .stock-card__projections .projection.profit.moderate[data-v-7637d0c5] {\n  border-bottom-color: rgba(153, 225, 217, 0.54);\n}\n.stock-card__projections .projection.profit.small[data-v-7637d0c5] {\n  border-bottom-color: #fff4bf;\n}\n.stock-card__projections .projection.loss[data-v-7637d0c5] {\n  border-bottom-color: rgba(247, 86, 124, 0.54);\n}\n.stock-card__projections .projection h1[data-v-7637d0c5] {\n  word-spacing: 100vw;\n  text-transform: capitalize;\n}\n.stock-card__projections .projection h3[data-v-7637d0c5] {\n  font-weight: normal;\n}\n.stock-card__projections .projection__time-period[data-v-7637d0c5] {\n  text-transform: uppercase;\n  border-bottom: 1px solid #eee;\n  padding-bottom: 10px;\n}\n.stock-card__projections .projection__accuracy[data-v-7637d0c5] {\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 20px;\n  margin-top: 13px;\n}", ""]);
 
 // exports
 
@@ -111557,6 +111563,7 @@ var render = function() {
           _c(
             "div",
             {
+              ref: "personalized",
               class: (_vm.hasPortfolio ? "" : "greyed ") + "card actions",
               style:
                 "width: " +
@@ -111570,9 +111577,16 @@ var render = function() {
                 ? _c("div", [
                     _c(
                       "p",
-                      { style: "padding-top: " + (_vm.height / 2 - 16) + "px" },
+                      {
+                        style:
+                          "margin-top: " +
+                          (_vm.height - _vm.innerHeight) / 2 +
+                          "px"
+                      },
                       [
-                        _vm._v("To access this feature, you need to "),
+                        _vm._v(
+                          "To access automated ordering and share balancing, you need to "
+                        ),
                         _c("a", { attrs: { href: _vm.robinhood } }, [
                           _vm._v("link your Robinhood account.")
                         ])

@@ -19,9 +19,9 @@
                     <span>Calculation based on the <a href="https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/" class="transition">Kelly Criteron</a> and our <a href="#" class="transition">projections</a></span>
                 </div>
             </el-card>
-            <div :style="'width: ' + remainingWidth + 'px; height: ' + height + 'px'" :class="(hasPortfolio ? '' : 'greyed ') + 'card actions'">
+            <div :style="'width: ' + remainingWidth + 'px; height: ' + height + 'px'" :class="(hasPortfolio ? '' : 'greyed ') + 'card actions'" ref="personalized">
                 <div v-if="!hasPortfolio">
-                    <p :style="'padding-top: ' + ((height / 2) - 16) + 'px'">To access this feature, you need to <a :href="robinhood">link your Robinhood account.</a></p>
+                    <p :style="'margin-top: ' + ((height - innerHeight) / 2) + 'px'">To access automated ordering and share balancing, you need to <a :href="robinhood">link your Robinhood account.</a></p>
                 </div>
                 <div v-else>
 
@@ -42,6 +42,7 @@
             return {
                 width: 0,
                 height: 0,
+                innerHeight: 0,
                 windowWidth: 0,
                 period: 'average',
             };
@@ -54,10 +55,14 @@
             calculateHeight () {
                 this.height = this.$refs.kellyPercent.$el.clientHeight;
             },
+            calculateInnerHeight () {
+                this.innerHeight = this.$refs.personalized.children[0].children[0].clientHeight;
+            },
             calculateDimensions () {
                 this.calculateWidth();
                 setTimeout(() => {
                     this.calculateHeight();
+                    this.calculateInnerHeight();
                 }, 0);
             },
         },
@@ -121,6 +126,10 @@
                 &.greyed {
                     background-color: rgba(0,0,0,0.3);
                     color: #fff;
+
+                    p {
+                        padding: 10px;
+                    }
 
                     & a{
                         color: #99E1D9;
