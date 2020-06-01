@@ -1,7 +1,7 @@
 <el-menu id="header" mode="horizontal">
-    <menu-item onclick="window.location.href='{{ url("/") }}'">
-        <h3>{{ config('app.name', 'Laravel') }}</h3>
-    </menu-item>
+    <el-menu-item onclick="window.location.href='{{ url("/") }}'">
+        <img id="logo" src="/logo.png" title="{{ config('app.name', 'Laravel') }}" alt="{{ config('app.name', 'Laravel') }}" />
+    </el-menu-item>
     @guest
         <el-menu-item onclick='window.location.href="{{ route('login') }}"'>
            Login
