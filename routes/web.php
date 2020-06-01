@@ -37,8 +37,9 @@ Route::prefix('portfolio')->name('portfolio.')->group(function () {
 });
 
 Route::prefix('profile')->name('profile.')->group(function () {
-    Route::get('robinhood', 'HomeController@index')->name('robinhood');
-    Route::get('alpha-vantage', 'HomeController@index')->name('alpha-vantage'); // @TODO - use a different handler here
+    Route::get('/', 'ProfileController@index')->name('index');
+    Route::get('robinhood', 'ProfileController@robinhood')->name('robinhood');
+    Route::get('alpha-vantage', 'ProfileController@alphaVantage')->name('alpha-vantage'); // @TODO - use a different handler here
 });
 
 Auth::routes();
