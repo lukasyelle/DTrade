@@ -27,7 +27,7 @@ class StocksController extends Controller
      */
     public function index()
     {
-        return view('stocks.list', [
+        return view('pages.stocks.list', [
             'stocks' => Stock::all(),
         ]);
     }
@@ -40,7 +40,7 @@ class StocksController extends Controller
         $indicators = new StockIndicators($stock);
         $portfolio = Auth::user()->portfolio;
 
-        return view('stocks.stock', [
+        return view('pages.stocks.stock', [
             'portfolio' => $portfolio ? $portfolio : 'null',
             'stock'     => $stock,
             'charts'    => [

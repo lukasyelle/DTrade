@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlatformData extends Model
 {
     protected $table = 'platform_data';
+    protected $fillable = ['platform', 'username', 'password'];
 
     public function user()
     {

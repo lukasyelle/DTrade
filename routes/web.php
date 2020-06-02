@@ -38,8 +38,14 @@ Route::prefix('portfolio')->name('portfolio.')->group(function () {
 
 Route::prefix('profile')->name('profile.')->group(function () {
     Route::get('/', 'ProfileController@index')->name('index');
-    Route::get('robinhood', 'ProfileController@robinhood')->name('robinhood');
-    Route::get('alpha-vantage', 'ProfileController@alphaVantage')->name('alpha-vantage'); // @TODO - use a different handler here
+    Route::prefix('robinhood')->name('robinhood')->group(function () {
+        Route::get('/', 'ProfileController@robinhood');
+        Route::post('/', 'ProfileController@saveRobinhood')->name('.save');
+    });
+    Route::prefix('alpha-vantage')->name('alpha-vantage')->group(function () {
+        Route::get('/', 'ProfileController@alphaVantage');
+        Route::post('/', 'ProfileController@saveAlphaVantage')->name('.save');
+    });
 });
 
 Auth::routes();
