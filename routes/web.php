@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('home', function () {
+    return view('home');
+});
+
 Route::prefix('stocks')->name('stocks.')->group(function () {
     Route::get('/', 'StocksController@index')->name('all');
     Route::prefix('{stock}')->group(function () {

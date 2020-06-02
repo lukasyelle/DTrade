@@ -2,29 +2,29 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 
-class PortfoliosUpdated implements ShouldBroadcast
+class PortfolioUpdated implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $portfolios;
+    public $portfolio;
 
     /**
      * Create a new event instance.
      *
-     * @param Collection $portfolios
+     * @param User $user
      */
-    public function __construct(Collection $portfolios)
+    public function __construct(User $user)
     {
-        $this->portfolios = $portfolios->toArray();
+        $this->portfolio = $user->portfolio()->with('stocks')->get();
     }
 
     /**
@@ -34,6 +34,6 @@ class PortfoliosUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('portfolios');
+        return new PrivateChannel(`portfolio.${$this->portfolio->id}`);
     }
 }

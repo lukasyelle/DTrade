@@ -14,6 +14,9 @@
     @else
         <el-submenu index="1" style="margin-left: 36px">
             <template slot="title">{{ Auth::user()->name }}</template>
+            <el-menu-item onclick="window.location.href='{{ route('profile.index') }}'">
+                Profile
+            </el-menu-item>
             <el-menu-item onclick="document.getElementById('logout-form').submit()">
                 Logout
             </el-menu-item>

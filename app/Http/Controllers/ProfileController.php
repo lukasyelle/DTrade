@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -41,6 +42,7 @@ class ProfileController extends Controller
 
         return view('pages.profile.robinhood', [
             'username'  => $account ? $account->username : '',
+            'updatedAt' => $account ? $account->updated_at : 'Never',
             'pageLinks' => json_encode($this->pageLinks),
         ]);
     }
@@ -49,7 +51,7 @@ class ProfileController extends Controller
     {
         return Validator::make($data, [
             'username'     => ['required', 'string', 'max:255'],
-            'password'     => ['required', 'string', 'confirmed'],
+            'password'     => ['required', 'string'],
         ]);
     }
 
@@ -59,9 +61,10 @@ class ProfileController extends Controller
 
         $platforms = Auth::user()->platforms();
         $username = $request->input('username');
-        $password = Hash::make($request->input('password'));
+        $password = encrypt($request->input('password'));
+        $platform = $platforms->where('platform', 'robinhood')->first();
 
-        if ($platform = $platforms->where('platform', 'robinhood')->first()) {
+        if ($platform !== null) {
             $platform->username = $username;
             $platform->password = $password;
             $platform->save();
@@ -73,7 +76,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return response($platform, 200);
+        return redirect(route('profile.robinhood'));
     }
 
     public function alphaVantage()
@@ -81,7 +84,8 @@ class ProfileController extends Controller
         $dataSource = Auth::user()->dataSource;
 
         return view('pages.profile.alphavantage', [
-            'api_key'   => $dataSource ? $dataSource->api_key : '',
+            'apiKey'    => $dataSource ? $dataSource->api_key : '',
+            'updatedAt' => $dataSource ? $dataSource->updated_at : 'Never',
             'pageLinks' => json_encode($this->pageLinks),
         ]);
     }
@@ -102,6 +106,7 @@ class ProfileController extends Controller
 
         if ($alphaVantageApi = $alphaVantageApis->first()) {
             $alphaVantageApi->api_key = $apiKey;
+            $alphaVantageApi->updated_at = Carbon::now();
             $alphaVantageApi->save();
         } else {
             $alphaVantageApi = $alphaVantageApis->create([
@@ -109,6 +114,6 @@ class ProfileController extends Controller
             ]);
         }
 
-        return response($alphaVantageApi, 200);
+        return redirect(route('profile.alpha-vantage'));
     }
 }
