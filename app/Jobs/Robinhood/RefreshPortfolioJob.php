@@ -4,9 +4,6 @@ namespace App\Jobs\Robinhood;
 
 use App\Events\PortfolioUpdated;
 use App\Jobs\BrowserJob;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 class RefreshPortfolioJob extends BrowserJob
 {
