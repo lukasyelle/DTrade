@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('home', function () {
+    return view('home');
+});
+
 Route::prefix('stocks')->name('stocks.')->group(function () {
     Route::get('/', 'StocksController@index')->name('all');
     Route::prefix('{stock}')->group(function () {
@@ -37,8 +41,15 @@ Route::prefix('portfolio')->name('portfolio.')->group(function () {
 });
 
 Route::prefix('profile')->name('profile.')->group(function () {
-    Route::get('robinhood', 'HomeController@index')->name('robinhood');
-    Route::get('alpha-vantage', 'HomeController@index')->name('alpha-vantage'); // @TODO - use a different handler here
+    Route::get('/', 'ProfileController@index')->name('index');
+    Route::prefix('robinhood')->name('robinhood')->group(function () {
+        Route::get('/', 'ProfileController@robinhood');
+        Route::post('/', 'ProfileController@saveRobinhood')->name('.save');
+    });
+    Route::prefix('alpha-vantage')->name('alpha-vantage')->group(function () {
+        Route::get('/', 'ProfileController@alphaVantage');
+        Route::post('/', 'ProfileController@saveAlphaVantage')->name('.save');
+    });
 });
 
 Auth::routes();

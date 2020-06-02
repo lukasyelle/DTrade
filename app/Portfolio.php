@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portfolio extends Model
 {
-    protected $appends = ['value'];
+    protected $appends = ['value', 'stocks'];
     protected $fillable = ['cash', 'user_id', 'platform_data_id'];
 
     public function getValueAttribute()
