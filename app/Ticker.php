@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Exceptions\AlphaVantageException;
+use App\Jobs\Stocks\AnalyzeStock;
+use App\Jobs\Stocks\CheckAccuracy;
 use App\Jobs\Stocks\DownloadTickerHistory;
 use App\Support\Database\CacheQueryBuilder;
 use App\Traits\StockIndicators;
@@ -104,7 +106,10 @@ class Ticker extends Model
             ]);
 
             Stock::create(['ticker_id' => $tickerId]);
-            DownloadTickerHistory::dispatch($symbol);
+            DownloadTickerHistory::withChain([
+                new AnalyzeStock($symbol),
+                new CheckAccuracy($symbol),
+            ])->dispatch($symbol);
 
             return self::fetch($symbol, false);
         }
