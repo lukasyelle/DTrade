@@ -12,6 +12,8 @@ class AlphaVantageApi extends Model
     public $fillable = ['api_key', 'user_id'];
     private $api;
 
+    private static $maxAutomaticRequestsPerDay = 400;
+
     /**
      * Every AV API key belongs to a user.
      */
@@ -139,18 +141,19 @@ class AlphaVantageApi extends Model
 
     /**
      * Method that computes the amount of time between two updates for a ticker
-     * this api is responsible for. Minimum amount of time is 15 minutes.
+     * this api is responsible for.
      *
      * @return int
      */
-    private function computeUpdateInterval()
+    public function computeUpdateInterval()
     {
         $numberOfTickers = $this->tickers()->count();
-        // 10n/11 is simplified from 60n/66. This enforces a maximum of 66
-        // updates in 60 minutes and thus 400 updates per trading session.
-        $computedInterval = (10 * $numberOfTickers) / 11;
+        // 390 the number of minutes in a trading day (6.5 hours). This formula
+        // is designed to update tickers at the fastest possible rate without
+        // hitting Alpha Vantage's API limit before the end of the day.
+        $computedInterval = (390 * $numberOfTickers) / self::$maxAutomaticRequestsPerDay;
 
-        return $computedInterval > 15 ? round($computedInterval) : 15;
+        return round($computedInterval);
     }
 
     /**
