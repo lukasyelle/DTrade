@@ -125,11 +125,16 @@ class Ticker extends Model
         $canUpdate = $currentTime->diffInMinutes($updatedAt) > $updateInterval;
         if ($updatedAt == null || $canUpdate) {
             $rawData = $this->dataSource->quote($this['symbol']);
-            $staticData = [
-                'ticker_id'     => $this->id,
-                'is_intraday'   => true,
-            ];
-            TickerData::create(array_merge($staticData, $rawData));
+            $lastTradingDay = $rawData['latest_trading_day'];
+            if ($currentTime->diffInDays($lastTradingDay) == 0) {
+                // Only make a new data entry if the ticker has been updated today
+                $staticData = [
+                    'ticker_id'     => $this->id,
+                    'is_intraday'   => true,
+                ];
+                TickerData::create(array_merge($staticData, $rawData));
+            }
+            // Always set the last update to now if update was needed
             $this->setUpdatedAt($this->freshTimestamp());
             $this->save();
         }
