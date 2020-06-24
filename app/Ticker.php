@@ -121,7 +121,9 @@ class Ticker extends Model
     {
         $updatedAt = $this->getLastUpdatedTimestamp();
         $currentTime = $this->freshTimestamp();
-        if ($updatedAt == null || $currentTime->diffInMinutes($updatedAt) > 15) {
+        $updateInterval = $this->dataSource->computeUpdateInterval();
+        $canUpdate = $currentTime->diffInMinutes($updatedAt) > $updateInterval;
+        if ($updatedAt == null || $canUpdate) {
             $rawData = $this->dataSource->quote($this['symbol']);
             $staticData = [
                 'ticker_id'     => $this->id,
