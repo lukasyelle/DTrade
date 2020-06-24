@@ -62,6 +62,7 @@ class StocksController extends Controller
         $data = $this->getData($stock);
         $dataPoints = new StockDataPoints($data['stock'], $graph);
         $data['charts']['dataPoints'] = $dataPoints;
+
         return view('pages.stocks.stock', $data);
     }
 }

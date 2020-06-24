@@ -80,6 +80,7 @@ class StockDataPoints extends StockChart
         $periods = $this->timePeriodData($windows);
         $categorized = $this->addCategoryToEachDataPoint($periods);
         $allData = $this->mergeData($categorized)->get(0);
+
         return $this->mapData($allData);
     }
 
@@ -102,13 +103,14 @@ class StockDataPoints extends StockChart
     private function profitabilityWindows()
     {
         return collect([
-//            $this->stock->nDayHistoricalProfitability(1),
-//            $this->stock->nDayHistoricalProfitability(5),
+            //            $this->stock->nDayHistoricalProfitability(1),
+            //            $this->stock->nDayHistoricalProfitability(5),
             $this->stock->nDayHistoricalProfitability(10),
         ]);
     }
 
-    private function timePeriodData (Collection $windows) {
+    private function timePeriodData(Collection $windows)
+    {
         return $windows->map(function (Collection $window) {
             return $this->stock->formatProfitabilityAndIndicators($window);
         });
@@ -145,11 +147,13 @@ class StockDataPoints extends StockChart
             $x = $row->get($xIndex);
             $y = $row->get($yIndex);
             $category = $row->get(0);
+
             return collect([$category, $x, $y]);
         });
     }
 
-    public function categories(){
+    public function categories()
+    {
         return $this->profitabilityWindows()->flatten()->unique()->filter(function ($category) {
             return $category !== null;
         })->values();
