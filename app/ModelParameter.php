@@ -12,9 +12,9 @@ class ModelParameter extends Model
     public static $durationWeight = 30; // 0 - 100 scale, 100 is equal weight as average accuracy achieved
 
     public $optimizeParameters = [
-        'cost' => [1, 100, 5],
-        'degree' => [1, 5, 1],
-        'gamma' => [1, 1000, 10],
+        'cost'      => [1, 100, 5],
+        'degree'    => [1, 5, 1],
+        'gamma'     => [1, 1000, 10],
         'tolerance' => [0.001, 0.1, 0.01],
     ];
 
@@ -138,7 +138,6 @@ class ModelParameter extends Model
     }
 
     /**
-     *
      * @throws \Exception
      */
     public function optimize()
@@ -153,9 +152,9 @@ class ModelParameter extends Model
         $averageScore = $this->getAverageScore();
 
         return [
-            "score"     => $previousScore,
-            "config"    => $previousConfig,
-            "avgScore"  => $averageScore,
+            'score'     => $previousScore,
+            'config'    => $previousConfig,
+            'avgScore'  => $averageScore,
         ];
     }
 
