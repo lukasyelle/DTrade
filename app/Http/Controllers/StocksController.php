@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\Stocks\StockDataPoints;
 use App\Charts\Stocks\StockIndicators;
 use App\Charts\Stocks\StockPriceChart;
 use App\Charts\Stocks\StockProjections;
@@ -32,7 +33,7 @@ class StocksController extends Controller
         ]);
     }
 
-    public function get($stock)
+    private function getData($stock)
     {
         $stock = Stock::fetch($stock);
         $price = new StockPriceChart($stock);
@@ -40,7 +41,7 @@ class StocksController extends Controller
         $indicators = new StockIndicators($stock);
         $portfolio = Auth::user()->portfolio;
 
-        return view('pages.stocks.stock', [
+        return [
             'portfolio' => $portfolio ? $portfolio : 'null',
             'stock'     => $stock,
             'charts'    => [
@@ -48,6 +49,19 @@ class StocksController extends Controller
                 'projections'   => $projections,
                 'indicators'    => $indicators,
             ],
-        ]);
+        ];
+    }
+
+    public function get($stock)
+    {
+        return view('pages.stocks.stock', $this->getData($stock));
+    }
+
+    public function getDetailed($stock, int $graph = 0)
+    {
+        $data = $this->getData($stock);
+        $dataPoints = new StockDataPoints($data['stock'], $graph);
+        $data['charts']['dataPoints'] = $dataPoints;
+        return view('pages.stocks.stock', $data);
     }
 }

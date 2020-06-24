@@ -44,6 +44,11 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
+    public function modelParameters()
+    {
+        return $this->hasOne(ModelParameter::class);
+    }
+
     public static function fetch($ticker): self
     {
         return Ticker::fetch($ticker)->stock;

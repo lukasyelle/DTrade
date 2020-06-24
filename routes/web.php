@@ -26,6 +26,7 @@ Route::prefix('stocks')->name('stocks.')->group(function () {
     Route::get('/', 'StocksController@index')->name('all');
     Route::prefix('{stock}')->group(function () {
         Route::get('/', 'StocksController@get')->name('stock');
+        Route::get('detailed/{graph?}', 'StocksController@getDetailed')->name('stockDetailed');
     });
 });
 

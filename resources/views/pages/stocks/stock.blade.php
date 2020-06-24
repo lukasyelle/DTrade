@@ -49,6 +49,16 @@
                     </el-card>
                 </el-col>
             </el-row>
+            @if(array_key_exists('dataPoints', $charts))
+            <el-row>
+                <el-col>
+                    <el-card>
+                        <h3 slot="header" class="">Historical Indicator Visualization</h3>
+                        {!! $charts['dataPoints']->container() !!}
+                    </el-card>
+                </el-col>
+            </el-row>
+            @endif
         </el-main>
     </el-container>
 @endsection

@@ -260,7 +260,7 @@ trait StockIndicators
         });
     }
 
-    private function nDayHistoricalProfitability($nDays)
+    public function nDayHistoricalProfitability($nDays)
     {
         $close = $this->close;
 
