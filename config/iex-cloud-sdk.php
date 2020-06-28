@@ -58,5 +58,5 @@ return [
     | your website JavaScript code, or in an iPhone or Android app.
     |
     */
-    'public_key' => env('IEX_CLOUD_PUBLIC_KEY')
+    'public_key' => env('IEX_CLOUD_PUBLIC_KEY'),
 ];
