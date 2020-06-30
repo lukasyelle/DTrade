@@ -37,13 +37,12 @@ class DataSource
      *
      * @param string $string
      * @param string $delimiter
-     * @param bool $capitalizeFirstCharacter
+     * @param bool   $capitalizeFirstCharacter
      *
      * @return string
      */
     private function camelCase(string $string, string $delimiter = '_', bool $capitalizeFirstCharacter = false)
     {
-
         $str = str_replace($delimiter, '', ucwords($string, $delimiter));
 
         if (!$capitalizeFirstCharacter) {
@@ -76,7 +75,7 @@ class DataSource
 
             if ($property == 'close') {
                 $value = $quote->get('latestPrice');
-            } else if ($quote->get($camelCase)) {
+            } elseif ($quote->get($camelCase)) {
                 $value = $quote->get($camelCase);
             }
 

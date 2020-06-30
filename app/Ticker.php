@@ -35,6 +35,7 @@ class Ticker extends Model
     public function dataSource()
     {
         $alphaVantage = $this->belongsTo(AlphaVantageApi::class, 'alpha_vantage_api_id', 'id');
+
         return $alphaVantage->exists() ? $alphaVantage : new DataSource();
     }
 
