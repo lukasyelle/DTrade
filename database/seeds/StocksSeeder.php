@@ -1,6 +1,5 @@
 <?php
 
-use App\Jobs\Stocks\DownloadTickerHistory;
 use App\Stock;
 use Illuminate\Database\Seeder;
 
