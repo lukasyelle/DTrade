@@ -63,9 +63,11 @@ trait DataSource
         $now = Carbon::now();
         $updateInterval = $this->computeUpdateInterval();
         $mostOutdatedTicker = $this->getMostOutdatedTicker();
-        $lastUpdate = $mostOutdatedTicker->updated_at;
-        if ($now->diffInMinutes($lastUpdate) > $updateInterval) {
-            UpdateTickerData::dispatch($mostOutdatedTicker->symbol);
+        if ($mostOutdatedTicker) {
+            $lastUpdate = $mostOutdatedTicker->updated_at;
+            if ($now->diffInMinutes($lastUpdate) > $updateInterval) {
+                UpdateTickerData::dispatch($mostOutdatedTicker->symbol);
+            }
         }
     }
 }

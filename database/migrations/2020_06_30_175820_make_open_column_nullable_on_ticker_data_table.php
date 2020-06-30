@@ -14,7 +14,7 @@ class MakeOpenColumnNullableOnTickerDataTable extends Migration
     public function up()
     {
         Schema::table('ticker_data', function (Blueprint $table) {
-            $table->integer('open')->nullable()->default(null)->change();
+            $table->float('open')->nullable()->default(null)->change();
         });
     }
 
@@ -26,7 +26,7 @@ class MakeOpenColumnNullableOnTickerDataTable extends Migration
     public function down()
     {
         Schema::table('ticker_data', function (Blueprint $table) {
-            $table->integer('open')->nullable(false)->default(0.0)->change();
+            $table->float('open')->nullable(false)->default(0.0)->change();
         });
     }
 }
