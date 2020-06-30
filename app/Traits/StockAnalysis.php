@@ -34,7 +34,7 @@ trait StockAnalysis
         });
 
         static::saving(function ($model) {
-            if ($model instanceof Stock) {
+            if ($model instanceof Stock && $model->modelParameters) {
                 $model->saveModelParameters();
             }
         });

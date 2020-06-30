@@ -6,7 +6,8 @@ use App\Jobs\Stocks\AnalyzeStock;
 use App\Jobs\Stocks\CheckAccuracy;
 use App\Jobs\Stocks\MarkEndOfDayData;
 use App\Jobs\Stocks\OptimizeModelParameters;
-use App\Jobs\Stocks\UpdateAlphaVantageApiTickers;
+use App\Jobs\Stocks\UpdateSharedTickers;
+use App\Jobs\Stocks\UpdateUserTickers;
 use App\Stock;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -65,7 +66,8 @@ class Kernel extends ConsoleKernel
         $updateInterval = 60 / self::$updatesPerMinute;
 
         for ($i = 0; $i < self::$updatesPerMinute; $i++) {
-            UpdateAlphaVantageApiTickers::dispatch();
+            UpdateUserTickers::dispatch();
+            UpdateSharedTickers::dispatch();
             self::sleepFor($updateInterval, $now);
         }
     }

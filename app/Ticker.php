@@ -10,6 +10,7 @@ use App\Support\Database\CacheQueryBuilder;
 use App\Traits\StockIndicators;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,17 @@ class Ticker extends Model
 
     public function dataSource()
     {
-        return $this->belongsTo(AlphaVantageApi::class, 'alpha_vantage_api_id', 'id');
+        $alphaVantage = $this->belongsTo(AlphaVantageApi::class, 'alpha_vantage_api_id', 'id');
+        return $alphaVantage->exists() ? $alphaVantage : new DataSource();
+    }
+
+    public function getDataSourceAttribute()
+    {
+        if ($this->dataSource() instanceof Relation) {
+            return $this->dataSource()->first();
+        }
+
+        return $this->dataSource();
     }
 
     private function getLastUpdatedTimestamp()
@@ -80,7 +91,7 @@ class Ticker extends Model
         return self::where('symbol', strtoupper($symbol))->exists();
     }
 
-    private static function requireAlphaVantageAPI()
+    private static function userHasAlphaVantageAPI()
     {
         $user = Auth::user();
         if ($user instanceof User) {
@@ -90,7 +101,34 @@ class Ticker extends Model
             }
         }
 
+        return false;
+    }
+
+    private static function requestFromFrontend()
+    {
+        return request()->cookies->all() ? true : false;
+    }
+
+    public static function requireAlphaVantageAPI()
+    {
+        if (self::requestFromFrontend()) {
+            if (self::userHasAlphaVantageAPI()) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+
         throw new AlphaVantageException();
+    }
+
+    private static function userAlphaVantageApiId()
+    {
+        if (self::userHasAlphaVantageAPI()) {
+            return Auth::user()->dataSource->id;
+        }
+
+        return null;
     }
 
     public static function fetch($symbol, $recurse = true)
@@ -101,8 +139,9 @@ class Ticker extends Model
             self::requireAlphaVantageAPI();
 
             $tickerId = DB::table('tickers')->insertGetId([
-                'symbol'     => $symbol,
-                'created_at' => Carbon::now(),
+                'symbol'                => $symbol,
+                'created_at'            => Carbon::now(),
+                'alpha_vantage_api_id'  => self::userAlphaVantageApiId(),
             ]);
 
             Stock::create(['ticker_id' => $tickerId]);
@@ -125,7 +164,9 @@ class Ticker extends Model
         $canUpdate = $currentTime->diffInMinutes($updatedAt) > $updateInterval;
         if ($updatedAt == null || $canUpdate) {
             $rawData = $this->dataSource->quote($this['symbol']);
-            $lastTradingDay = $rawData['latest_trading_day'];
+            $lastDateKey = $this->dataSource->lastTradingDayQuoteKey;
+            $lastTradingDay = $rawData[$lastDateKey];
+            $lastTradingDay = gettype($lastTradingDay) == 'string' ? $lastTradingDay : Carbon::createFromTimestamp($lastTradingDay)->toDateTimeString();
             if ($currentTime->diffInDays($lastTradingDay) == 0) {
                 // Only make a new data entry if the ticker has been updated today
                 $staticData = [
