@@ -24,20 +24,30 @@ trait StockAnalysis
         parent::boot();
 
         static::retrieved(function ($model) {
-            if ($model instanceof Stock) {
-                if ($model->modelParameters) {
-                    $model->loadModelParameters();
-                } else {
-                    ModelParameter::initiate($model);
-                }
-            }
+            self::loadParameters($model);
         });
 
         static::saving(function ($model) {
-            if ($model instanceof Stock && $model->modelParameters) {
-                $model->saveModelParameters();
-            }
+            self::saveParameters($model);
         });
+    }
+
+    public static function saveParameters($model)
+    {
+        if ($model instanceof Stock && $model->modelParameters) {
+            $model->saveModelParameters();
+        }
+    }
+
+    public static function loadParameters($model)
+    {
+        if ($model instanceof Stock) {
+            if ($model->modelParameters) {
+                $model->loadModelParameters();
+            } else {
+                ModelParameter::initiate($model);
+            }
+        }
     }
 
     public function makeInformedProjection(Estimator $classifier)
