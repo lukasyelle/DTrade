@@ -49,9 +49,17 @@ class Stock extends Model
         return $this->hasOne(ModelParameter::class);
     }
 
-    public static function fetch($ticker): self
+    public static function fetch($symbol)
     {
-        return Ticker::fetch($ticker)->stock;
+        $ticker = Ticker::fetch($symbol);
+
+        if ($ticker) {
+            return $ticker->stock;
+        }
+
+        sleep(5);
+
+        return self::fetch($symbol);
     }
 
     public function getSymbolAttribute()

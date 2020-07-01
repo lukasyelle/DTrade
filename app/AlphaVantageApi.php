@@ -3,16 +3,23 @@
 namespace App;
 
 use AlphaVantage;
-use App\Jobs\Stocks\UpdateTickerData;
-use Carbon\Carbon;
+use App\Traits\DataSource;
 use Illuminate\Database\Eloquent\Model;
 
 class AlphaVantageApi extends Model
 {
+    use DataSource;
+
     public $fillable = ['api_key', 'user_id'];
     private $api;
 
-    private static $maxAutomaticRequestsPerDay = 400;
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->lastTradingDayQuoteKey = 'latest_trading_day';
+        $this->maxAutomaticRequestsPerDay = 400;
+    }
 
     /**
      * Every AV API key belongs to a user.
@@ -122,53 +129,6 @@ class AlphaVantageApi extends Model
 
                 return $formattedQuote;
             })->reverse()->values();
-        }
-    }
-
-    /**
-     * Method that finds the ticker that hasn't been updated in the most amount
-     * of time.
-     *
-     * @return Ticker
-     */
-    private function getMostOutdatedTicker()
-    {
-        return $this->tickers()
-                    ->orderBy('updated_at', 'ASC')
-                    ->limit(1)
-                    ->first();
-    }
-
-    /**
-     * Method that computes the amount of time between two updates for a ticker
-     * this api is responsible for.
-     *
-     * @return int
-     */
-    public function computeUpdateInterval()
-    {
-        $numberOfTickers = $this->tickers()->count();
-        // 390 the number of minutes in a trading day (6.5 hours). This formula
-        // is designed to update tickers at the fastest possible rate without
-        // hitting Alpha Vantage's API limit before the end of the day.
-        $computedInterval = (390 * $numberOfTickers) / self::$maxAutomaticRequestsPerDay;
-
-        return round($computedInterval);
-    }
-
-    /**
-     * Updates the most outdated Ticker as long as it has not been updated in at
-     * least 15 minutes. The amount of time between updates changes as the api
-     * is responsible for more tickers.
-     */
-    public function updateMostOutdatedTicker()
-    {
-        $now = Carbon::now();
-        $updateInterval = $this->computeUpdateInterval();
-        $mostOutdatedTicker = $this->getMostOutdatedTicker();
-        $lastUpdate = $mostOutdatedTicker->updated_at;
-        if ($now->diffInMinutes($lastUpdate) > $updateInterval) {
-            UpdateTickerData::dispatch($mostOutdatedTicker->symbol);
         }
     }
 }
