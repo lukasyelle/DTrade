@@ -70,7 +70,7 @@ class TestEstimator extends Command
         if (is_array($result)) {
             if (array_key_exists('overall', $result)) {
                 $result = $result['overall']['f1_score'];
-            } else if (array_key_exists('mean_absolute_percentage_error', $result)) {
+            } elseif (array_key_exists('mean_absolute_percentage_error', $result)) {
                 $result = $result['mean_absolute_percentage_error'];
             }
         }
@@ -95,7 +95,7 @@ class TestEstimator extends Command
     {
         $this->setupEstimator();
         $this->setupStock();
-        $this->info("Testing the $this->estimator estimator for " . $this->stock->symbol . '.');
+        $this->info("Testing the $this->estimator estimator for ".$this->stock->symbol.'.');
         $resType = $this->estimator === 'profit' ? 'overall f1 score' : 'mean percentage error';
 
         while ($this->trials->count() < 10) {
