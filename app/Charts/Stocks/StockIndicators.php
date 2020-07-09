@@ -2,8 +2,6 @@
 
 namespace App\Charts\Stocks;
 
-use Illuminate\Support\Collection;
-
 class StockIndicators extends StockChart
 {
     private $indicators;
