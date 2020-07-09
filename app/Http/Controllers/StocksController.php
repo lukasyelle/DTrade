@@ -7,7 +7,6 @@ use App\Charts\Stocks\StockIndicators;
 use App\Charts\Stocks\StockPriceChart;
 use App\Charts\Stocks\StockProjections;
 use App\Stock;
-use App\Ticker;
 use Illuminate\Support\Facades\Auth;
 
 class StocksController extends Controller
@@ -69,6 +68,5 @@ class StocksController extends Controller
 
     public function search($symbol)
     {
-
     }
 }

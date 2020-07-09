@@ -32,6 +32,7 @@ class Ticker extends Model
     public function searchableAs()
     {
         $environment = strtolower(env('APP_ENV'));
+
         return "$environment-tickers_index";
     }
 
