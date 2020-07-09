@@ -222,26 +222,36 @@ trait StockIndicators
         });
     }
 
-    private function indicators()
+    private function indicators($withClose = false)
     {
         $close = $this->close;
         $sar = collect($this->sar())->values();
         $wma = collect($this->wma())->values();
 
-        return [
+        $indicators = [
             'dx'        => collect($this->dx()),
             'rsi'       => collect($this->rsi()),
             'ultosc'    => collect($this->ultosc()),
             'sard'      => $this->computeCloseDelta($sar, $close),
             'wmad'      => $this->computeCloseDelta($wma, $close),
         ];
+
+        if ($withClose) {
+            $indicators['close'] = collect($close)->map(function ($value) {
+                return floatval($value);
+            });
+            $indicators['sar'] = $sar;
+            $indicators['wma'] = $wma;
+        }
+
+        return $indicators;
     }
 
-    public function trendIndicators()
+    public function trendIndicators($withClose = false)
     {
         $data = [];
         $close = $this->close;
-        $indicators = $this->indicators();
+        $indicators = $this->indicators($withClose);
 
         foreach (range(0, count($close) - 1) as $index) {
             foreach ($indicators as $indicator => $values) {

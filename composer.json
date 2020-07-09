@@ -25,6 +25,7 @@
         "php-ai/php-ml": "^0.9.0",
         "pusher/pusher-php-server": "^3.3",
         "radicalloop/eodhistoricaldata": "^1.0",
+        "rubix/ml": "^0.1.0@RC",
         "spatie/laravel-permission": "^2.29"
     },
     "require-dev": {

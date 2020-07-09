@@ -14,6 +14,8 @@ use Phpml\SupportVectorMachine\Kernel;
 
 trait StockAnalysis
 {
+    use StockIndicators;
+
     public $cost = 5;
     public $degree = 3;
     public $gamma = 3;
