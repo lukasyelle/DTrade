@@ -8,6 +8,7 @@ class StockPriceChart extends StockChart
     {
         $this->addLimitedDateLabels();
         $this->limitedDataset('Price', 'line', array_values($this->stock->close));
+        $this->limitedDataset('TSF', 'line', array_values($this->stock->tsf));
         $this->limitedDataset('SAR', 'scatter', array_values($this->stock->sar))->options([
             'symbolSize' => 3,
         ]);

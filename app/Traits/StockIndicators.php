@@ -165,6 +165,16 @@ trait StockIndicators
         return Trader::obv($this->real, $this->volume);
     }
 
+    public function getTsfAttribute()
+    {
+        return $this->tsf(40);
+    }
+
+    public function tsf($timePeriod = 10)
+    {
+        return Trader::tsf($this->real, $timePeriod);
+    }
+
     // ---------======================================================---------
     // ---------================= Data  manipulation =================---------
     // ---------======================================================---------
@@ -227,6 +237,7 @@ trait StockIndicators
         $close = $this->close;
         $sar = collect($this->sar())->values();
         $wma = collect($this->wma())->values();
+        $tsf = collect($this->tsf());
 
         $indicators = [
             'dx'        => collect($this->dx()),
@@ -234,6 +245,7 @@ trait StockIndicators
             'ultosc'    => collect($this->ultosc()),
             'sard'      => $this->computeCloseDelta($sar, $close),
             'wmad'      => $this->computeCloseDelta($wma, $close),
+            'tsfd'      => $this->computeCloseDelta($tsf, $close),
         ];
 
         if ($withClose) {

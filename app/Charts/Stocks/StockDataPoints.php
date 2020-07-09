@@ -13,25 +13,36 @@ class StockDataPoints extends StockChart
         'ultosc'    => 3,
         'sard'      => 4,
         'wmad'      => 5,
+        'tsfd'      => 6,
     ];
 
     private $dataMatrix = [
+        [],
+        ['dx', 'tsfd'],
         ['dx', 'rsi'],
         ['dx', 'ultosc'],
         ['dx', 'sard'],
         ['dx', 'wmad'],
+        ['rsi', 'tsfd'],
         ['rsi', 'dx'],
         ['rsi', 'ultosc'],
         ['rsi', 'sard'],
         ['rsi', 'wmad'],
+        ['sard', 'tsfd'],
         ['sard', 'dx'],
         ['sard', 'rsi'],
         ['sard', 'ultosc'],
         ['sard', 'wmad'],
+        ['wmad', 'tsfd'],
         ['wmad', 'dx'],
         ['wmad', 'rsi'],
         ['wmad', 'ultosc'],
         ['wmad', 'sard'],
+        ['tsfd', 'dx'],
+        ['tsfd', 'rsi'],
+        ['tsfd', 'ultosc'],
+        ['tsfd', 'sard'],
+        ['tsfd', 'wmad'],
     ];
 
     private $axes;
