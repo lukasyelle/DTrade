@@ -7,25 +7,21 @@ use Rubix\ML\Classifiers\SVC;
 use Rubix\ML\CrossValidation\KFold;
 use Rubix\ML\CrossValidation\Metrics\MCC;
 use Rubix\ML\CrossValidation\Metrics\SMAPE;
-use Rubix\ML\CrossValidation\Reports\ConfusionMatrix;
 use Rubix\ML\CrossValidation\Reports\ErrorAnalysis;
 use Rubix\ML\CrossValidation\Reports\MulticlassBreakdown;
 use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Datasets\Unlabeled;
-use Rubix\ML\Kernels\SVM\Linear;
 use Rubix\ML\Kernels\SVM\Polynomial;
-use Rubix\ML\Kernels\SVM\RBF;
-use Rubix\ML\Kernels\SVM\Sigmoidal;
 use Rubix\ML\NeuralNet\ActivationFunctions\LeakyReLU;
+use Rubix\ML\NeuralNet\ActivationFunctions\ReLU;
 use Rubix\ML\NeuralNet\CostFunctions\CrossEntropy;
+use Rubix\ML\NeuralNet\CostFunctions\LeastSquares;
+use Rubix\ML\NeuralNet\Layers\Activation;
+use Rubix\ML\NeuralNet\Layers\Dense;
 use Rubix\ML\NeuralNet\Layers\Dropout;
 use Rubix\ML\NeuralNet\Layers\PReLU;
 use Rubix\ML\NeuralNet\Optimizers\Adam;
 use Rubix\ML\Regressors\MLPRegressor;
-use Rubix\ML\NeuralNet\Layers\Dense;
-use Rubix\ML\NeuralNet\Layers\Activation;
-use Rubix\ML\NeuralNet\ActivationFunctions\ReLU;
-use Rubix\ML\NeuralNet\CostFunctions\LeastSquares;
 use Rubix\ML\Regressors\SVR;
 use Rubix\ML\Transformers\VarianceThresholdFilter;
 
@@ -39,6 +35,7 @@ trait PriceEstimator
     private function getData()
     {
         $nextDay = $this->nextDayHistoricalProfitability();
+
         return $this->formatProfitabilityAndIndicators($nextDay);
     }
 
@@ -92,7 +89,7 @@ trait PriceEstimator
 //            new Dense(20),
 //            new Activation(new ReLU()),
 //        ], 128, new Adam(0.001), 1e-3, 100, 1e-5, 3, 0.1, new LeastSquares(), new SMAPE());
-        return new SVR(3.7, 0.03, new Polynomial(1, 0,12), true, 1e-3, 256.0);
+        return new SVR(3.7, 0.03, new Polynomial(1, 0, 12), true, 1e-3, 256.0);
     }
 
     private function classifier()
