@@ -7,6 +7,7 @@ use App\Charts\Stocks\StockIndicators;
 use App\Charts\Stocks\StockPriceChart;
 use App\Charts\Stocks\StockProjections;
 use App\Stock;
+use App\Ticker;
 use Illuminate\Support\Facades\Auth;
 
 class StocksController extends Controller
@@ -64,5 +65,10 @@ class StocksController extends Controller
         $data['charts']['dataPoints'] = $dataPoints;
 
         return view('pages.stocks.stock', $data);
+    }
+
+    public function search($symbol)
+    {
+
     }
 }

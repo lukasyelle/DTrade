@@ -28,6 +28,10 @@ Route::get('stock/{ticker}/price', function (Request $request, $ticker) {
     return $stock->json();
 });
 
+Route::prefix('stocks')->name('stocks.')->middleware('auth:api')->group(function () {
+    Route::get('search/{symbol?}', 'StocksController@search');
+});
+
 Route::group(['middleware'=>'auth:api', 'prefix'=>'process/'], function () {
     Route::get('test', function (Request $request) {
         JobTest::dispatch(auth('api')->user());

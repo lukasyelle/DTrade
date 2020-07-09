@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
+        "algolia/algoliasearch-client-php": "^2.2",
         "aws/aws-sdk-php": "^3.111",
         "consoletvs/charts": "6.*",
         "digitonic/iex-cloud-sdk": "^0.2.0",
@@ -20,6 +21,7 @@
         "laravel/framework": "5.8.*",
         "laravel/horizon": "^2.0",
         "laravel/passport": "^7.0",
+        "laravel/scout": "7.2.1",
         "laravel/tinker": "^1.0",
         "lukasyelle/dusk-prodsafe": "v5.5.3",
         "php-ai/php-ml": "^0.9.0",

@@ -13,14 +13,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 class Ticker extends Model
 {
+    use Searchable;
     use StockIndicators;
     use CacheQueryBuilder;
 
     protected $fillable = ['symbol'];
     protected $hidden = ['data'];
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        $environment = strtolower(env('APP_ENV'));
+        return "$environment-tickers_index";
+    }
 
     public function stock()
     {
