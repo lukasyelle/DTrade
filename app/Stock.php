@@ -3,8 +3,8 @@
 namespace App;
 
 use App\Support\Database\CacheQueryBuilder;
-use App\Traits\StockPrediction;
 use App\Traits\StockAnalysis;
+use App\Traits\StockPrediction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;

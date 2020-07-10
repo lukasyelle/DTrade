@@ -67,12 +67,14 @@ trait StockPrediction
     {
         $tuner = new RegressionTree(3);
         $model = new SVR(0.01, 1, new Polynomial(1, 0, 0.1), true, 1e-3, 256.0);
+
         return new GradientBoost($tuner, 0.1, 0.8, 1000, 1e-4, 10, 0.1, new RSquared(), $model);
     }
 
     private function classifier()
     {
         $model = new SVC(0.01, new Polynomial(1, 0), true, 1e-3, 256.0);
+
         return new AdaBoost($model, 2, 0.8, 500, 1e-5, 50);
     }
 
