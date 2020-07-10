@@ -66,7 +66,7 @@ class TestEstimator extends Command
 
     private function runTrial()
     {
-        $result = $this->stock->generateReport($this->estimator === 'price');
+        $result = $this->stock->setEstimator($this->estimator)->generateReport();
         if (is_array($result)) {
             if (array_key_exists('overall', $result)) {
                 $result = $result['overall']['f1_score'];

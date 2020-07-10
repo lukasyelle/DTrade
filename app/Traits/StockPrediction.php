@@ -2,30 +2,22 @@
 
 namespace App\Traits;
 
-use Rubix\ML\Classifiers\MultilayerPerceptron;
+use Rubix\ML\Classifiers\AdaBoost;
 use Rubix\ML\Classifiers\SVC;
 use Rubix\ML\CrossValidation\KFold;
-use Rubix\ML\CrossValidation\Metrics\MCC;
+use Rubix\ML\CrossValidation\Metrics\RSquared;
 use Rubix\ML\CrossValidation\Metrics\SMAPE;
 use Rubix\ML\CrossValidation\Reports\ErrorAnalysis;
 use Rubix\ML\CrossValidation\Reports\MulticlassBreakdown;
 use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Datasets\Unlabeled;
 use Rubix\ML\Kernels\SVM\Polynomial;
-use Rubix\ML\NeuralNet\ActivationFunctions\LeakyReLU;
-use Rubix\ML\NeuralNet\ActivationFunctions\ReLU;
-use Rubix\ML\NeuralNet\CostFunctions\CrossEntropy;
-use Rubix\ML\NeuralNet\CostFunctions\LeastSquares;
-use Rubix\ML\NeuralNet\Layers\Activation;
-use Rubix\ML\NeuralNet\Layers\Dense;
-use Rubix\ML\NeuralNet\Layers\Dropout;
-use Rubix\ML\NeuralNet\Layers\PReLU;
-use Rubix\ML\NeuralNet\Optimizers\Adam;
-use Rubix\ML\Regressors\MLPRegressor;
+use Rubix\ML\Regressors\GradientBoost;
+use Rubix\ML\Regressors\RegressionTree;
 use Rubix\ML\Regressors\SVR;
 use Rubix\ML\Transformers\VarianceThresholdFilter;
 
-trait PriceEstimator
+trait StockPrediction
 {
     use StockIndicators;
 
@@ -73,44 +65,20 @@ trait PriceEstimator
 
     private function regressor()
     {
-//        return new MLPRegressor([
-//            new Dense(20),
-//            new Activation(new ReLU()),
-//            new Dense(10),
-//            new Activation(new ReLU()),
-//            new Dense(20),
-//            new Activation(new ReLU()),
-//            new Dense(40),
-//            new Activation(new ReLU()),
-//            new Dense(80),
-//            new Activation(new ReLU()),
-//            new Dense(40),
-//            new Activation(new ReLU()),
-//            new Dense(20),
-//            new Activation(new ReLU()),
-//        ], 128, new Adam(0.001), 1e-3, 100, 1e-5, 3, 0.1, new LeastSquares(), new SMAPE());
-        return new SVR(3.7, 0.03, new Polynomial(1, 0, 12), true, 1e-3, 256.0);
+        $tuner = new RegressionTree(3);
+        $model = new SVR(0.01, 1, new Polynomial(1, 0, 0.1), true, 1e-3, 256.0);
+        return new GradientBoost($tuner, 0.1, 0.8, 1000, 1e-4, 10, 0.1, new RSquared(), $model);
     }
 
     private function classifier()
     {
-//        return new MultilayerPerceptron([
-//            new Dense(200),
-//            new Activation(new LeakyReLU()),
-//            new Dropout(0.3),
-//            new Dense(100),
-//            new Activation(new LeakyReLU()),
-//            new Dropout(0.3),
-//            new Dense(50),
-//            new PReLU(),
-//        ], 128, new Adam(0.001), 1e-4, 1000, 1e-3, 3, 0.1, new CrossEntropy(), new MCC());
-        return new SVC(0.01, new Polynomial(1, 0), true, 1e-3, 256.0);
+        $model = new SVC(0.01, new Polynomial(1, 0), true, 1e-3, 256.0);
+        return new AdaBoost($model, 2, 0.8, 500, 1e-5, 50);
     }
 
-    public function createEstimator($regressor = true)
+    public function createEstimator()
     {
-        $this->isRegressor = $regressor;
-        $this->estimator = $regressor ? $this->regressor() : $this->classifier();
+        $this->estimator = $this->isRegressor ? $this->regressor() : $this->classifier();
     }
 
     public function trainEstimator()
@@ -124,11 +92,11 @@ trait PriceEstimator
         return new Unlabeled([array_values($sample)]);
     }
 
-    public function predict($price = true)
+    public function predict($sample = false)
     {
-        $this->createEstimator($price);
+        $this->createEstimator();
         $this->trainEstimator();
-        $sample = $this->getSamples()->last();
+        $sample = $sample ? $sample : $this->getSamples()->last();
         $dataPoint = $this->formatDataPoint($sample);
 
         return $this->estimator->predict($dataPoint);
@@ -142,9 +110,9 @@ trait PriceEstimator
         return $validator->test($this->estimator, $this->getDataset(), $metric ? $metric : new SMAPE());
     }
 
-    public function getAllPredictions($regressor = true)
+    public function getAllPredictions()
     {
-        $this->createEstimator($regressor);
+        $this->createEstimator();
         $this->trainEstimator();
         $samples = $this->getSamples();
         $samples->forget($samples->count() - 1);
@@ -153,12 +121,19 @@ trait PriceEstimator
         return $this->estimator->predict($dataset);
     }
 
-    public function generateReport($regressor = true)
+    public function setEstimator($profitOrPrice)
     {
-        $predictions = $this->getAllPredictions($regressor);
+        $this->isRegressor = $profitOrPrice === 'price';
+
+        return $this;
+    }
+
+    public function generateReport()
+    {
+        $predictions = $this->getAllPredictions();
         $labels = $this->getLabels();
         $labels->forget(0);
-        $report = $regressor ? new ErrorAnalysis() : new MulticlassBreakdown();
+        $report = $this->isRegressor ? new ErrorAnalysis() : new MulticlassBreakdown();
 
         return $report->generate($predictions, $labels->values()->toArray());
     }

@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Support\Database\CacheQueryBuilder;
-use App\Traits\PriceEstimator;
+use App\Traits\StockPrediction;
 use App\Traits\StockAnalysis;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 class Stock extends Model
 {
     use StockAnalysis;
-    use PriceEstimator;
+    use StockPrediction;
     use CacheQueryBuilder;
 
     protected $fillable = ['ticker_id'];
