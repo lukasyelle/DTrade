@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use Rubix\ML\Classifiers\AdaBoost;
 use Rubix\ML\Classifiers\SVC;
 use Rubix\ML\CrossValidation\KFold;
 use Rubix\ML\CrossValidation\Metrics\RSquared;
@@ -24,7 +23,7 @@ trait StockPrediction
     public $estimator;
     private $isRegressor = true;
 
-    private function getData()
+    public function getData()
     {
         $nextDay = $this->nextDayHistoricalProfitability();
 
@@ -65,7 +64,7 @@ trait StockPrediction
 
     private function regressor()
     {
-        $tuner = new RegressionTree(3);
+        $tuner = new RegressionTree(7);
         $model = new SVR(0.01, 1, new Polynomial(1, 0, 0.1), true, 1e-3, 256.0);
 
         return new GradientBoost($tuner, 0.1, 0.8, 1000, 1e-4, 10, 0.1, new RSquared(), $model);
@@ -73,9 +72,12 @@ trait StockPrediction
 
     private function classifier()
     {
-        $model = new SVC(0.01, new Polynomial(1, 0), true, 1e-3, 256.0);
-
-        return new AdaBoost($model, 2, 0.8, 500, 1e-5, 50);
+        // This classifier is not going to be used for anything just yet, as its mean F1 score of .13 is too low to
+        // inspire confidence in me as to the accuracy of its projections. PHP-ML's classifier will be used for the time
+        // being, also because of its ability to produce probabilistic estimates for all outcomes, not just the most
+        // likely one. Work may be done in the future to increase the accuracy of this model and utilize it as a form of
+        // confidence check for its' php-ml counterpart.
+        return new SVC(0.01, new Polynomial(1, 0), true, 1e-3, 256.0);
     }
 
     public function createEstimator()
