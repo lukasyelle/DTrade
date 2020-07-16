@@ -97,7 +97,7 @@
                 }
             }
 
-            a {
+            a, div {
                 display: inline-block;
                 float: right;
                 margin-top: 23px;
