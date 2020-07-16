@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     ];
 
     public static $userStockUpdatesPerMinute = 4;
-    public static $sharedStockUpdatesPerMinute = 500;
+    public static $sharedStockUpdatesPerMinute = 200;
 
     public static function analyzeStocks()
     {
