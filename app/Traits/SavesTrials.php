@@ -18,7 +18,7 @@ trait SavesTrials
                 $periodKey  => $trialPeriod,
             ];
             $trialData->each(function ($item, $key) use (&$trial, $saveKey, $dataPrefix) {
-                $key = ($key === $saveKey) ? $key : $dataPrefix . '_'.str_replace(' ', '_', $key);
+                $key = ($key === $saveKey) ? $key : $dataPrefix.'_'.str_replace(' ', '_', $key);
                 $trial[$key] = $item;
             });
             self::create($trial);
