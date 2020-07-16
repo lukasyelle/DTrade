@@ -26,9 +26,10 @@
 
 <script>
     export default {
-        props: ['stock'],
+        props: ['passedStock'],
         data () {
             return {
+                stock: this.passedStock,
                 timePeriods: ['nextDay', 'fiveDay', 'tenDay'],
                 timePeriodsReadable: {'nextDay': 'next day', 'fiveDay': 'five day', 'tenDay': 'ten day'}
             };
@@ -50,6 +51,14 @@
             getProfitLoss: function (day) {
                 return 'profit' in day ? 'profit' : 'loss';
             }
+        },
+        mounted() {
+            Echo.channel('stocks')
+                .listen('StockRefreshed', (result) => {
+                    if (this.stock.symbol === result.stock.symbol) {
+                        this.stock = result.stock;
+                    }
+                })
         }
     }
 </script>

@@ -6,7 +6,10 @@ use App\Charts\Stocks\StockDataPoints;
 use App\Charts\Stocks\StockIndicators;
 use App\Charts\Stocks\StockPriceChart;
 use App\Charts\Stocks\StockProjections;
+use App\Events\UserActionCompleted;
 use App\Stock;
+use App\Ticker;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class StocksController extends Controller
@@ -64,5 +67,22 @@ class StocksController extends Controller
         $data['charts']['dataPoints'] = $dataPoints;
 
         return view('pages.stocks.stock', $data);
+    }
+
+    public function exists($symbol)
+    {
+        return Ticker::symbolExists($symbol);
+    }
+
+    public function refresh($symbol)
+    {
+        if (Ticker::symbolExists($symbol) && Auth::check()) {
+            $user = Auth::user();
+            $ticker = Ticker::fetch($symbol);
+            if ($user instanceof User && $ticker instanceof Ticker) {
+                $ticker->updateData();
+                event(new UserActionCompleted($user, 'Stock Refreshed'));
+            }
+        }
     }
 }

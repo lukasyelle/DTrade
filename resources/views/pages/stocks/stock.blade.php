@@ -14,7 +14,7 @@
         <el-main>
             <el-row :gutter="20">
                 <el-col :lg="10" :md="9" :sm="24">
-                    <stock-today-card :stock="{{ $stock }}"></stock-today-card>
+                    <stock-today-card :passed-stock="{{ $stock }}"></stock-today-card>
                 </el-col>
                 <el-col :lg="14" :md="15" :sm="24">
                     <stock-summary-projections-card :stock="{{ $stock }}"></stock-summary-projections-card>

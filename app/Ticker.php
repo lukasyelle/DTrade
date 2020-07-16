@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\StockCannotRefresh;
+use App\Events\StockRefreshed;
 use App\Exceptions\AlphaVantageException;
 use App\Jobs\Stocks\AnalyzeStock;
 use App\Jobs\Stocks\CheckAccuracy;
@@ -179,6 +181,9 @@ class Ticker extends Model
             // Always set the last update to now if update was needed
             $this->setUpdatedAt($this->freshTimestamp());
             $this->save();
+            event(new StockRefreshed(Stock::fetch($this->symbol)));
+        } else {
+            event(new StockCannotRefresh('Not enough time has passed since last refresh.', $this->symbol));
         }
     }
 }

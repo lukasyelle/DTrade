@@ -3,6 +3,7 @@
 use App\Jobs\Robinhood\JobTest;
 use App\Jobs\Robinhood\RefreshPortfolioJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use RadicalLoop\Eod\Api\Stock as Market;
 use RadicalLoop\Eod\Config as EodConfig;
 
@@ -26,6 +27,13 @@ Route::get('stock/{ticker}/price', function (Request $request, $ticker) {
     $stock = $market->realTime("$ticker.US");
 
     return $stock->json();
+});
+
+Route::prefix('stocks')->name('stocks.')->middleware('auth:api')->group(function () {
+    Route::prefix('{symbol}')->group(function () {
+        Route::get('exists', 'StocksController@exists');
+        Route::post('refresh', 'StocksController@refresh');
+    });
 });
 
 Route::group(['middleware'=>'auth:api', 'prefix'=>'process/'], function () {
