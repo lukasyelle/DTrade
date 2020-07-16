@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
         //
     ];
 
-    public static $updatesPerMinute = 4;
+    public static $userStockUpdatesPerMinute = 4;
+    public static $sharedStockUpdatesPerMinute = 500;
 
     public static function analyzeStocks()
     {
@@ -63,11 +64,14 @@ class Kernel extends ConsoleKernel
     public static function keepTickersUpdated(Carbon &$now = null)
     {
         $now = ($now === null) ? Carbon::now() : $now;
-        $updateInterval = 60 / self::$updatesPerMinute;
+        $updateInterval = 60 / self::$sharedStockUpdatesPerMinute;
+        $sharedUpdatesPerUserUpdate = self::$sharedStockUpdatesPerMinute / self::$userStockUpdatesPerMinute;
 
-        for ($i = 0; $i < self::$updatesPerMinute; $i++) {
-            UpdateUserTickers::dispatch();
+        for ($i = 0; $i < self::$sharedStockUpdatesPerMinute; $i++) {
             UpdateSharedTickers::dispatch();
+            if ($i % $sharedUpdatesPerUserUpdate === 0) {
+                UpdateUserTickers::dispatch();
+            }
             self::sleepFor($updateInterval, $now);
         }
     }
