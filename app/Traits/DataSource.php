@@ -34,21 +34,18 @@ trait DataSource
 
     /**
      * Method that computes the amount of time between two updates for a ticker
-     * this api is responsible for. This number is in minutes, although down the
-     * road I'd like to have the potential for shorter update intervals, it will
-     * require a refactoring of updateMostOutdatedTicker in this class and also
-     * keepTickersUpdated in App\Console\Kernel.php. Currently, updates are
-     * limited to a maximum of 1 per minute per ticker.
+     * this api is responsible for. This number is in seconds. Currently, updates
+     * are limited to a maximum of 1 per second per ticker.
      *
      * @return int
      */
     public function computeUpdateInterval()
     {
         $numberOfTickers = $this->tickers()->count();
-        // 390 the number of minutes in a trading day (6.5 hours). This formula
-        // is designed to update tickers at the fastest possible rate without
-        // hitting the API limit before the end of the day.
-        $computedInterval = (390 * $numberOfTickers) / $this->maxAutomaticRequestsPerDay;
+        // 23,400 the number of seconds in a trading day (6.5 hours). This
+        // formula is designed to update tickers at the fastest possible rate
+        // without hitting the API limit before the end of the day.
+        $computedInterval = (23400 * $numberOfTickers) / $this->maxAutomaticRequestsPerDay;
 
         return max(round($computedInterval), 1);
     }
@@ -65,7 +62,7 @@ trait DataSource
         $mostOutdatedTicker = $this->getMostOutdatedTicker();
         if ($mostOutdatedTicker) {
             $lastUpdate = $mostOutdatedTicker->updated_at;
-            if ($now->diffInMinutes($lastUpdate) > $updateInterval) {
+            if ($now->diffInSeconds($lastUpdate) > $updateInterval) {
                 UpdateTickerData::dispatch($mostOutdatedTicker->symbol);
             }
         }

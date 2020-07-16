@@ -164,7 +164,7 @@ class Ticker extends Model
         $updatedAt = $this->getLastUpdatedTimestamp();
         $currentTime = $this->freshTimestamp();
         $updateInterval = $this->dataSource->computeUpdateInterval();
-        $canUpdate = $currentTime->diffInMinutes($updatedAt) > $updateInterval;
+        $canUpdate = $currentTime->diffInSeconds($updatedAt) > $updateInterval;
         if ($updatedAt == null || $canUpdate) {
             $rawData = $this->dataSource->quote($this['symbol']);
             $lastDateKey = $this->dataSource->lastTradingDayQuoteKey;
