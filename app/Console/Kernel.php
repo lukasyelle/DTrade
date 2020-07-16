@@ -41,12 +41,6 @@ class Kernel extends ConsoleKernel
         Log::debug("Launched chained jobs to analyze, and check prediction accuracy for $symbolsString");
     }
 
-    public static function sleepFor($numberMicroSeconds, Carbon &$now = null)
-    {
-        $now = ($now === null) ? Carbon::now() : $now;
-        time_sleep_until($now->addMicroseconds($numberMicroSeconds)->getPreciseTimestamp(3));
-    }
-
     /**
      * Update the most outdated ticker $updatesPerMinute times a minute.
      *
@@ -72,7 +66,7 @@ class Kernel extends ConsoleKernel
             if ($i % $sharedUpdatesPerUserUpdate === 0) {
                 UpdateUserTickers::dispatch();
             }
-            self::sleepFor($updateInterval, $now);
+            usleep($updateInterval);
         }
     }
 
