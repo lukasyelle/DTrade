@@ -22,10 +22,10 @@ class StockUpdated implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param Stock  $stock - The stock that was updated
+     * @param Stock  $stock   - The stock that was updated
      * @param string $message
      */
-    public function __construct(Stock $stock, string $message = "")
+    public function __construct(Stock $stock, string $message = '')
     {
         $this->stock = $stock;
         $this->message = $message;
