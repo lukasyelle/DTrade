@@ -41,10 +41,10 @@ class Kernel extends ConsoleKernel
         Log::debug("Launched chained jobs to analyze, and check prediction accuracy for $symbolsString");
     }
 
-    public static function sleepFor($numberSeconds, Carbon &$now = null)
+    public static function sleepFor($numberMicroSeconds, Carbon &$now = null)
     {
         $now = ($now === null) ? Carbon::now() : $now;
-        time_sleep_until($now->addSeconds($numberSeconds)->timestamp);
+        time_sleep_until($now->addMicroseconds($numberMicroSeconds)->timestamp);
     }
 
     /**
@@ -64,7 +64,7 @@ class Kernel extends ConsoleKernel
     public static function keepTickersUpdated(Carbon &$now = null)
     {
         $now = ($now === null) ? Carbon::now() : $now;
-        $updateInterval = 60 / self::$sharedStockUpdatesPerMinute;
+        $updateInterval = 1000000 * (60 / self::$sharedStockUpdatesPerMinute);
         $sharedUpdatesPerUserUpdate = self::$sharedStockUpdatesPerMinute / self::$userStockUpdatesPerMinute;
 
         for ($i = 0; $i < self::$sharedStockUpdatesPerMinute; $i++) {
