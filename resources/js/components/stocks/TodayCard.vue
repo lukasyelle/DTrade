@@ -72,24 +72,32 @@
                         setTimeout(() => {
                             this.isRefreshing = false;
                         }, 3000);
+                    })
+                    .catch((e) => {
+                        this.isRefreshing = false;
+                        this.$notify({
+                            title: 'Error',
+                            type: 'error',
+                            duration: 2000
+                        })
                     });
             }
         },
         mounted () {
             Echo.channel('stocks')
-                .listen('StockRefreshed', (result) => {
+                .listen('StockUpdated', (result) => {
                     if (this.stock.symbol === result.stock.symbol) {
                         this.isRefreshing = false;
                         this.stock = result.stock;
                         this.$notify({
                             title: 'Success',
-                            message: 'Stock data has been refreshed successfully.',
+                            message: result.message,
                             type: 'success',
                             duration: 2000
                         });
                     }
                 })
-                .listen('StockCannotRefresh', (result) => {
+                .listen('StockCannotUpdate', (result) => {
                     if (this.stock.symbol === result.symbol) {
                         this.isRefreshing = false;
                         this.$notify({

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\StockUpdated;
 use App\Support\Database\CacheQueryBuilder;
 use App\Traits\KellySizing;
 use Illuminate\Database\Eloquent\Model;
@@ -64,5 +65,26 @@ class StockProjection extends Model
     public function getProbabilityProfitAttribute()
     {
         return $this->probabilityBroadOutcome('profit');
+    }
+
+    public static function makeFor(Stock $stock)
+    {
+        $projections = collect([
+            'next day'  => collect($stock->nextDayProjection()),
+            'five day'  => collect($stock->fiveDayProjection()),
+            'ten day'   => collect($stock->tenDayProjection()),
+        ]);
+        $projections->each(function ($projectionData, $projectionFor) use ($stock) {
+            $stockProjection = [
+                'stock_id'          => $stock->id,
+                'projection_for'    => $projectionFor,
+            ];
+            $projectionData->each(function ($item, $key) use (&$stockProjection) {
+                $key = ($key == 'verdict') ? $key : 'probability_'.str_replace(' ', '_', $key);
+                $stockProjection[$key] = $item;
+            });
+            self::create($stockProjection);
+        });
+        event(new StockUpdated($stock, 'Stock projections have been updated successfully.'));
     }
 }

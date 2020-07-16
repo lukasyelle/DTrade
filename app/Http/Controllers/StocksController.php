@@ -7,7 +7,9 @@ use App\Charts\Stocks\StockIndicators;
 use App\Charts\Stocks\StockPriceChart;
 use App\Charts\Stocks\StockProjections;
 use App\Events\UserActionCompleted;
+use App\Events\UserActionFailed;
 use App\Stock;
+use App\StockProjection;
 use App\Ticker;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -76,13 +78,31 @@ class StocksController extends Controller
 
     public function refresh($symbol)
     {
-        if (Ticker::symbolExists($symbol) && Auth::check()) {
-            $user = Auth::user();
+        $user = Auth::user();
+        $user = $user instanceof User ? $user : null;
+
+        if (Ticker::symbolExists($symbol) && $user) {
             $ticker = Ticker::fetch($symbol);
-            if ($user instanceof User && $ticker instanceof Ticker) {
+            if ($ticker instanceof Ticker) {
                 $ticker->updateData();
-                event(new UserActionCompleted($user, 'Stock Refreshed'));
+                event(new UserActionCompleted($user, 'Stock Refresh'));
             }
+        } else if ($user) {
+            event(new UserActionFailed($user, 'Stock Refresh', 'Ticker Does not exist'));
+        }
+    }
+
+    public function analyze($symbol)
+    {
+        $user = Auth::user();
+        $user = $user instanceof User ? $user : null;
+
+        if (Ticker::symbolExists($symbol) && $user) {
+            $stock = Stock::fetch($symbol);
+            StockProjection::makeFor($stock);
+            event(new UserActionCompleted($user, 'Stock Analysis'));
+        } else if ($user) {
+            event(new UserActionFailed($user, 'Stock Analysis', 'Ticker Does not exist'));
         }
     }
 }

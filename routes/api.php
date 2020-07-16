@@ -33,6 +33,7 @@ Route::prefix('stocks')->name('stocks.')->middleware('auth:api')->group(function
     Route::prefix('{symbol}')->group(function () {
         Route::get('exists', 'StocksController@exists');
         Route::post('refresh', 'StocksController@refresh');
+        Route::post('analyze', 'StocksController@analyze');
     });
 });
 

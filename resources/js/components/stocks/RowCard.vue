@@ -54,11 +54,11 @@
         },
         mounted() {
             Echo.channel('stocks')
-                .listen('StockRefreshed', (result) => {
+                .listen('StockUpdated', (result) => {
                     if (this.stock.symbol === result.stock.symbol) {
                         this.stock = result.stock;
                     }
-                })
+                });
         }
     }
 </script>

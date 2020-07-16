@@ -17,13 +17,13 @@
                     <stock-today-card :passed-stock="{{ $stock }}"></stock-today-card>
                 </el-col>
                 <el-col :lg="14" :md="15" :sm="24">
-                    <stock-summary-projections-card :stock="{{ $stock }}"></stock-summary-projections-card>
+                    <stock-summary-projections-card :passed-stock="{{ $stock }}"></stock-summary-projections-card>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :lg="14" :md="12">
                     <stock-recommendations-card
-                        :stock="{{ $stock }}"
+                        :passed-stock="{{ $stock }}"
                         :portfolio="{{ $portfolio }}"
                         robinhood="{{ route('profile.robinhood') }}">
                     </stock-recommendations-card>
