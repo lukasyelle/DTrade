@@ -2,14 +2,16 @@
 
 namespace App;
 
+use App\Events\StockUpdated;
 use App\Support\Database\CacheQueryBuilder;
+use App\Traits\SavesTrials;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class ModelAccuracy extends Model
 {
     use CacheQueryBuilder;
+    use SavesTrials;
 
     protected $fillable = [
         'stock_id',
@@ -64,24 +66,20 @@ class ModelAccuracy extends Model
         return $results->put('duration', $duration);
     }
 
-    public static function test(Stock $stock)
+    public static function runTrials(Stock $stock)
     {
-        $tests = collect([
+        return collect([
             'next day'  => self::runTrial($stock, 1),
             'five day'  => self::runTrial($stock, 5),
             'ten day'   => self::runTrial($stock, 10),
         ]);
-        $tests->each(function (Collection $accuracyData, $timePeriod) use ($stock) {
-            $accuracyModel = [
-                'stock_id'      => $stock->id,
-                'time_period'   => $timePeriod,
-            ];
-            $accuracyData->each(function ($item, $key) use (&$accuracyModel) {
-                $key = ($key == 'duration') ? $key : 'accuracy_'.str_replace(' ', '_', $key);
-                $accuracyModel[$key] = $item;
-            });
-            self::create($accuracyModel);
-        });
+    }
+
+    public static function test(Stock $stock)
+    {
+        $tests = self::runAndSaveTrials($stock, 'time_period', 'duration', 'accuracy');
+
+        event(new StockUpdated($stock, 'Stock projection accuracy estimates have been updated successfully.'));
 
         return $tests;
     }

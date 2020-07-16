@@ -7,6 +7,7 @@ use App\Traits\StockAnalysis;
 use App\Traits\StockIndicators;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class Stock extends Model
@@ -177,10 +178,25 @@ class Stock extends Model
         return ['loss' => $probabilityLoss];
     }
 
+    private function getDayString(Carbon $lastUpdate)
+    {
+        $dayDiff = Carbon::now()->diffInDays($lastUpdate);
+        switch ($dayDiff) {
+            case 0:
+                return 'Today';
+            case 1:
+                return 'Yesterday';
+            default:
+                return $lastUpdate->isoFormat('dddd');
+        }
+    }
+
     public function getQuickLookAttribute()
     {
+        $lastUpdateCreatedAt = $this->lastUpdate->created_at;
+        $lastUpdateDay = $this->getDayString($lastUpdateCreatedAt);
+        $lastUpdatedOn = $lastUpdateCreatedAt->format('m/d/Y - H:i');
         $lastProjectionUpdate = $this->projections->first()->created_at->format('m/d/Y - H:i');
-        $lastUpdatedOn = $this->lastUpdate->created_at->format('m/d/Y - H:i');
         $nextDayBroad = $this->getProbabilityLikelyOutcomeFor('next day');
         $fiveDayBroad = $this->getProbabilityLikelyOutcomeFor('five day');
         $tenDayBroad = $this->getProbabilityLikelyOutcomeFor('ten day');
@@ -190,6 +206,7 @@ class Stock extends Model
             'change'                => $this->lastUpdate->change,
             'changePercent'         => $this->lastUpdate->change_percent,
             'lastProjectionUpdate'  => $lastProjectionUpdate,
+            'lastUpdateDay'         => $lastUpdateDay,
             'lastUpdate'            => $lastUpdatedOn,
             'nextDay'               => $nextDayBroad,
             'fiveDay'               => $fiveDayBroad,

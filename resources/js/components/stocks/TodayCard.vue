@@ -1,9 +1,12 @@
 <template>
     <div :class="profitOrLoss + ' stock-card bright-background material-shadow'">
         <div class="stock-card__header">
-            <h1>Today</h1>
+            <h1>{{ stock.quickLook.lastUpdateDay }}</h1>
             <span>As of {{ stock.lastUpdatedAt }}</span>
-            <a href="#">Refresh</a>
+            <a v-if="!isRefreshing" @click="refreshStock()" href="#">Refresh</a>
+            <div v-else>
+                <i class="el-icon-loading"></i>
+            </div>
         </div>
         <div class="stock-card__body">
             <div class="stock-card__body__price">
@@ -37,7 +40,13 @@
 
 <script>
     export default {
-        props: ['stock'],
+        props: ['passedStock'],
+        data () {
+            return {
+                stock: this.passedStock,
+                isRefreshing: false,
+            };
+        },
         computed: {
             profitOrLoss: function () {
                 return this.stock.lastUpdate.change >= 0 ? 'profit' : 'loss';
@@ -55,6 +64,51 @@
                 return magnitude + ' ' + this.profitOrLoss;
             },
         },
+        methods: {
+            refreshStock: function () {
+                this.isRefreshing = true;
+                axios.post(`/api/stocks/${this.stock.symbol}/refresh`)
+                    .then(() => {
+                        setTimeout(() => {
+                            this.isRefreshing = false;
+                        }, 3000);
+                    })
+                    .catch((e) => {
+                        this.isRefreshing = false;
+                        this.$notify({
+                            title: 'Error',
+                            type: 'error',
+                            duration: 2000
+                        })
+                    });
+            }
+        },
+        mounted () {
+            Echo.channel('stocks')
+                .listen('StockUpdated', (result) => {
+                    if (this.stock.symbol === result.stock.symbol) {
+                        this.isRefreshing = false;
+                        this.stock = result.stock;
+                        this.$notify({
+                            title: 'Success',
+                            message: result.message,
+                            type: 'success',
+                            duration: 2000
+                        });
+                    }
+                })
+                .listen('StockCannotUpdate', (result) => {
+                    if (this.stock.symbol === result.symbol) {
+                        this.isRefreshing = false;
+                        this.$notify({
+                            title: 'Error',
+                            message: result.message,
+                            type: 'error',
+                            duration: 2000
+                        });
+                    }
+                });
+        }
     }
 </script>
 
@@ -84,7 +138,7 @@
                 padding-left: 10px;
             }
 
-            a {
+            a, div {
                 display: inline-block;
                 float: right;
                 margin-top: 23px;

@@ -34,12 +34,13 @@
 <script>
     export default {
         props: {
-            'stock': { type: Object, required: true, },
+            'passedStock': { type: Object, required: true, },
             'portfolio': { type: Object, required: false, },
             'robinhood': { type: String, required: true, },
         },
         data () {
             return {
+                stock: this.passedStock,
                 width: 0,
                 height: 0,
                 innerHeight: 0,
@@ -83,11 +84,15 @@
                 return this.width - this.innerWidth - 105;
             },
             percentage () {
+                let kellySize;
+
                 if (this.period === 'average') {
-                    return this.stock.averageKellySize;
+                    kellySize = this.stock.averageKellySize;
                 } else {
-                    return this.stock[this.period].kellySize;
+                    kellySize = this.stock[this.period].kellySize;
                 }
+
+                return kellySize > 0 ? kellySize : 0;
             },
             hasPortfolio () {
                 return this.portfolio !== null;
@@ -101,6 +106,13 @@
             });
 
             window.src = this;
+
+            Echo.channel('stocks')
+                .listen('StockUpdated', (result) => {
+                    if (this.stock.symbol === result.stock.symbol) {
+                        this.stock = result.stock;
+                    }
+                });
         }
     }
 </script>
