@@ -1,7 +1,7 @@
 <template>
     <div :class="profitOrLoss + ' stock-card bright-background material-shadow'">
         <div class="stock-card__header">
-            <h1>Today</h1>
+            <h1>{{ stock.quickLook.lastUpdateDay }}</h1>
             <span>As of {{ stock.lastUpdatedAt }}</span>
             <a v-if="!isRefreshing" @click="refreshStock()" href="#">Refresh</a>
             <div v-else>
