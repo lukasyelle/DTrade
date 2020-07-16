@@ -87,7 +87,7 @@ class StocksController extends Controller
                 $ticker->updateData();
                 event(new UserActionCompleted($user, 'Stock Refresh'));
             }
-        } else if ($user) {
+        } elseif ($user) {
             event(new UserActionFailed($user, 'Stock Refresh', 'Ticker Does not exist'));
         }
     }
@@ -101,7 +101,7 @@ class StocksController extends Controller
             $stock = Stock::fetch($symbol);
             StockProjection::makeFor($stock);
             event(new UserActionCompleted($user, 'Stock Analysis'));
-        } else if ($user) {
+        } elseif ($user) {
             event(new UserActionFailed($user, 'Stock Analysis', 'Ticker Does not exist'));
         }
     }
