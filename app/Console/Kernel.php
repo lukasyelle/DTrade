@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
     public static function sleepFor($numberMicroSeconds, Carbon &$now = null)
     {
         $now = ($now === null) ? Carbon::now() : $now;
-        time_sleep_until($now->addMicroseconds($numberMicroSeconds)->timestamp);
+        time_sleep_until($now->addMicroseconds($numberMicroSeconds)->getPreciseTimestamp(3));
     }
 
     /**
