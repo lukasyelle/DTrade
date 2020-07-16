@@ -3,15 +3,17 @@
 namespace App\Events;
 
 use App\User;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class UserActionCompleted implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     private $user;
 
@@ -20,7 +22,7 @@ class UserActionCompleted implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param User   $user - The user who initiated the action
+     * @param User   $user   - The user who initiated the action
      * @param string $action - The string name of the action which has completed
      */
     public function __construct(User $user, string $action)
@@ -36,6 +38,6 @@ class UserActionCompleted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('actions.' . $this->user->id);
+        return new PrivateChannel('actions.'.$this->user->id);
     }
 }
