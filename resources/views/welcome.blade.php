@@ -20,79 +20,69 @@
                 margin: 0;
             }
 
-            .full-height {
-                height: 100vh;
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 80px;
+                z-index: 1;
             }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
+            nav ul {
+                float: right;
+                padding: 15px;
+                display: inline-block;
+                list-style-type: none;
+                background-color: #fff;
             }
 
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
+            nav ul li {
+                float: left;
                 padding: 0 25px;
                 font-size: 13px;
                 font-weight: 600;
                 letter-spacing: .1rem;
-                text-decoration: none;
                 text-transform: uppercase;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
+            nav ul li a {
+                color: #636b6f;
+                text-decoration: none;
+            }
+
+            main {
+                z-index: 0;
+                min-height: 90vh;
+                padding-top: 10vh;
+                position: relative;
+            }
+
+            #landing {
+                height: 70vh;
+                background-image: url('/big-logo.png');
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
             }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/stocks') }}">Stocks</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+        <nav>
+            <ul>
+                @auth
+                    <li><a href="{{ route('stocks.all') }}">Stocks</a></li>
+                    <li><a href="{{ route('profile.index') }}">Profile</a></li>
+                @else
+                    <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('register') }}">Register</a></li>
+                @endauth
+            </ul>
+        </nav>
+        <main>
+            <section id="landing">
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
     </body>
 </html>

@@ -87,18 +87,20 @@
             Echo.channel('stocks')
                 .listen('StockUpdated', (result) => {
                     if (this.stock.symbol === result.stock.symbol) {
-                        this.isRefreshing = false;
+                        if (this.isRefreshing) {
+                            this.isRefreshing = false;
+                            this.$notify({
+                                title: 'Success',
+                                message: result.message,
+                                type: 'success',
+                                duration: 2000
+                            });
+                        }
                         this.stock = result.stock;
-                        this.$notify({
-                            title: 'Success',
-                            message: result.message,
-                            type: 'success',
-                            duration: 2000
-                        });
                     }
                 })
                 .listen('StockCannotUpdate', (result) => {
-                    if (this.stock.symbol === result.symbol) {
+                    if (this.stock.symbol === result.symbol && this.isRefreshing) {
                         this.isRefreshing = false;
                         this.$notify({
                             title: 'Error',
