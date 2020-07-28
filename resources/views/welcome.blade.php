@@ -27,7 +27,6 @@
                 right: 0;
                 height: 80px;
                 z-index: 1;
-
             }
 
             nav ul {
@@ -36,6 +35,11 @@
                 display: inline-block;
                 list-style-type: none;
                 background-color: #fff;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                -webkit-box-shadow: 0px 0px 5px 0px rgba(170,170,170,1);
+                -moz-box-shadow: 0px 0px 5px 0px rgba(170,170,170,1);
+                box-shadow: 0px 0px 5px 0px rgba(170,170,170,1);
             }
 
             nav ul li {
@@ -129,9 +133,6 @@
 
             .wave > svg {
                 display: block;
-            }
-
-            #landing .wave > svg {
                 transform-origin: top;
                 animation: animateWave 1000ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
             }
@@ -188,30 +189,33 @@
                 }
             }
 
-            .content-2 {
-                margin-top: -0.5px;
+            #content-2 {
                 padding: 50px;
             }
 
-            .content-2 article {
+            #content-2-wave svg {
+                transform-origin: bottom;
+            }
+
+            #content-2 article {
                 overflow: hidden;
             }
 
-            .content-2 article h1 {
+            #content-2 article h1 {
                 color: #f0f0f0;
                 font-size: 30px;
                 text-transform: capitalize;
                 margin-bottom: 20px;
             }
 
-            .content-2 article p {
+            #content-2 article p {
                 color: #f0f0f0;
                 font-size: 24px;
                 font-weight: bold;
                 margin-top: 20px;
             }
 
-            .content-2 article div {
+            #content-2 article div {
                 width: 60%;
                 padding: 20px;
                 display: block;
@@ -221,27 +225,27 @@
             }
 
             @media screen and (min-width: 1000px) {
-                .content-2 {
+                #content-2 {
                     padding: 20px;
                 }
 
-                .content-2 article {
+                #content-2 article {
                     width: 60%;
                 }
 
-                .content-2 article div {
+                #content-2 article div {
                     width: calc(90% - 40px);
                 }
             }
 
             @media screen and (max-width: 1000px) {
-                .content-2 article div {
+                #content-2 article div {
                     width: 80%;
                 }
             }
 
             @media screen and (max-width: 800px) {
-                .content-2 article div {
+                #content-2 article div {
                     width: 90%;
                 }
             }
@@ -279,10 +283,10 @@
                 </article>
             </section>
             <section class="wave-container">
-                <div class="wave">
+                <div id="content-2-wave" class="wave">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#00cba9" fill-opacity="0.7" d="M0,160L30,181.3C60,203,120,245,180,240C240,235,300,181,360,160C420,139,480,149,540,181.3C600,213,660,267,720,272C780,277,840,235,900,208C960,181,1020,171,1080,160C1140,149,1200,139,1260,144C1320,149,1380,171,1410,181.3L1440,192L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"></path></svg>
                 </div>
-                <div class="content-2 padding green-background">
+                <div id="content-2" class="padding green-background">
                     <article class="center">
                         <h1 class="text-left underline-left">Choose any stocks <br /> for your watchlist</h1>
                         <div class="center">
