@@ -220,12 +220,6 @@
                 background-color: #eee;
             }
 
-            /*@media screen and (min-width: 1200px) {*/
-            /*    .content-2 article {*/
-            /*        width: 80%;*/
-            /*    }*/
-            /*}*/
-
             @media screen and (min-width: 1000px) {
                 .content-2 {
                     padding: 20px;
