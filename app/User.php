@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasOne(Portfolio::class);
     }
 
+    public function watchlist()
+    {
+        return $this->hasOne(Watchlist::class);
+    }
+
     public function dataSource()
     {
         return $this->hasOne(AlphaVantageApi::class);

@@ -45,6 +45,11 @@ class Stock extends Model
         return $this->belongsToMany(Portfolio::class);
     }
 
+    public function watchlists()
+    {
+        return $this->belongsToMany(Watchlist::class);
+    }
+
     public function modelParameters()
     {
         return $this->hasOne(ModelParameter::class);

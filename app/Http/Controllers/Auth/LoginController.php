@@ -53,7 +53,9 @@ class LoginController extends Controller
         $token->save();
         $user->save();
         $request->session()->push('api_key', $tokenResult->accessToken);
-        RefreshPortfolioJob::dispatch($user);
+        if ($user->portfolio) {
+            RefreshPortfolioJob::dispatch($user);
+        }
     }
 
     /**
