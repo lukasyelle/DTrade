@@ -23,7 +23,7 @@
                 </el-col>
             </div>
         </el-row>
-        <el-row class="stock-card__watchlist-container transition">
+        <el-row class="stock-card__actions-container transition">
             <el-col class="center padding" :sm="12" :xs="24">
                 <watchlist-button-component :stock="stock" :is-in-watchlist="isInWatchlist"></watchlist-button-component>
             </el-col>
@@ -195,12 +195,12 @@
                 border-bottom-right-radius: 0;
             }
 
-            .stock-card__watchlist-container {
+            .stock-card__actions-container {
                 display: block;
             }
         }
 
-        &__watchlist-container {
+        &__actions-container {
             display: none;
             background-color: rgba(236, 236, 236, 0.81);
             border-bottom-left-radius: 5px;
