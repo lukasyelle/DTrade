@@ -255,6 +255,7 @@ class Stock extends Model
     public function getInWatchlistAttribute()
     {
         $watchlist = Auth::user()->watchlist;
+
         return $watchlist && $watchlist->stocks->contains($this) ? 'true' : 'false';
     }
 }
