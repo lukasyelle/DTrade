@@ -1,13 +1,13 @@
-w<template>
+<template>
     <el-card shadow="always">
         <div slot="header">
-            <h3>Portfolios</h3>
+            <h3>Portfolio</h3>
         </div>
         <dashboard-portfolio-card
                 v-for="(portfolio, index) in portfolios"
                 :key="'pc-'+index+'-'+portfolio.updated_at"
-                :title="portfolio.platform"
-                :value="portfolio.portfolio_value"
+                :title="portfolio.platform.platform"
+                :value="portfolio.value"
                 :updated="portfolio.updated_at"
                 :loading="false"
         >
@@ -33,6 +33,9 @@ w<template>
             let self = this,
                 portfolios = JSON.parse(this.initial_portfolios);
 
+            portfolios = Array.isArray(portfolios) ? portfolios : [portfolios];
+
+            console.log(portfolios);
             this.updatePortfolios(portfolios);
             this.$echo.channel('portfolios').listen('PortfoliosUpdated', (payload) => {
                 self.updatePortfolios(payload.portfolios);

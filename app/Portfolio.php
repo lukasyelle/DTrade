@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portfolio extends Model
 {
-    protected $appends = ['value', 'stocks'];
+    protected $appends = ['value', 'title'];
     protected $fillable = ['cash', 'user_id', 'platform_data_id'];
 
     public function getValueAttribute()
@@ -18,6 +18,16 @@ class Portfolio extends Model
 
         return $value;
     }
+
+    public function getTitleAttribute()
+    {
+        return $this->platform->platform;
+    }
+
+//    public function getStocksAttribute()
+//    {
+//        return $this->stocks()->get();
+//    }
 
     public function stocks()
     {
@@ -31,6 +41,6 @@ class Portfolio extends Model
 
     public function platform()
     {
-        return $this->belongsTo(PlatformData::class);
+        return $this->belongsTo(PlatformData::class, 'platform_data_id', 'id');
     }
 }
