@@ -8,7 +8,8 @@ class Watchlist extends Model
 {
     protected $fillable = ['user_id'];
 
-    public function stocks() {
+    public function stocks()
+    {
         return $this->belongsToMany(Stock::class);
     }
 }
