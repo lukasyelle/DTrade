@@ -9,7 +9,7 @@
 
 @section('body')
         <el-row :gutter="20">
-            <el-col :md="16" :sm="24">
+            <el-col :span="{{ $portfolio ? '16' : '24' }}" :sm="24">
                 <el-container class="home">
                     <el-header>
                         <h1>Watchlist</h1>
@@ -31,7 +31,7 @@
                     </el-main>
                 </el-container>
             </el-col>
-            <el-col :md="8" :sm="24">
+            <el-col :md="8" :sm="24" class="{{ $portfolio ? '' : 'hidden' }}">
                 <dashboard-portfolios initial_portfolios="{{ $portfolio }}"></dashboard-portfolios>
             </el-col>
         </el-row>
