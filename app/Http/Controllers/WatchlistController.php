@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Stock;
 use App\Ticker;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WatchlistController extends Controller
