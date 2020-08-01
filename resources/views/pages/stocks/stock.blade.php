@@ -5,7 +5,12 @@
 @section('content')
     <el-container>
         <el-header>
-            <h1>{{ $stock->symbol }}</h1>
+            <h1>
+                {{ $stock->symbol }}
+                <span class="right" style="margin-top: 13px">
+                    <watchlist-button-component :stock="{{ $stock }}" :is-in-watchlist="{{ $stock->inWatchlist }}"></watchlist-button-component>
+                </span>
+            </h1>
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><a href="/stocks">Stocks</a></el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $stock->symbol }}</el-breadcrumb-item>
@@ -68,3 +73,9 @@
         {!! $chart->script() !!}
     @endforeach
 @endsection
+<script>
+    import WatchlistButtonComponent from "../../../js/components/stocks/WatchlistButtonComponent";
+    export default {
+        components: {WatchlistButtonComponent}
+    }
+</script>

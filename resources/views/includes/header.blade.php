@@ -13,9 +13,16 @@
                     <el-menu mode="horizontal">
                         <el-submenu index="1" style="margin-left: 36px">
                             <template slot="title"><i class="el-icon-menu"></i></template>
-                            <el-menu-item onclick="window.location.href='{{ route('profile.index') }}'">
-                                Profile
-                            </el-menu-item>
+                            @if(!Route::is('stocks.all'))
+                                <el-menu-item onclick="window.location.href='{{ route('stocks.all') }}'">
+                                    Stocks
+                                </el-menu-item>
+                            @endif
+                            @if(!Route::is('profile.*'))
+                                <el-menu-item onclick="window.location.href='{{ route('profile.index') }}'">
+                                    Profile
+                                </el-menu-item>
+                            @endif
                             <el-menu-item onclick="document.getElementById('logout-form').submit()">
                                 Logout
                             </el-menu-item>

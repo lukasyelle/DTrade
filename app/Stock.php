@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Stock extends Model
 {
@@ -18,7 +19,7 @@ class Stock extends Model
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
-    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize', 'inWatchlist'];
 
     public function ticker()
     {
@@ -43,6 +44,11 @@ class Stock extends Model
     public function portfolios()
     {
         return $this->belongsToMany(Portfolio::class);
+    }
+
+    public function watchlists()
+    {
+        return $this->belongsToMany(Watchlist::class);
     }
 
     public function modelParameters()
@@ -244,5 +250,12 @@ class Stock extends Model
 
             return $model->retrieve();
         }
+    }
+
+    public function getInWatchlistAttribute()
+    {
+        $watchlist = Auth::user()->watchlist;
+
+        return $watchlist && $watchlist->stocks->contains($this) ? 'true' : 'false';
     }
 }

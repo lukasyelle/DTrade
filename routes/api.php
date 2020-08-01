@@ -37,6 +37,13 @@ Route::prefix('stocks')->name('stocks.')->middleware('auth:api')->group(function
     });
 });
 
+Route::prefix('watchlist')->name('watchlist.')->middleware('auth:api')->group(function () {
+    Route::prefix('stocks/{symbol}')->group(function () {
+        Route::post('add', 'WatchlistController@add');
+        Route::post('remove', 'WatchlistController@remove');
+    });
+});
+
 Route::group(['middleware'=>'auth:api', 'prefix'=>'process/'], function () {
     Route::get('test', function (Request $request) {
         JobTest::dispatch(auth('api')->user());
