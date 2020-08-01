@@ -68,6 +68,11 @@ Vue.component(
     require('./components/pages/profile/Nav').default
 );
 
+Vue.component(
+    'stock-watchlist-button',
+    require('./components/stocks/WatchlistButtonComponent').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

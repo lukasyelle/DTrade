@@ -90,6 +90,13 @@
         .el-icon-menu {
             font-size: 24px;
             margin: 0;
+            line-height: 66px;
+            color: $dark;
+            @include transition(0.15s, linear);
+
+            &:hover {
+                transform: rotate(90deg);
+            }
         }
 
         .el-menu-item {

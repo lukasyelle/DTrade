@@ -34,7 +34,7 @@ class StocksController extends Controller
     public function index()
     {
         return view('pages.stocks.list', [
-            'stocks' => Stock::all(),
+            'stocks'    => Stock::all(),
         ]);
     }
 
