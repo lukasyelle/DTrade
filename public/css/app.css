@@ -124,9 +124,9 @@
   border-radius: 3px;
   font-family: "Montserrat", Arial;
   font-size: 0.7em;
-  background-color: #38c172;
+  background-color: #99e1d9;
   color: #fcfcfc;
-  border: 1px solid #38c172;
+  border: 1px solid #99e1d9;
   margin-right: 5px;
   text-transform: uppercase;
 }
@@ -294,6 +294,10 @@
 
 .bright-text {
   color: #ffffff;
+}
+
+.highlight {
+  color: #99e1d9;
 }
 
 #header {

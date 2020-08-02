@@ -19,7 +19,7 @@ class Stock extends Model
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
-    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize', 'inWatchlist'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize', 'inWatchlist', 'currentPosition'];
 
     public function ticker()
     {
@@ -257,5 +257,18 @@ class Stock extends Model
         $watchlist = Auth::user()->watchlist;
 
         return $watchlist && $watchlist->stocks->contains($this) ? 'true' : 'false';
+    }
+
+    public function getCurrentPositionAttribute()
+    {
+        $user = Auth::user();
+        if ($user && $user->portfolio) {
+            $stocks = $user->portfolio->stocks;
+            if ($stocks->contains($this)) {
+                return $stocks->find($this)->pivot->shares;
+            }
+        }
+
+        return 0;
     }
 }

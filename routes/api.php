@@ -44,6 +44,21 @@ Route::prefix('watchlist')->name('watchlist.')->middleware('auth:api')->group(fu
     });
 });
 
+Route::prefix('automation')->name('automation.')->middleware('auth:api')->group(function () {
+    Route::prefix('position-balancing')->name('balancing.')->group(function () {
+        Route::prefix('stock/{symbol}')->group(function () {
+            Route::post('enable', 'AutomationController@enable');
+            Route::post('disable', 'AutomationController@disable');
+        });
+    });
+    Route::prefix('portfolio')->name('portfolio.')->group(function () {
+        Route::prefix('stock/{symbol}')->group(function () {
+            Route::post('buy', 'PortfolioController@buy');
+            Route::post('sell', 'PortfolioController@sell');
+        });
+    });
+});
+
 Route::group(['middleware'=>'auth:api', 'prefix'=>'process/'], function () {
     Route::get('test', function (Request $request) {
         JobTest::dispatch(auth('api')->user());
