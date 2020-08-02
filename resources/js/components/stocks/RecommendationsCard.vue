@@ -32,7 +32,7 @@
                             <span class="dim-text">
                                 Verdict:&nbsp;
                                 <el-button v-if="shouldBuy || shouldSell" type="text" @click="openBuyOrSellModal()"><h3>{{ shouldBuy ? 'Buy' :'Sell'}} This Stock</h3></el-button>
-                                <span v-else>No Action</span>
+                                <span v-else>Maintain Current Position</span>
                             </span>
                         </div>
                         <el-card shadow="never" class="inline-block padding margin">
@@ -51,7 +51,7 @@
                             width="50%">
                             <div v-if="automate">
                                 <p><span>Warning: </span>Enabling position automation may result in some undesirable trades occurring. By enabling this feature, you are acknowledging this fact and agree to not hold us accountable to any losses endured as a result of these automated trades.</p>
-                                <p class="padding-top">This feature aims to maintain the Kelly-Optimal position size of your holdings in this stock. It will attempt to make trades at optimal times for both selling and buying, but if one is not detected before the end of the day at which the optimal number of shares changes, a trade will be made at a locally-optimum price.</p>
+                                <p class="padding-top">This feature aims to maintain the Kelly-Optimal position size of your holdings in this stock. It will attempt to make trades at optimal times for both selling and buying, but if one is not detected before the end of the day at which the optimal number of shares changes, a trade will be made at a locally-optimum price. Trades are tracked and executed optimally for your portfolio, and will only execute the best 3 trades in any given 5 day trading period.</p>
                                 <div slot="footer" class="dialog-footer">
                                     <el-button @click="automatedSizingDialogVisible = false" class="margin-top">Never mind, I dont want the risk.</el-button>
                                     <el-button @click="modifyPositionAutomation(true)" type="success" class="margin-top">Automate my position!</el-button>
@@ -68,9 +68,14 @@
                         <el-dialog
                             :title="(shouldBuy ? 'Buy' : 'Sell') + ' ' + stock.symbol + ' Stock'"
                             :visible.sync="buyOrSellDialogVisible"
-                            class="position-balancing-modal"
+                            class="buy-sell-modal"
                             width="50%">
                             <div>
+                                <el-form>
+                                    <el-form-item>
+                                        <el-input-number v-model="orderSize" :min="1"></el-input-number>
+                                    </el-form-item>
+                                </el-form>
                                 <div slot="footer" class="dialog-footer">
                                     <el-button @click="buyOrSellDialogVisible = false"  class="margin-top">Close</el-button>
                                     <el-button @click="buyOrSell()" type="success" class="margin-top">Submit Order</el-button>
@@ -103,6 +108,7 @@
                 automate: false,
                 automatedSizingDialogVisible: false,
                 buyOrSellDialogVisible: false,
+                orderSize: 0,
             };
         },
         methods: {
@@ -205,6 +211,9 @@
             },
             shouldSell () {
                 return this.optimalPosition < this.stock.currentPosition;
+            },
+            initialOrderSize () {
+                return Math.abs(this.optimalPosition - this.passedStock.currentPosition);
             }
         },
         mounted () {
@@ -215,6 +224,7 @@
             });
 
             window.src = this;
+            this.orderSize = this.initialOrderSize;
 
             Echo.channel('stocks')
                 .listen('StockUpdated', (result) => {
@@ -341,7 +351,14 @@
                     margin-bottom: 20px;
                 }
             }
+        }
 
+        .buy-sell-modal {
+            .el-icon {
+                span {
+                    line-height: 38px;
+                }
+            }
         }
     }
 </style>
