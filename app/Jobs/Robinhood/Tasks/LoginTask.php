@@ -10,29 +10,29 @@ use App\User;
 use Carbon\Carbon;
 use Exception;
 use Facebook\WebDriver\Exception\TimeOutException;
-use Illuminate\Support\Facades\Log;
 use Laravel\Dusk\Browser;
 
 class LoginTask extends BrowserTask
 {
     public $codeInputSelector = 'input[placeholder="000000"]';
+    public $robinhoodAccount;
+    public $browser;
+    public $user;
 
-    private function tryMfaCode(Browser $browser, $code)
+    private function tryMfaCode($code)
     {
-        Log::debug("Trying to type code: $code");
         try {
-            $browser->type($this->codeInputSelector, $code)
-                    ->press('Confirm')
-                    ->waitForText('Account');
+            $this->browser->type($this->codeInputSelector, $code)
+                          ->press('Confirm')
+                          ->waitForText('Account');
 
             return true;
-        }
-        catch (TimeOutException $exception) {
-            return false;
-        }
+        } catch (TimeOutException $e) {}
+
+        return false;
     }
 
-    private function isPreviousOlder($current, $previous)
+    private function isCurrentNewer($current, $previous)
     {
         if ($current instanceof MFACode && $previous instanceof MFACode) {
             return $current->created_at > $previous->created_at;
@@ -41,102 +41,154 @@ class LoginTask extends BrowserTask
         return false;
     }
 
-    private function handleMfa(User $user, Browser $browser)
+
+    private function getMfaCode()
     {
-        $mfaAccepted = false;
-        $mfaAttempted = false;
-        $previousMfaCode = null;
-        $loops = 0;
+        return User::where('id', $this->user->id)->first()->mfaCode()->first();
+    }
 
-        while (!$mfaAccepted && $loops < 60) {
-            // For three minutes, wait for the user to get a code.
-            $loops += 1;
-            $mfaCode = User::where('id', $user->id)->first()->mfaCode()->get()->first();
-            $previousMfaCodeIsOlder = $this->isPreviousOlder($mfaCode, $previousMfaCode);
+    private function mfaFailure()
+    {
+        $message = 'did not supply a MFA token in the time allotted.';
+        $this->browser->quit();
+        event(new MultiFactorFailed($this->user, "You $message"));
+        throw new Exception("User $message");
+    }
 
-            if ($mfaCode && $mfaCode->created_at->diffInSeconds() < 10) {
-                // MFA Code exists for a user, and it is relatively new
-                if (!$mfaAttempted || $previousMfaCodeIsOlder) {
-                    // Current MFA Has not been attempted, try it
-                    $mfaAccepted = $this->tryMfaCode($browser, $mfaCode->code);
-                    $mfaAttempted = true;
+    private function handleMfa($mfaAttempted = false, $previousMfaCode = null, $tries = 0)
+    {
+        if ($tries >= 10) {
+            // Timeout waiting for user to free up queue worker after 2 minutes.
+            $this->mfaFailure();
+            return false;
+        }
 
-                    if (!$mfaAccepted) {
-                        event(new MultiFactorNecessary($user , 'That code was invalid, please try again.'));
-                    }
-                }
+        $mfaCode = $this->getMfaCode();
+        if ($this->isCurrentNewer($mfaCode, $previousMfaCode)) {
+            $mfaAttempted = false;
+        }
+
+        $mfaCodeIsRecent = $mfaCode && $mfaCode->created_at->diffInSeconds() < 10;
+        if ($mfaCodeIsRecent && !$mfaAttempted) {
+            // A recent MFA Code exists for a user and it has not already been attempted
+            if ($this->tryMfaCode($mfaCode->code)) {
+                return true;
+            } else {
+                // Code was invalid, notify the user to try again
+                $mfaAttempted = true;
+                event(new MultiFactorNecessary($this->user , 'That code was invalid, please try again.'));
             }
-
-            $previousMfaCode = $mfaCode;
-            sleep(2);
         }
 
-        if (!$mfaAccepted) {
-            event(new MultiFactorFailed($user));
-            $browser->quit();
+        $tries += 1;
+        $previousMfaCode = $mfaCode;
+
+        sleep(2);
+
+        return $this->handleMfa($mfaAttempted, $previousMfaCode, $tries);
+    }
+
+    private function waitForAccountText()
+    {
+        try {
+            $this->browser->waitForText('Account');
+        } catch (TimeOutException $e) {
+            $userId = $this->user->id;
+            $dateString = Carbon::now()->format('yy-m-d-His');
+            $errorTitle = 'Account-Text-Not-Visible';
+            $this->browser->screenshot("failure-$errorTitle--user-$userId--$dateString");
+            $this->browser->quit();
+            throw new Exception('Account not visible when it should be');
         }
     }
 
-    private function clickTextOrEmailOption(Browser $browser)
+    private function clickTextOrEmailOption()
     {
         try {
-            $browser->assertSee('Text Me')
-                    ->press('Text Me')
-                    ->waitFor($this->codeInputSelector);
-
-            Log::debug('Done waiting for code input box.');
-        }
-        catch (Exception $e) {
-            $browser->press('Email Me')
-                    ->waitFor($this->codeInputSelector);
+            $this->browser
+                ->assertSee('Text Me')
+                ->press('Text Me')
+                ->waitFor($this->codeInputSelector);
+            return 'phone';
+        } catch (TimeOutException $e) {
+            $this->browser
+                ->assertSee('Email Me')
+                ->press('Email Me')
+                ->waitFor($this->codeInputSelector);
+            return 'email';
         }
     }
 
-    private function hasMfaRequirement(Browser $browser)
+    private function sendMfaRequest()
+    {
+        $verificationMethod = $this->clickTextOrEmailOption();
+        event(new MultiFactorNecessary($this->user , "Please enter the MFA code you were just sent to your $verificationMethod below."));
+    }
+
+    private function typeUsernamePassword()
+    {
+        $this->browser->type("input[name='username']", $this->robinhoodAccount->username)
+                      ->type("input[name='password']", decrypt($this->robinhoodAccount->password))
+                      ->click("button[type='submit']");
+    }
+
+    private function has($text)
     {
         try {
-            sleep(2);
-            $browser->waitForText('Verify Your Identity');
-            $this->clickTextOrEmailOption($browser);
+            $this->browser->waitForText($text);
 
             return true;
+        } catch (TimeOutException $e) {}
+
+        return false;
+    }
+
+    private function needsMfa()
+    {
+        return $this->has('Verify Your Identity');
+    }
+
+    private function needsLogin()
+    {
+        return $this->has('Welcome to Robinhood');
+    }
+
+    private function getRobinhoodAccount()
+    {
+        $robinhoodAccount = $this->user->platforms()->where('platform', 'robinhood')->first();
+        if ($robinhoodAccount == null) {
+            throw new Exception('User does not have a linked Robinhood account');
         }
-        catch (TimeOutException $e) {
-            return $browser->element($this->codeInputSelector) ? true : false;
-        }
+
+        return $robinhoodAccount;
     }
 
     /**
      * @param User    $user
      * @param Browser $browser
      *
-     * @throws \Facebook\WebDriver\Exception\TimeOutException
-     * @throws Exception                                      if the user does not have a Robinhood account
+     * @throws Exception
      */
     public function execute(User $user = null, Browser $browser = null)
     {
-        if ($browser == null) {
-            throw new Exception('User not passed to login task');
+        $this->user = $this->expectsUser($user);
+        $this->browser = $this->expectsBrowser($browser);
+        $this->robinhoodAccount = $this->getRobinhoodAccount();
+
+        $browser->visit('https://robinhood.com/login');
+
+        if ($this->needsLogin()) {
+            $this->typeUsernamePassword();
+
+            if ($this->needsMfa()) {
+                $this->sendMfaRequest();
+                $this->handleMfa();
+            }
         }
 
-        $robinhoodAccount = $user->platforms()->where('platform', 'robinhood')->first();
-        if ($robinhoodAccount == null) {
-            throw new Exception('User does not have a linked Robinhood account');
-        }
+        $this->waitForAccountText();
 
-        $browser->visit('https://robinhood.com/login')
-                ->type("input[name='username']", $robinhoodAccount->username)
-                ->type("input[name='password']", decrypt($robinhoodAccount->password))
-                ->click("button[type='submit']");
-
-        if ($this->hasMfaRequirement($browser)) {
-            event(new MultiFactorNecessary($user , 'Please enter the MFA code you were just sent below.'));
-            $this->handleMfa($user, $browser);
-        }
-
-        $browser->waitForText('Account');
-
-        $robinhoodAccount->last_login = Carbon::now()->toDateTimeString();
-        $robinhoodAccount->save();
+        $this->robinhoodAccount->last_login = Carbon::now()->toDateTimeString();
+        $this->robinhoodAccount->save();
     }
 }

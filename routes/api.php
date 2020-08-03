@@ -37,6 +37,7 @@ Route::prefix('user')->name('user.')->middleware('auth:api')->group(function () 
     Route::prefix('{user}')->group(function () {
         Route::prefix('robinhood')->name('robinhood')->group(function () {
             Route::post('mfa', 'RobinhoodController@receiveMfaCode');
+            Route::post('refreshPortfolio', 'RobinhoodController@refreshPortfolio');
         });
     });
 });
