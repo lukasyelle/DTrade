@@ -3,15 +3,17 @@
 namespace App\Events\Robinhood;
 
 use App\User;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class MultiFactorNecessary implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     private $user;
     public $message;
@@ -19,8 +21,8 @@ class MultiFactorNecessary implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param User      $user
-     * @param string    $message
+     * @param User   $user
+     * @param string $message
      */
     public function __construct(User $user, $message)
     {
@@ -35,6 +37,6 @@ class MultiFactorNecessary implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user.' . $this->user->id);
+        return new PrivateChannel('user.'.$this->user->id);
     }
 }
