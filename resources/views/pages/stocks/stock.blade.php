@@ -74,7 +74,7 @@
     @endforeach
 @endsection
 <script>
-    import WatchlistButtonComponent from "../../../js/components/stocks/WatchlistButtonComponent";
+    import WatchlistButtonComponent from "../../../js/components/pages/stocks/WatchlistButtonComponent";
     export default {
         components: {WatchlistButtonComponent}
     }

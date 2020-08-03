@@ -24,7 +24,7 @@ class PortfolioUpdated implements ShouldBroadcast
      */
     public function __construct(User $user)
     {
-        $this->portfolio = $user->portfolio()->with('stocks')->get();
+        $this->portfolio = $user->portfolio()->with('stocks')->first();
     }
 
     /**
@@ -34,6 +34,6 @@ class PortfolioUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`portfolio.${$this->portfolio->id}`);
+        return new PrivateChannel(`user.${$this->portfolio->id}`);
     }
 }
