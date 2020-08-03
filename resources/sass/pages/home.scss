@@ -1,11 +1,12 @@
-.home {
-    .el-header {
-        height: auto !important;
+.el-header {
+    height: auto !important;
 
-        h1 {
-            font-size: 48px;
-        }
+    h1 {
+        font-size: 48px;
     }
+}
+
+.home {
     .stock-card {
         margin-bottom: 20px;
 
@@ -58,12 +59,5 @@
                 margin-top: 0 !important;
             }
         }
-    }
-}
-
-.portfolios {
-    h2 {
-        font-size: 30px;
-        line-height: 48px;
     }
 }

@@ -9,7 +9,7 @@
 
 @section('body')
         <el-row :gutter="20">
-            <el-col :span="{{ $portfolio ? '16' : '24' }}" :sm="24">
+            <el-col :md="{{ $portfolio ? '16' : '24' }}" :sm="24">
                 <el-container class="home">
                     <el-header>
                         <h1>Watchlist</h1>

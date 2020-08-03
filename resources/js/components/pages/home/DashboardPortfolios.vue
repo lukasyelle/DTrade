@@ -1,7 +1,7 @@
 <template>
     <el-container class="portfolios">
         <el-header>
-            <h2>Portfolio</h2>
+            <h1>Portfolio</h1>
         </el-header>
         <el-main>
             <dashboard-portfolio-card
