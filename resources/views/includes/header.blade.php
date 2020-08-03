@@ -62,4 +62,7 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
+    @auth
+        <event-receiver :user-id="{{ Auth::user()->id }}"></event-receiver>
+    @endauth
 </div>

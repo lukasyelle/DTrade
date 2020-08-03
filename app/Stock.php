@@ -254,9 +254,13 @@ class Stock extends Model
 
     public function getInWatchlistAttribute()
     {
-        $watchlist = Auth::user()->watchlist;
+        if (Auth::check()) {
+            $watchlist = Auth::user()->watchlist;
 
-        return $watchlist && $watchlist->stocks->contains($this) ? 'true' : 'false';
+            return $watchlist && $watchlist->stocks->contains($this) ? 'true' : 'false';
+        }
+
+        return 'false';
     }
 
     public function getCurrentPositionAttribute()

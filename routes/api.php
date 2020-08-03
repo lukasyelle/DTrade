@@ -29,6 +29,19 @@ Route::get('stock/{ticker}/price', function (Request $request, $ticker) {
     return $stock->json();
 });
 
+Route::prefix('user')->name('user.')->middleware('auth:api')->group(function () {
+    Route::get('/', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::prefix('{user}')->group(function () {
+        Route::prefix('robinhood')->name('robinhood')->group(function () {
+            Route::post('mfa', 'RobinhoodController@receiveMfaCode');
+            Route::post('refreshPortfolio', 'RobinhoodController@refreshPortfolio');
+        });
+    });
+});
+
 Route::prefix('stocks')->name('stocks.')->middleware('auth:api')->group(function () {
     Route::prefix('{symbol}')->group(function () {
         Route::get('exists', 'StocksController@exists');
