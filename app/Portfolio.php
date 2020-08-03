@@ -24,11 +24,6 @@ class Portfolio extends Model
         return $this->platform->platform;
     }
 
-//    public function getStocksAttribute()
-//    {
-//        return $this->stocks()->get();
-//    }
-
     public function stocks()
     {
         return $this->belongsToMany(Stock::class)->withPivot('shares');

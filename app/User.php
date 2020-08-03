@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(AlphaVantageApi::class);
     }
+
+    public function mfaCode()
+    {
+        return $this->hasmany(MFACode::class)->orderBy('created_at', 'desc')->limit(1);
+    }
 }
