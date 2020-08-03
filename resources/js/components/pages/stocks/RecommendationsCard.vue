@@ -237,7 +237,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../../sass/variables';
+    @import '../../../../sass/variables';
 
     .recommendations {
         .select {
