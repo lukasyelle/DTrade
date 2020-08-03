@@ -27,7 +27,8 @@ class LoginTask extends BrowserTask
                           ->waitForText('Account');
 
             return true;
-        } catch (TimeOutException $e) {}
+        } catch (TimeOutException $e) {
+        }
 
         return false;
     }
@@ -41,7 +42,6 @@ class LoginTask extends BrowserTask
         return false;
     }
 
-
     private function getMfaCode()
     {
         return User::where('id', $this->user->id)->first()->mfaCode()->first();
@@ -52,6 +52,7 @@ class LoginTask extends BrowserTask
         $message = 'did not supply a MFA token in the time allotted.';
         $this->browser->quit();
         event(new MultiFactorFailed($this->user, "You $message"));
+
         throw new Exception("User $message");
     }
 
@@ -60,6 +61,7 @@ class LoginTask extends BrowserTask
         if ($tries >= 10) {
             // Timeout waiting for user to free up queue worker after 2 minutes.
             $this->mfaFailure();
+
             return false;
         }
 
@@ -76,7 +78,7 @@ class LoginTask extends BrowserTask
             } else {
                 // Code was invalid, notify the user to try again
                 $mfaAttempted = true;
-                event(new MultiFactorNecessary($this->user , 'That code was invalid, please try again.'));
+                event(new MultiFactorNecessary($this->user, 'That code was invalid, please try again.'));
             }
         }
 
@@ -98,6 +100,7 @@ class LoginTask extends BrowserTask
             $errorTitle = 'Account-Text-Not-Visible';
             $this->browser->screenshot("failure-$errorTitle--user-$userId--$dateString");
             $this->browser->quit();
+
             throw new Exception('Account not visible when it should be');
         }
     }
@@ -109,12 +112,14 @@ class LoginTask extends BrowserTask
                 ->assertSee('Text Me')
                 ->press('Text Me')
                 ->waitFor($this->codeInputSelector);
+
             return 'phone';
         } catch (TimeOutException $e) {
             $this->browser
                 ->assertSee('Email Me')
                 ->press('Email Me')
                 ->waitFor($this->codeInputSelector);
+
             return 'email';
         }
     }
@@ -122,7 +127,7 @@ class LoginTask extends BrowserTask
     private function sendMfaRequest()
     {
         $verificationMethod = $this->clickTextOrEmailOption();
-        event(new MultiFactorNecessary($this->user , "Please enter the MFA code you were just sent to your $verificationMethod below."));
+        event(new MultiFactorNecessary($this->user, "Please enter the MFA code you were just sent to your $verificationMethod below."));
     }
 
     private function typeUsernamePassword()
@@ -138,7 +143,8 @@ class LoginTask extends BrowserTask
             $this->browser->waitForText($text);
 
             return true;
-        } catch (TimeOutException $e) {}
+        } catch (TimeOutException $e) {
+        }
 
         return false;
     }
