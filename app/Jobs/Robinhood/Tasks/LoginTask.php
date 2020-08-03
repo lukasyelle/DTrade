@@ -20,14 +20,14 @@ class LoginTask extends BrowserTask
     private function tryMfaCode(Browser $browser, $code)
     {
         Log::debug("Trying to type code: $code");
+
         try {
             $browser->type($this->codeInputSelector, $code)
                     ->press('Confirm')
                     ->waitForText('Account');
 
             return true;
-        }
-        catch (TimeOutException $exception) {
+        } catch (TimeOutException $exception) {
             return false;
         }
     }
@@ -62,7 +62,7 @@ class LoginTask extends BrowserTask
                     $mfaAttempted = true;
 
                     if (!$mfaAccepted) {
-                        event(new MultiFactorNecessary($user , 'That code was invalid, please try again.'));
+                        event(new MultiFactorNecessary($user, 'That code was invalid, please try again.'));
                     }
                 }
             }
@@ -85,8 +85,7 @@ class LoginTask extends BrowserTask
                     ->waitFor($this->codeInputSelector);
 
             Log::debug('Done waiting for code input box.');
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $browser->press('Email Me')
                     ->waitFor($this->codeInputSelector);
         }
@@ -100,8 +99,7 @@ class LoginTask extends BrowserTask
             $this->clickTextOrEmailOption($browser);
 
             return true;
-        }
-        catch (TimeOutException $e) {
+        } catch (TimeOutException $e) {
             return $browser->element($this->codeInputSelector) ? true : false;
         }
     }
@@ -130,7 +128,7 @@ class LoginTask extends BrowserTask
                 ->click("button[type='submit']");
 
         if ($this->hasMfaRequirement($browser)) {
-            event(new MultiFactorNecessary($user , 'Please enter the MFA code you were just sent below.'));
+            event(new MultiFactorNecessary($user, 'Please enter the MFA code you were just sent below.'));
             $this->handleMfa($user, $browser);
         }
 
