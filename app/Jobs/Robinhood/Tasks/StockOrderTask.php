@@ -57,8 +57,10 @@ class StockOrderTask extends BrowserTask
 
     public function handleMarketOrder(Browser $browser)
     {
-        $browser->click('button.-aVQMh2t1ihTiMYRyjQA2')
+        if ($browser->element('button.-aVQMh2t1ihTiMYRyjQA2')) {
+            $browser->click('button.-aVQMh2t1ihTiMYRyjQA2')
                 ->clickLink('Shares', '._2P2xUGg0JyC-C4gA3ucexl');
+        }
         $this->typeShares($browser);
     }
 
