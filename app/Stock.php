@@ -19,7 +19,7 @@ class Stock extends Model
 
     protected $fillable = ['ticker_id'];
     protected $hidden = ['id', 'created_at', 'updated_at', 'ticker_id', 'data', 'projections', 'ticker'];
-    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize', 'inWatchlist', 'currentPosition'];
+    protected $appends = ['symbol', 'value', 'nextDay', 'fiveDay', 'tenDay', 'lastUpdatedAt', 'lastUpdate', 'quickLook', 'averageKellySize', 'inWatchlist', 'recommendedPosition', 'currentPosition'];
 
     public function ticker()
     {
@@ -49,6 +49,16 @@ class Stock extends Model
     public function watchlists()
     {
         return $this->belongsToMany(Watchlist::class);
+    }
+
+    public function automations()
+    {
+        return $this->hasMany(Automation::class);
+    }
+
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
     }
 
     public function modelParameters()
@@ -82,13 +92,19 @@ class Stock extends Model
         return round($trueAverage, 2);
     }
 
-    public function getRecommendedPositionAttribute()
+    public function recommendedPositionFor(User $user = null)
     {
-        if (auth()->check()) {
-            $user = auth()->user();
-            $avgKellySize = $this->averageKellySize / 10;
+        return $this->getRecommendedPositionAttribute($user);
+    }
 
-            return ($user->portfolio->cash * $avgKellySize) / $this->value;
+    public function getRecommendedPositionAttribute(User $user = null)
+    {
+        $user = $user ? $user : auth()->user();
+        if ($user) {
+            $avgKellySize = $this->averageKellySize / 100;
+            $moneyIn = ($user->portfolio->value * $avgKellySize) / $this->value;
+
+            return floor($moneyIn / $this->value);
         }
 
         return 0;
@@ -263,9 +279,14 @@ class Stock extends Model
         return 'false';
     }
 
-    public function getCurrentPositionAttribute()
+    public function currentPositionFor(User $user = null)
     {
-        $user = Auth::user();
+        return $this->getCurrentPositionAttribute($user);
+    }
+
+    public function getCurrentPositionAttribute(User $user = null)
+    {
+        $user = $user ? $user : Auth::user();
         if ($user && $user->portfolio) {
             $stocks = $user->portfolio->stocks;
             if ($stocks->contains($this)) {

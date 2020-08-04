@@ -26,7 +26,7 @@ class Portfolio extends Model
 
     public function stocks()
     {
-        return $this->belongsToMany(Stock::class)->withPivot('shares');
+        return $this->belongsToMany(Stock::class)->withPivot(['shares']);
     }
 
     public function user()

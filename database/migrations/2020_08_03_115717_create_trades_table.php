@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTradesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('trades', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('number_shares');
+            $table->string('order_type');
+            $table->boolean('executed')->default(false);
+            $table->integer('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('stock_id')->unsigned()->index();
+            $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
+            $table->integer('automation_id')->nullable()->default(null)->unsigned()->index();
+            $table->foreign('automation_id')->references('id')->on('stocks')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('trades');
+    }
+}
