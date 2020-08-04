@@ -52,7 +52,7 @@ class Trade extends Model
             'order'         => $this->order,
             'order_type'    => $this->order_type,
             'ticker'        => $this->stock->symbol,
-            'shares'        => $this->stock->shares,
+            'shares'        => $this->shares,
         ];
 
         if ($this->order_details) {

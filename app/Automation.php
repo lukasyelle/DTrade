@@ -50,7 +50,7 @@ class Automation extends Model
         return array_slice($dataSource, -$periods, $periods);
     }
 
-    private function getPriceSlope($periods)
+    public function getPriceSlope($periods)
     {
         $lastUpdate = $this->stock->lastUpdate->close;
         $closings = $this->stock->close;
@@ -101,7 +101,7 @@ class Automation extends Model
     private function isLocallyOptimalBuyTime()
     {
         if ($this->getCurrentRsi() < 50) {
-            $priceSlope = $this->getPriceSlope(5);
+            $priceSlope = $this->getPriceSlope(4);
 
             // Rsi is low and price is rising
             return $priceSlope > 0;
@@ -113,7 +113,7 @@ class Automation extends Model
     private function isLocallyOptimalSellTime()
     {
         if ($this->getCurrentRsi() > 50) {
-            $priceSlope = $this->getPriceSlope(5);
+            $priceSlope = $this->getPriceSlope(4);
 
             // Rsi is high and price is rising slowly or falling
             return $priceSlope < 1;
@@ -147,9 +147,13 @@ class Automation extends Model
     public function execute()
     {
         if ($this->enabled && $this->shouldTrade) {
+            // Make sure we can buy the stocks with the balance we have, also do
+            // the portfolio edits necessary to keep everything as synced as possible.
+            $orderSize = $this->user->portfolio->modifyPortfolio($this->stock, $this->orderSize);
+
             $trade = $this->trades()->firstOrCreate([
                 'order'         => $this->orderType,
-                'shares'        => $this->orderSize,
+                'shares'        => $orderSize,
                 'user_id'       => $this->user->id,
                 'stock_id'      => $this->stock->id,
                 'order_type'    => 'market',

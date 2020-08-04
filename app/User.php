@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function getNumberDayTradesAttribute()
     {
-        return $this->user->trades()->thisWeek()->all()->filter(function (Trade $trade) {
+        return $this->trades()->thisWeek()->get()->filter(function (Trade $trade) {
             return $trade->isDayTrade();
         })->count();
     }

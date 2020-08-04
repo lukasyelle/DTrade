@@ -69,6 +69,8 @@ class Portfolio extends Model
             // add it to their portfolio with the given amount of shares.
             $stocksQuery->attach($stock->id, ['shares' => $change]);
         }
+
+        return $change;
     }
 
     private function computeExpectedMovement(Stock $stock)

@@ -18,7 +18,7 @@ class AutomationController extends Controller
 
     public function enable($symbol)
     {
-        $automation = $this->automationFor($symbol)->enable();
+        $automation = $this->automationFor($symbol)->enable()->execute();
 
         return response($automation, 200);
     }
