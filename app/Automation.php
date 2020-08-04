@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Math;
+use Illuminate\Database\Eloquent\Model;
 
 class Automation extends Model
 {
