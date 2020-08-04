@@ -159,7 +159,7 @@ class Automation extends Model
             $stock = $this->stock->symbol;
             $order = $this->orderType === 'buy' ? 'purchase' : $this->orderType;
 
-            if ($trade->execute()){
+            if ($trade->execute()) {
                 event(new StockOrderSent($this->user, "Your $order order of $stock has been sent."));
             } else {
                 event(new TooManyDayTrades($this->user, "Your $order order of $stock failed because too many day trades have occurred in the past week."));
