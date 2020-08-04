@@ -22,4 +22,9 @@ class Trade extends Model
     {
         return $this->belongsTo(Automation::class);
     }
+
+    public function execute()
+    {
+
+    }
 }

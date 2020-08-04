@@ -59,7 +59,11 @@ class StocksController extends Controller
 
     public function get($stock)
     {
-        return view('pages.stocks.stock', $this->getData($stock));
+        if (Ticker::symbolExists($stock)) {
+            return view('pages.stocks.stock', $this->getData($stock));
+        } else {
+            return redirect(route('stocks.all'));
+        }
     }
 
     public function getDetailed($stock, int $graph = 0)

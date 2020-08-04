@@ -168,4 +168,18 @@ class Automation extends Model
 
         return $diff > 0 ? 'buy' : 'sell';
     }
+
+    public function getScoreAttribute()
+    {
+        $score = $this->stock->averageKellySize * $this->orderSize;
+        $score += abs($this->getRsiSlope(4));
+        $score += abs($this->getPriceSlope(4));
+
+        // Will scale the score by 10 or 5, or force the score to 0
+        // The 0 case will occur if the automation is not enabled or
+        // it is not a good time to trade this stock.
+        $score *= 10 * ($this->enabled ? $this->getOrderSizeScalar() : 0);
+
+        return $score;
+    }
 }

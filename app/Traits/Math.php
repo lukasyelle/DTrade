@@ -32,4 +32,9 @@ trait Math
 
         return $slope;
     }
+
+    public function normalize($value, $min, $max)
+    {
+        return ($value - $min) / ($max - $min);
+    }
 }
