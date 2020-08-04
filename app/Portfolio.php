@@ -117,7 +117,7 @@ class Portfolio extends Model
             $value += $stock->pivot->shares * $stock->value;
         });
 
-        return $value;
+        return round($value, 2);
     }
 
     public function getTitleAttribute()
