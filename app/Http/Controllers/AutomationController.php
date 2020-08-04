@@ -12,6 +12,7 @@ class AutomationController extends Controller
     {
         $user = Auth::user();
         $stock = Stock::fetch($symbol);
+
         return $user->automations()->firstOrCreate(['stock_id' => $stock->id]);
     }
 
