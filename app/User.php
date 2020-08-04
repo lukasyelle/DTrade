@@ -31,6 +31,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['numberDayTrades'];
+
     public function platforms()
     {
         return $this->hasMany(PlatformData::class);
@@ -54,5 +56,22 @@ class User extends Authenticatable
     public function mfaCode()
     {
         return $this->hasmany(MFACode::class)->orderBy('created_at', 'desc')->limit(1);
+    }
+
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
+    }
+
+    public function automations()
+    {
+        return $this->hasMany(Automation::class);
+    }
+
+    public function getNumberDayTradesAttribute()
+    {
+        return $this->trades()->thisWeek()->get()->filter(function (Trade $trade) {
+            return $trade->isDayTrade();
+        })->count();
     }
 }

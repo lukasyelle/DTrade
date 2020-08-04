@@ -6,6 +6,7 @@ use App\Jobs\Stocks\AnalyzeStock;
 use App\Jobs\Stocks\CheckAccuracy;
 use App\Jobs\Stocks\MarkEndOfDayData;
 use App\Jobs\Stocks\OptimizeModelParameters;
+use App\Jobs\Stocks\RunAutomations;
 use App\Jobs\Stocks\UpdateSharedTickers;
 use App\Jobs\Stocks\UpdateUserTickers;
 use App\Stock;
@@ -83,6 +84,11 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             self::keepTickersUpdated();
         })->everyMinute()->weekdays()->between('09:30', '16:00');
+
+        // Ensure automations are run throughout the day
+        $schedule->call(function () {
+            RunAutomations::dispatch();
+        })->hourly()->weekdays()->between('09:30', '16:00');
 
         // At the end of the trading day mark the last intraday update as the
         // EOD data point. Dispatch a minute after market close to allow pending

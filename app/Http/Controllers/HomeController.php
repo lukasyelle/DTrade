@@ -29,6 +29,7 @@ class HomeController extends Controller
         }
 
         return view('home', [
+            'user'      => $user,
             'portfolio' => $user->portfolio,
             'watchlist' => $user->watchlist,
         ]);

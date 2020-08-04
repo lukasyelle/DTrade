@@ -6,6 +6,7 @@ use App\Events\Robinhood\MultiFactorFailed;
 use App\Events\Robinhood\MultiFactorNecessary;
 use App\Jobs\BrowserTask;
 use App\MFACode;
+use App\PlatformData;
 use App\User;
 use Carbon\Carbon;
 use Exception;
@@ -58,7 +59,7 @@ class LoginTask extends BrowserTask
 
     private function handleMfa($mfaAttempted = false, $previousMfaCode = null, $tries = 0)
     {
-        if ($tries >= 10) {
+        if ($tries >= 60) {
             // Timeout waiting for user to free up queue worker after 2 minutes.
             $this->mfaFailure();
 
@@ -169,6 +170,45 @@ class LoginTask extends BrowserTask
         return $robinhoodAccount;
     }
 
+    public function getCookies(Browser $browser, PlatformData $robinhood)
+    {
+        if ($robinhood->cookies) {
+            //Add each cookie to this session
+            $cookies = collect(unserialize(base64_decode($robinhood->cookies->data)));
+
+            $cookies->each(function ($cookie) use ($browser) {
+                $browser->driver->manage()->addCookie($cookie);
+            });
+        }
+    }
+
+    public function saveCookies(Browser $browser, PlatformData $robinhood)
+    {
+        $cookies = base64_encode(serialize($browser->driver->manage()->getCookies()));
+        if (!$robinhood->cookies) {
+            $robinhood->cookies()->create(['data' => $cookies]);
+        } else {
+            $cookiesObject = $robinhood->cookies;
+            $cookiesObject->data = $cookies;
+            $cookiesObject->save();
+        }
+    }
+
+    private function visitHomePage(Browser $browser)
+    {
+        $browser->visit('https://robinhood.com/')
+                ->waitForText('Investing for Everyone');
+    }
+
+    private function visitLoginPage(Browser $browser)
+    {
+        try {
+            $browser->clickLink('Log In')
+                ->waitForText('Welcome to Robinhood', 30);
+        } catch (TimeOutException $e) {
+        }
+    }
+
     /**
      * @param User    $user
      * @param Browser $browser
@@ -181,7 +221,9 @@ class LoginTask extends BrowserTask
         $this->browser = $this->expectsBrowser($browser);
         $this->robinhoodAccount = $this->getRobinhoodAccount();
 
-        $browser->visit('https://robinhood.com/login');
+        $this->visitHomePage($browser);
+        $this->getCookies($browser, $this->robinhoodAccount);
+        $this->visitLoginPage($browser);
 
         if ($this->needsLogin()) {
             $this->typeUsernamePassword();
@@ -194,6 +236,7 @@ class LoginTask extends BrowserTask
 
         $this->waitForAccountText();
 
+        $this->saveCookies($browser, $this->robinhoodAccount);
         $this->robinhoodAccount->last_login = Carbon::now()->toDateTimeString();
         $this->robinhoodAccount->save();
     }

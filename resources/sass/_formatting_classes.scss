@@ -316,17 +316,21 @@
 }
 
 .dim-text {
-    color: $dim
+    color: $dim;
 }
 
 .dark-text {
-    color: $dark
+    color: $dark;
 }
 
 .light-text {
-    color: $light
+    color: $light;
 }
 
 .bright-text {
-    color: $bright
+    color: $bright;
+}
+
+.highlight {
+    color: $highlight;
 }

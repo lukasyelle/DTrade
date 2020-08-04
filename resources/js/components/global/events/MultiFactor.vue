@@ -76,7 +76,7 @@
             }
         },
         mounted () {
-            let a = Echo.private(`user.${ this.userId }`)
+            Echo.private(`user.${ this.userId }`)
                 .listen('Robinhood.MultiFactorNecessary', (result) => {
                     this.submitted = false;
                     this.message = result.message;
