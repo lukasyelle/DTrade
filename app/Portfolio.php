@@ -105,10 +105,10 @@ class Portfolio extends Model
     {
         $projections = [$stock->nextDay, $stock->fiveDay, $stock->tenDay];
 
-        return collect($projections)->map(function ($projection) use ($stock) {
+        return collect($projections)->map(function ($projection) {
             $projectedMovement = 0;
 
-            switch (str_replace([' profit', ' loss'], '' , $projection['verdict'])) {
+            switch (str_replace([' profit', ' loss'], '', $projection['verdict'])) {
                 case 'small':
                     $projectedMovement = .02;
                     break;
@@ -128,7 +128,8 @@ class Portfolio extends Model
         })->average();
     }
 
-    private function recommendedPositionFor(Stock $stock){
+    private function recommendedPositionFor(Stock $stock)
+    {
         return $stock->recommendedPositionFor($this->user);
     }
 
