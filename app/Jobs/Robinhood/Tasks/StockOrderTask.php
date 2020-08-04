@@ -25,7 +25,7 @@ class StockOrderTask extends BrowserTask
     {
         $browser->press('Review Order')
                 ->waitForText('You are')
-                ->press("Submit $order");
+                ->press("$order");
 
         // Handle the cases where robinhood requires you reenter your password.
         if ($browser->element("input[name='password']")) {

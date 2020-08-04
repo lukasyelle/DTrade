@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portfolio extends Model
 {
-    protected $appends = ['value', 'title', 'percentCash'];
+    protected $appends = ['value', 'title'];
     protected $fillable = ['cash', 'user_id', 'platform_data_id'];
 
     public function stocks()
@@ -86,21 +86,6 @@ class Portfolio extends Model
         return $this->platform->platform;
     }
 
-    public function getPercentCashAttribute()
-    {
-        return $this->value / $this->cash;
-    }
-
-    // How much of your portfolio is comprised of a given stock
-    public function percentStock(Stock $stock)
-    {
-        if ($this->stocks->contains($stock)) {
-            return $this->value / ($stock->pivot->shares * $stock->value);
-        }
-
-        return 0;
-    }
-
     private function computeExpectedMovement(Stock $stock)
     {
         $projections = [$stock->nextDay, $stock->fiveDay, $stock->tenDay];
@@ -155,7 +140,7 @@ class Portfolio extends Model
         })->filter(function (Stock $stock) use (&$totalCost) {
             // Keep as many as we can afford to buy together
             $costOfOptimalShares = $this->costOfOptimalShares($stock);
-            if ($totalCost + $costOfOptimalShares < $this->value) {
+            if ($totalCost + $costOfOptimalShares < $this->cash) {
                 $totalCost += $costOfOptimalShares;
 
                 return true;

@@ -141,7 +141,7 @@ class Automation extends Model
 
     public function getNeedsBalancingAttribute()
     {
-        return $this->enabled ? $this->currentVsRecommendedDiff() !== 0 : false;
+        return $this->enabled ? $this->currentVsRecommendedDiff() !== 0.0 : false;
     }
 
     public function getBalancingQuantityAttribute()

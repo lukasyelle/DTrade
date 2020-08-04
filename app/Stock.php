@@ -101,10 +101,9 @@ class Stock extends Model
     {
         $user = $user ? $user : auth()->user();
         if ($user) {
-            $avgKellySize = $this->averageKellySize / 100;
-            $moneyIn = ($user->portfolio->value * $avgKellySize) / $this->value;
+            $moneyIn = ($this->averageKellySize / 100) * $user->portfolio->value;
 
-            return floor($moneyIn / $this->value);
+            return round($moneyIn / $this->value);
         }
 
         return 0;

@@ -13,11 +13,10 @@ class JobTest extends BrowserJob
     {
         $orderDetails = [
             'order'         => 'buy',
-            'order_type'    => 'stop limit',
+            'order_type'    => 'limit',
             'ticker'        => 'dse',
             'shares'        => '1',
             'limit_price'   => '0.5',
-            'stop_price'    => '0.45',
             'expiration'    => 'Good till Canceled',
         ];
 

@@ -185,7 +185,13 @@ class LoginTask extends BrowserTask
     public function saveCookies(Browser $browser, PlatformData $robinhood)
     {
         $cookies = base64_encode(serialize($browser->driver->manage()->getCookies()));
-        $robinhood->cookies()->firstOrCreate(['data' => $cookies]);
+        if (!$robinhood->cookies) {
+            $robinhood->cookies()->create(['data' => $cookies]);
+        } else {
+            $cookiesObject = $robinhood->cookies;
+            $cookiesObject->data = $cookies;
+            $cookiesObject->save();
+        }
     }
 
     private function visitHomePage(Browser $browser)

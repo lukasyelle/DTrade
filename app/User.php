@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasmany(MFACode::class)->orderBy('created_at', 'desc')->limit(1);
     }
 
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
+    }
+
     public function automations()
     {
         return $this->hasMany(Automation::class);
