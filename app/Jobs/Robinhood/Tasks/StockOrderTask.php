@@ -4,8 +4,8 @@ namespace App\Jobs\Robinhood\Tasks;
 
 use App\Jobs\BrowserTask;
 use App\User;
+use Exception;
 use Laravel\Dusk\Browser;
-use \Exception;
 
 class StockOrderTask extends BrowserTask
 {
@@ -52,7 +52,7 @@ class StockOrderTask extends BrowserTask
     public function selectExpiration(Browser $browser)
     {
         $browser->click('button.-aVQMh2t1ihTiMYRyjQA2')
-                ->clickLink($this->params['expiration'],'._39ED64wnAoahW3-2WXpEzU');
+                ->clickLink($this->params['expiration'], '._39ED64wnAoahW3-2WXpEzU');
     }
 
     public function handleMarketOrder(Browser $browser)
@@ -88,7 +88,7 @@ class StockOrderTask extends BrowserTask
     }
 
     /**
-     * handleOrder - parse the order type to a handler and execute it
+     * handleOrder - parse the order type to a handler and execute it.
      *
      * @param Browser $browser
      * @param         $orderType
@@ -97,7 +97,7 @@ class StockOrderTask extends BrowserTask
      */
     public function handleOrder(Browser $browser, $orderType)
     {
-        $orderHandler = 'handle' . str_replace(' ', '', ucwords($orderType)) . 'Order';
+        $orderHandler = 'handle'.str_replace(' ', '', ucwords($orderType)).'Order';
         if (method_exists($this, $orderHandler)) {
             $this->$orderHandler($browser);
         } else {
