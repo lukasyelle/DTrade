@@ -199,8 +199,7 @@ class LoginTask extends BrowserTask
         try {
             $browser->clickLink('Log In')
                 ->waitForText('Welcome to Robinhood', 30);
-        } catch (TimeOutException $e)
-        {
+        } catch (TimeOutException $e) {
         }
     }
 
