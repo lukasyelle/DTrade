@@ -31,7 +31,7 @@ class GrabPortfolioValues extends BrowserTask
             if (Ticker::symbolExists($stockName)) {
                 $stock = Stock::fetch($stockName);
                 $data = [
-                    $stock->id => ['shares' => intval(str_replace(' Shares', '', $stockShares))]
+                    $stock->id => ['shares' => intval(str_replace(' Shares', '', $stockShares))],
                 ];
                 $user->portfolio->stocks()->sync($data);
                 array_push($stocks, strtolower($stock->symbol));
