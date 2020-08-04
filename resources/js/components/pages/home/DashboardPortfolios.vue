@@ -7,10 +7,8 @@
             <dashboard-portfolio-card
                 v-for="(portfolio, index) in portfolios"
                 :key="'pc-'+index+'-'+portfolio.updated_at"
-                :title="portfolio.platform.platform"
-                :value="portfolio.value"
-                :updated="portfolio.updated_at"
-                :loading="false"
+                :sent-portfolio="portfolio"
+                :user-id="userId"
             >
             </dashboard-portfolio-card>
         </el-main>
@@ -20,10 +18,10 @@
 <script>
     export default {
         name: "DashboardPortfolios",
-        props: ["initial_portfolios"],
+        props: ["initial_portfolios", 'userId'],
         data () {
             return {
-                portfolios: []
+                portfolios: [],
             };
         },
         methods: {
@@ -32,14 +30,10 @@
             }
         },
         mounted () {
-            let self = this,
-                portfolios = JSON.parse(this.initial_portfolios);
+            let portfolios = JSON.parse(this.initial_portfolios);
 
             portfolios = Array.isArray(portfolios) ? portfolios : [portfolios];
             this.updatePortfolios(portfolios);
-            this.$echo.channel('portfolios').listen('PortfoliosUpdated', (payload) => {
-                self.updatePortfolios(payload.portfolios);
-            });
         }
     }
 </script>

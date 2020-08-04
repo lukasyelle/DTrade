@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Robinhood;
 
-use App\Events\PortfolioUpdated;
+use App\Events\Portfolio\PortfolioUpdated;
 use App\Jobs\BrowserJob;
 
 class RefreshPortfolioJob extends BrowserJob
@@ -25,7 +25,6 @@ class RefreshPortfolioJob extends BrowserJob
 
     public function tearDown()
     {
-        \Log::debug($this->user);
-        event(new PortfolioUpdated($this->user));
+        event(new PortfolioUpdated($this->user, $this->user->portfolio));
     }
 }

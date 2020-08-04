@@ -32,7 +32,7 @@
                 </el-container>
             </el-col>
             <el-col :md="8" :sm="24" class="{{ $portfolio ? '' : 'hidden' }}">
-                <dashboard-portfolios initial_portfolios="{{ $portfolio }}"></dashboard-portfolios>
+                <dashboard-portfolios user-id="{{ $user->id }}" initial_portfolios="{{ $portfolio }}"></dashboard-portfolios>
             </el-col>
         </el-row>
 </div>

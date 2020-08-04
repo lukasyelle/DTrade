@@ -22,6 +22,7 @@ class GrabPortfolioValues extends BrowserTask
 
     private function updateStocks(User $user, Browser $browser)
     {
+        $data = [];
         $stocks = [];
         $stockElements = $browser->elements('.rh-hyperlink.qD5a4psv-CV7GnWdHxLvn._3M7AljDD8LvhnX3nLSzsxK ._2I1BbQ7XdJcJvUV6xWz9u2');
         foreach ($stockElements as $stockElement) {
@@ -30,16 +31,16 @@ class GrabPortfolioValues extends BrowserTask
             $stockShares = $stockNameAndShares[1]->getAttribute('innerHTML');
             if (Ticker::symbolExists($stockName)) {
                 $stock = Stock::fetch($stockName);
-                $data = [
-                    $stock->id => ['shares' => intval(str_replace(' Shares', '', $stockShares))],
-                ];
-                $user->portfolio->stocks()->sync($data);
+                $data[$stock->id] = ['shares' => intval(str_replace(' Shares', '', $stockShares))];
                 array_push($stocks, strtolower($stock->symbol));
             }
         }
 
+        $user->portfolio->stocks()->sync($data);
+
         $user->portfolio->stocks->each(function (Stock $stock) use ($stocks, $user) {
             if (!in_array(strtolower($stock->symbol), $stocks)) {
+                \Log::debug('Deleting stock '.$stock->symbol);
                 $user->portfolio->stocks()->detach($stock);
             }
         });
@@ -64,7 +65,8 @@ class GrabPortfolioValues extends BrowserTask
 
         $this->savePortfolioBuyingPower($user, $browser);
 
-        $browser->click("a[href='/account']");
+        $browser->click("a[href='/account']")
+                ->pause(1000);
 
         $this->updateStocks($user, $browser);
     }
