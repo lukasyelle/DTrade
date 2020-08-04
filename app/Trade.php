@@ -25,6 +25,5 @@ class Trade extends Model
 
     public function execute()
     {
-
     }
 }
