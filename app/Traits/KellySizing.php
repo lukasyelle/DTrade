@@ -58,7 +58,7 @@ trait KellySizing
             $lossAmount = $this->getPotentialLossAmount();
             $winProbability = $this->probabilityProfit;
 
-            $profitAmount = $this->normalize($profitAmount, 0.01 ,0.12);
+            $profitAmount = $this->normalize($profitAmount, 0.01, 0.12);
 
             // The kelly formula being used is: W/A – (1 – W)/B
             // Where W is the win probability, B is the profit (%) in the event
