@@ -71,21 +71,6 @@ class Portfolio extends Model
         }
     }
 
-    public function getValueAttribute()
-    {
-        $value = $this->cash;
-        $this->stocks->each(function (Stock $stock) use (&$value) {
-            $value += $stock->pivot->shares * $stock->value;
-        });
-
-        return $value;
-    }
-
-    public function getTitleAttribute()
-    {
-        return $this->platform->platform;
-    }
-
     private function computeExpectedMovement(Stock $stock)
     {
         $projections = [$stock->nextDay, $stock->fiveDay, $stock->tenDay];
@@ -121,6 +106,21 @@ class Portfolio extends Model
     private function costOfOptimalShares(Stock $stock)
     {
         return $this->recommendedPositionFor($stock) * $stock->value;
+    }
+
+    public function getValueAttribute()
+    {
+        $value = $this->cash;
+        $this->stocks->each(function (Stock $stock) use (&$value) {
+            $value += $stock->pivot->shares * $stock->value;
+        });
+
+        return $value;
+    }
+
+    public function getTitleAttribute()
+    {
+        return $this->platform->platform;
     }
 
     public function getRecommendedStocksAttribute()

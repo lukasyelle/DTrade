@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\Portfolio\StockOrderSent;
+use App\Events\Portfolio\TooManyDayTrades;
 use App\Traits\Math;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,7 +52,10 @@ class Automation extends Model
 
     private function getPriceSlope($periods)
     {
-        $close = $this->dataLimit($this->stock->close, $periods);
+        $lastUpdate = $this->stock->lastUpdate->close;
+        $closings = $this->stock->close;
+        array_push($closings, $lastUpdate);
+        $close = $this->dataLimit($closings, $periods);
 
         return $this->computeSlope($close);
     }
@@ -139,6 +144,29 @@ class Automation extends Model
         return 0;
     }
 
+    public function execute()
+    {
+        if ($this->enabled && $this->shouldTrade) {
+            $trade = $this->trades()->firstOrCreate([
+                'order'         => $this->orderType,
+                'shares'        => $this->orderSize,
+                'user_id'       => $this->user->id,
+                'stock_id'      => $this->stock->id,
+                'order_type'    => 'market',
+                'executed'      => false,
+            ]);
+
+            $stock = $this->stock->symbol;
+            $order = $this->orderType === 'buy' ? 'purchase' : $this->orderType;
+
+            if ($trade->execute()){
+                event(new StockOrderSent($this->user, "Your $order order of $stock has been sent."));
+            } else {
+                event(new TooManyDayTrades($this->user, "Your $order order of $stock failed because too many day trades have occurred in the past week."));
+            }
+        }
+    }
+
     public function getNeedsBalancingAttribute()
     {
         return $this->enabled ? $this->currentVsRecommendedDiff() !== 0.0 : false;
@@ -167,19 +195,5 @@ class Automation extends Model
         }
 
         return $diff > 0 ? 'buy' : 'sell';
-    }
-
-    public function getScoreAttribute()
-    {
-        $score = $this->stock->averageKellySize * $this->orderSize;
-        $score += abs($this->getRsiSlope(4));
-        $score += abs($this->getPriceSlope(4));
-
-        // Will scale the score by 10 or 5, or force the score to 0
-        // The 0 case will occur if the automation is not enabled or
-        // it is not a good time to trade this stock.
-        $score *= 10 * ($this->enabled ? $this->getOrderSizeScalar() : 0);
-
-        return $score;
     }
 }

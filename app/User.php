@@ -31,6 +31,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['numberDayTrades'];
+
     public function platforms()
     {
         return $this->hasMany(PlatformData::class);
@@ -64,5 +66,12 @@ class User extends Authenticatable
     public function automations()
     {
         return $this->hasMany(Automation::class);
+    }
+
+    public function getNumberDayTradesAttribute()
+    {
+        return $this->user->trades()->thisWeek()->all()->filter(function (Trade $trade) {
+            return $trade->isDayTrade();
+        })->count();
     }
 }
