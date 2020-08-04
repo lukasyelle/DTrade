@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="cards">
-            <el-card shadow="never" class="inline-block card" ref="kellyPercent">
+            <el-card shadow="never" class="inline-block card" ref="kellyPercent" style="padding-top: 16px; padding-bottom: 16px">
                 <el-progress type="dashboard" :percentage="percentage" color="#99E1D9" :width="innerWidth" :stroke-width="10"></el-progress>
                 <div class="text-container" :style="'width: ' + innerWidth + 'px'">
                     <p>Of your portfolio should consist of this stock.</p>
