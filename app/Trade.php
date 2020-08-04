@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class Trade extends Model
 {
-    protected $fillable = ['order', 'order_type', 'shares', 'order_details', 'executed', 'user_id', 'stock_id', 'automation_id',];
+    protected $fillable = ['order', 'order_type', 'shares', 'order_details', 'executed', 'user_id', 'stock_id', 'automation_id'];
 
     public function user()
     {
@@ -26,7 +26,7 @@ class Trade extends Model
         return $this->belongsTo(Automation::class);
     }
 
-    public function scopeThisWeek(Builder$query)
+    public function scopeThisWeek(Builder $query)
     {
         return $query->where('created_at', '>', Carbon::today()->subDays(7));
     }
@@ -35,10 +35,11 @@ class Trade extends Model
     {
         if ($this->order_type === 'sell' && $this->executed) {
             $startOfTradingTime = Carbon::today()->addHours(9)->addMinutes(30);
+
             return $this->user->trades->where([
                 ['stock_id', '=', $this->stock->id],
                 ['order_type', '=', 'buy'],
-                ['updated_at', '>', $startOfTradingTime]
+                ['updated_at', '>', $startOfTradingTime],
             ])->exists();
         }
 
@@ -74,6 +75,7 @@ class Trade extends Model
 
         $this->executed = true;
         $this->save();
+
         return true;
     }
 }
