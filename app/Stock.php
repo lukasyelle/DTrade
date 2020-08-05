@@ -100,7 +100,7 @@ class Stock extends Model
     public function getRecommendedPositionAttribute(User $user = null)
     {
         $user = $user ? $user : auth()->user();
-        if ($user) {
+        if ($user && $user->portfolio) {
             $moneyIn = ($this->averageKellySize / 100) * $user->portfolio->value;
 
             return round($moneyIn / $this->value);
