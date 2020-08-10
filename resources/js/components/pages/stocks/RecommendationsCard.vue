@@ -229,7 +229,9 @@
             Echo.channel('stocks')
                 .listen('StockUpdated', (result) => {
                     if (this.stock.symbol === result.stock.symbol) {
+                        let previousPosition = this.stock.currentPosition;
                         this.stock = result.stock;
+                        this.stock.currentPosition = previousPosition;
                     }
                 });
         }
