@@ -74,10 +74,10 @@ abstract class BaseTask
     public function addRequiredParams($params)
     {
         if ($params !== true) {
-            if (!is_array($params)) {
+            if (! is_array($params)) {
                 $params = [$params];
             }
-            if (!is_array($this->requiredParams)) {
+            if (! is_array($this->requiredParams)) {
                 if ($this->requiredParams == true || $this->requiredParams == null) {
                     $this->requiredParams = [];
                 } else {

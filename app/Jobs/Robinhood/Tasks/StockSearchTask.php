@@ -23,7 +23,7 @@ class StockSearchTask extends BrowserTask
     public function execute(User $user = null, Browser $browser = null)
     {
         $symbol = $this->params;
-        if (!is_string($symbol)) {
+        if (! is_string($symbol)) {
             throw new Exception('Ticker symbol must be sent as the parameter to the task upon initialization.');
         }
         $browser->visit("https://robinhood.com/stocks/$symbol")

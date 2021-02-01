@@ -55,7 +55,7 @@ class LoginController extends Controller
         $request->session()->push('api_key', $tokenResult->accessToken);
         $platform = $user->platforms->first();
         if ($platform) {
-            if (!$user->portfolio) {
+            if (! $user->portfolio) {
                 $user->portfolio()->create(['platform_data_id' => $platform->id]);
             }
             RefreshPortfolioJob::dispatch($user);
