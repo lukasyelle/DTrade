@@ -135,7 +135,7 @@ class Portfolio extends Model
             $canAffordOptimalShares = $this->costOfOptimalShares($stock) < $this->cash;
 
             // Dont want to recommend stocks that are already in our portfolio, in bad shape, or that we cant afford.
-            return ! $this->stocks->contains($stock) && $optimalPositionSize > 0 && $canAffordOptimalShares;
+            return !$this->stocks->contains($stock) && $optimalPositionSize > 0 && $canAffordOptimalShares;
         })->sortBy(function (Stock $stock) {
             // Sort the stocks by their average expected return
             return $this->computeExpectedMovement($stock);

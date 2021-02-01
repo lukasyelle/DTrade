@@ -45,7 +45,7 @@ class DataSource
     {
         $str = str_replace($delimiter, '', ucwords($string, $delimiter));
 
-        if (! $capitalizeFirstCharacter) {
+        if (!$capitalizeFirstCharacter) {
             $str = lcfirst($str);
         }
 
