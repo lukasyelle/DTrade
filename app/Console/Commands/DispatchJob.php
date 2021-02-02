@@ -28,7 +28,7 @@ class DispatchJob extends Command
     public function handle()
     {
         $class = '\\App\\Jobs\\'.$this->argument('job');
-        if (! class_exists($class)) {
+        if (!class_exists($class)) {
             $this->error('Job does not exist.');
 
             return  1;
