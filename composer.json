@@ -7,6 +7,12 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lukasyelle/trader"
+        }
+    ],
     "require": {
         "php": "^7.3",
         "ext-json": "*",
@@ -16,7 +22,7 @@
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "kokspflanze/alpha-vantage-api": "^0.5.0",
-        "laratrade/trader": "^1.0",
+        "laratrade/trader": "dev-laravel-update",
         "laravel/framework": "^6.20",
         "laravel/horizon": "^3.7",
         "laravel/passport": "^9.3",
@@ -24,7 +30,7 @@
         "lukasyelle/dusk-prodsafe": "v5.5.3",
         "php-ai/php-ml": "^0.9.0",
         "pusher/pusher-php-server": "^4.1",
-        "radicalloop/eodhistoricaldata": "^1.0",
+        "radicalloop/eodhistoricaldata": "^2.0|^3.0",
         "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {
