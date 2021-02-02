@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if (!$user->watchlist) {
+        if (! $user->watchlist) {
             $user->watchlist()->create(['user_id' => $user->id]);
         }
 

@@ -72,7 +72,7 @@ class LoginTask extends BrowserTask
         }
 
         $mfaCodeIsRecent = $mfaCode && $mfaCode->created_at->diffInSeconds() < 10;
-        if ($mfaCodeIsRecent && !$mfaAttempted) {
+        if ($mfaCodeIsRecent && ! $mfaAttempted) {
             // A recent MFA Code exists for a user and it has not already been attempted
             if ($this->tryMfaCode($mfaCode->code)) {
                 return true;
@@ -185,7 +185,7 @@ class LoginTask extends BrowserTask
     public function saveCookies(Browser $browser, PlatformData $robinhood)
     {
         $cookies = base64_encode(serialize($browser->driver->manage()->getCookies()));
-        if (!$robinhood->cookies) {
+        if (! $robinhood->cookies) {
             $robinhood->cookies()->create(['data' => $cookies]);
         } else {
             $cookiesObject = $robinhood->cookies;

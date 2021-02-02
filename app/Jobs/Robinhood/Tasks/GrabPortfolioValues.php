@@ -39,7 +39,7 @@ class GrabPortfolioValues extends BrowserTask
         $user->portfolio->stocks()->sync($data);
 
         $user->portfolio->stocks->each(function (Stock $stock) use ($stocks, $user) {
-            if (!in_array(strtolower($stock->symbol), $stocks)) {
+            if (! in_array(strtolower($stock->symbol), $stocks)) {
                 \Log::debug('Deleting stock '.$stock->symbol);
                 $user->portfolio->stocks()->detach($stock);
             }

@@ -11,7 +11,7 @@ class WatchlistController extends Controller
 {
     private function ensureWatchlistExists(User $user)
     {
-        if (!$user->watchlist) {
+        if (! $user->watchlist) {
             $user->watchlist()->create(['user_id' => $user->id]);
         }
     }
