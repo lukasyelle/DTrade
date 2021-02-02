@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Portfolio;
 use App\Stock;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 class PortfolioController extends Controller
 {
@@ -38,7 +38,7 @@ class PortfolioController extends Controller
     public function buy($symbol)
     {
         $stock = Stock::fetch($symbol);
-        $amount = Input::get('amount');
+        $amount = Request::get('amount');
         $this->portfolio()->modifyPortfolio($stock, $amount);
 
         return response("Launched job to buy $symbol.");
@@ -47,7 +47,7 @@ class PortfolioController extends Controller
     public function sell($symbol)
     {
         $stock = Stock::fetch($symbol);
-        $amount = Input::get('amount');
+        $amount = Request::get('amount');
         $this->portfolio()->modifyPortfolio($stock, -$amount);
 
         return response("Launched job to sell $symbol.");
