@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
-        "aws/aws-sdk-php": "^3.172",
+        "aws/aws-sdk-php": "^3.176",
         "consoletvs/charts": "6.*",
         "digitonic/iex-cloud-sdk": "^0.2.0",
         "doctrine/dbal": "^3.0",
