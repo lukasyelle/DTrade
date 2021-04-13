@@ -18,7 +18,7 @@
         "ext-json": "*",
         "aws/aws-sdk-php": "^3.178",
         "consoletvs/charts": "6.*",
-        "digitonic/iex-cloud-sdk": "^0.2.0",
+        "digitonic/iex-cloud-sdk": "^0.5.1",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "kokspflanze/alpha-vantage-api": "^0.5.0",
