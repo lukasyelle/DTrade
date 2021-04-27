@@ -27,7 +27,7 @@
         "laravel/horizon": "^3.7",
         "laravel/passport": "^9.3",
         "laravel/tinker": "^2.5",
-        "lukasyelle/dusk-prodsafe": "v5.5.3",
+        "lukasyelle/dusk-prodsafe": "^5.5",
         "php-ai/php-ml": "^0.9.0",
         "pusher/pusher-php-server": "^4.1",
         "radicalloop/eodhistoricaldata": "^2.0|^3.0",
