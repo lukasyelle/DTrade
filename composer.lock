@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60a5dd8e0edf1604aaa980e7304d63f2",
+    "content-hash": "79926fb17df966416e9ea7adef49a245",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2695,16 +2695,16 @@
         },
         {
             "name": "lukasyelle/dusk-prodsafe",
-            "version": "v5.5.3",
+            "version": "5.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lukasyelle/dusk-prodsafe.git",
-                "reference": "d5d3553f06fb5930b245f9db0a1a9729e858c755"
+                "reference": "1e4280df151ac0547858367a6c7d9d94473a2c0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lukasyelle/dusk-prodsafe/zipball/d5d3553f06fb5930b245f9db0a1a9729e858c755",
-                "reference": "d5d3553f06fb5930b245f9db0a1a9729e858c755",
+                "url": "https://api.github.com/repos/lukasyelle/dusk-prodsafe/zipball/1e4280df151ac0547858367a6c7d9d94473a2c0b",
+                "reference": "1e4280df151ac0547858367a6c7d9d94473a2c0b",
                 "shasum": ""
             },
             "require": {
@@ -2715,14 +2715,14 @@
                 "illuminate/support": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "nesbot/carbon": "^1.20|^2.0",
                 "php": ">=7.1.0",
-                "symfony/console": "^4.0",
-                "symfony/finder": "^4.0",
-                "symfony/process": "^4.0",
-                "vlucas/phpdotenv": "^2.2|^3.3"
+                "symfony/console": "^4.0|^5.0|^6.0",
+                "symfony/finder": "^4.0|^5.0|^6.0",
+                "symfony/process": "^4.0|^5.0|^6.0",
+                "vlucas/phpdotenv": "^2.2|^3.3|^4.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^7.5|^8.0"
+                "phpunit/phpunit": "^7.5|^8.0|^9.0"
             },
             "type": "library",
             "extra": {
@@ -2757,9 +2757,9 @@
                 "webdriver"
             ],
             "support": {
-                "source": "https://github.com/lukasyelle/dusk-prodsafe/tree/5.0"
+                "source": "https://github.com/lukasyelle/dusk-prodsafe/tree/5.5.5"
             },
-            "time": "2019-10-15T03:34:55+00:00"
+            "time": "2021-02-02T15:35:17+00:00"
         },
         {
             "name": "monolog/monolog",
