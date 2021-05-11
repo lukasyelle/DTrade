@@ -21,7 +21,7 @@
         "digitonic/iex-cloud-sdk": "^0.5.1",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
-        "kokspflanze/alpha-vantage-api": "^0.5.0",
+        "kokspflanze/alpha-vantage-api": "^0.10.0",
         "laratrade/trader": "dev-laravel-update",
         "laravel/framework": "^6.20",
         "laravel/horizon": "^3.7",
